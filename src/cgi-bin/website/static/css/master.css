@@ -1,0 +1,22 @@
+.form-validation-feedback {
+    font-size: small;
+    color: indianred;
+}
+#Register-Feedback-Error-Wrapper {
+    display: none;
+}
+#Login-Feedback-Success-Wrapper {
+    list-style-type: none;
+}
+#Login-Feedback-Error-Wrapper {
+    display: none;
+}
+#Project-Feedback-Error-Wrapper {
+    display: none;
+}
+#Invalid-User-Credentials {
+    display: none;
+}
+#Dashboard-Alerts {
+    display: none;
+}
