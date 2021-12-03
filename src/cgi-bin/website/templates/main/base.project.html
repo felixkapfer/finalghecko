@@ -13,9 +13,7 @@
                             <h6 class="header-pretitle" style="padding-left: 3px;">Projekt</h6>
                             <!-- Title -->
                             <h1 class="header-title" style="font-size: 3em; padding-top: 6px; padding-bottom: 15px;">
-                                {% if project %}
-                                    {{project['result-set-data'][0]['project_title']}}
-                                {% endif %}
+
                             </h1>
                         </div>
       
@@ -23,7 +21,7 @@
                             <!-- Avatar group -->
                             <div class="avatar-group">
                             <a href="/profile" class="avatar" data-bs-toggle="tooltip" title="{{ current_user.firstname }} {{current_user.lastname}}">
-                                <img src="{{url_for('static', filename='assets/img/avatars/profiles/davidpersin.jpg')}}" alt="..." class="avatar-img rounded-circle"> <!-- todo url für profilbild anpassen-->
+                                <img src="{{url_for('static', filename='assets/img/avatars/profiles/davidpersin.jpg')}}" alt="..." class="avatar-img rounded-circle">
                             </a>
                             </div>
                         </div>
