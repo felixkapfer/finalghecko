@@ -1,0 +1,441 @@
+<!-- ################################################################################################################## -->
+<!--                                        Section for general Configuration                                           -->
+<!-- ################################################################################################################## -->
+{% extends "main/base.project.html" %} 
+    {% block title %}Dashboard{% endblock %}
+
+
+
+    <!-- ################################################################################################################## -->
+    <!--    Navigation in each Project between Default Dashboard, Kanban View, Statistics View und Project Settings         -->
+    <!-- ################################################################################################################## -->
+    {% block projectnavigation %}
+        <ul class="nav nav-tabs nav-overflow header-tabs">
+            <li class="nav-item">
+                <a href="/dashboard" class="nav-link active">Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a href="/kanban" class="nav-link">Kanban</a>
+            </li>
+            <li class="nav-item">
+                <a href="/statistics" class="nav-link">Statistik</a>
+            </li>
+            <li class="nav-item">
+                <a href="/projectsettings" class="nav-link">Einstellungen</a>
+            </li>
+        </ul>
+    {% endblock %}
+
+    <!-- ################################################################################################################## -->
+    <!--    Content Section, where alerts get displayed          -->
+    <!-- ################################################################################################################## -->
+    {% block content %}
+        <!-- CONTENT -->
+        <div class="container-fluid">
+
+            <!-- Alert Section -->
+            <div class="alert alert-success alert-dismissible fade show" role="alert" id="Dashboard-Alerts">
+                <!-- {{flashArea}} -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <li class="{{ category }}">{{ message }}</li>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                <!-- Close -->
+                <button type="button" class="btn-close" aria-label="Close"></button>
+            </div>
+
+
+
+            <!-- ################################################################################################################## -->
+            <!--    Content Section, where Statistic Cards get displayed         -->
+            <!-- ################################################################################################################## -->
+            <!-- Card Wrapper -->
+            <!-- Card Wrapper -->
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl">
+                    <!-- Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row align-items-center gx-0">
+                                <div class="col">
+                                    <!-- Title -->
+                                    <h6 class="text-uppercase text-muted mb-2">Aufgaben Anzahl</h6>
+                                    <!-- Heading -->
+                                    <span class="h2 mb-0"> 
+                                        {% if project_tasks['count-result-set'] %}
+                                            {{project_tasks['count-result-set']}}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                    </span>                                
+                                    <!-- Badge -->
+                                    <span class="badge bg-success-soft mt-n1">+3.5%</span>
+                                </div>
+                                <div class="col-auto">
+                                    <!-- Icon -->
+                                    <span class="h2 fe fe-dollar-sign text-muted mb-0"></span>
+                                </div>
+                            </div> <!-- / .row -->
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Card Wrapper -->
+                <div class="col-12 col-lg-6 col-xl">
+                    <!-- Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row align-items-center gx-0">
+                                <div class="col">
+                                    <!-- Title -->
+                                    <h6 class="text-uppercase text-muted mb-2">Erledigte Aufgabe</h6>
+                                    <!-- Heading -->
+                                    <span class="h2 mb-0">
+                                        {% if project_tasks_finished['count-result-set'] %}
+                                            {{ project_tasks_finished['count-result-set']}}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                    </span>
+                                </div>
+                                <div class="col-auto">
+                                    <!-- Icon -->
+                                    <span class="h2 fe fe-briefcase text-muted mb-0"></span>
+                                </div>
+                            </div> <!-- / .row -->
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Card Wrapper -->
+                <div class="col-12 col-lg-6 col-xl">
+                    <!-- Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row align-items-center gx-0">
+                                <div class="col">
+                                    <!-- Title -->
+                                    <h6 class="text-uppercase text-muted mb-2">Fortschritt</h6>        
+                                    <div class="row align-items-center g-0">
+                                        <div class="col-auto">
+                                            <!-- Heading -->
+                                            <span class="h2 me-2 mb-0">
+                                                {% if project_tasks_finished['count-result-set'] and project_tasks['count-result-set'] %}
+                                                    {% set projects_finished_percent = ((project_tasks_finished['count-result-set'] / project_tasks['count-result-set'] *100) | round(1, 'floor'))%}
+                                                    {{projects_finished_percent}} %
+                                                {% else %}
+                                                    0%
+                                                {% endif %}
+                                            </span>                      
+                                        </div>
+                                        <div class="col">
+                                            <!-- Progress Bar -->
+                                            <div class="progress progress-sm me-4">
+                                                <div class="progress-bar" role="progressbar" style="width: {% if projects_finished_percent %} {{projects_finished_percent}}% {% else %}0% {% endif %}" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>    
+                                            </div>
+                                        </div>
+                                    </div> <!-- / .row -->
+                                </div>
+                                <div class="col-auto">
+                                    <!-- Icon -->
+                                    <span class="h2 fe fe-clipboard text-muted mb-0"></span>
+                                </div>
+                            </div> <!-- / .row -->
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-12 col-lg-6 col-xl">
+                    <!-- Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row align-items-center gx-0">
+                                <div class="col">
+                                    <!-- Title -->
+                                    <h6 class="text-uppercase text-muted mb-2">Zeit seit Projektstart</h6> 
+                                    <!-- Heading -->
+                                    <span class="h2 mb-0">
+                                        {% if project_diff_date_start_today%}
+                                            {{project_diff_date_start_today['result-set-data']['Difference-of-Days']}} Tage
+                                        {% else %}
+                                            0 Tage
+                                        {% endif %}    
+                                    </span>                                    
+                                </div>
+                                <div class="col-auto">
+                                    <!-- Chart -->
+                                    <div class="chart chart-sparkline">
+                                        <canvas class="chart-canvas" id="sparklineChart"></canvas>
+                                    </div>
+                                </div>
+                            </div> <!-- / .row -->
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- / .row -->
+
+
+
+
+            <!-- ################################################################################################################## -->
+            <!--    Content Section, where Tasks are displayed         -->
+            <!-- ################################################################################################################## -->
+            <div class="row" >
+                <div class="col-12 col-xl-8">
+                    <div class="container-fluid">
+                        <div class="row" >
+                            <div class="col-12" style="padding-left: 0px;">
+
+                                <!-- ------------------------------------------------------------------------------------------------------------------------ -->
+                                <!-- Section for Tasks that have status "to do" -->
+                                <!-- ------------------------------------------------------------------------------------------------------------------------ -->
+                                <!-- List group -->
+                                <div class="list-group list-group-lg list-group-flush">
+                                    <div class="list-group-item">
+                                        <!-- Header -->
+                                        <div class="row align-items-center mb-4">
+                                            <div class="col">
+                                                <!-- Heading -->
+                                                <h2 class="mb-0" >Zu erledigen</h2>
+                                            </div>
+                                        </div> <!-- / .row -->
+                                        <!-- Category -->
+                                        <div class="kanban-category" >
+                                            {% if project_tasks_todo['result-set-data'] %}
+                                                {% for task in project_tasks_todo['result-set-data'] %}
+                                                    <!-- Card -->
+                                                    <div class="kanban-item" >
+                                                        <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask" >
+                                                            <div class="card-body">
+                                                                <div class="row align-items-center">
+                                                                    <div class="col-12 col-sm" >
+                                                                        <!-- task name -->
+                                                                        <p class="mb-0" style="padding-bottom: 8px;">                         
+                                                                            <strong>{{task['task_title']}}</strong>                                                          
+                                                                        </p>                 
+                                                                        <!-- Body -->
+                                                                        <p class="mb-sm-0">
+                                                                            {{task['task_description']}}                 
+                                                                        </p>
+                                                                    </div>
+                                                                    <!-- Time -->
+                                                                    <div class="col col-sm-auto">
+                                                                        <p class="card-text small text-muted mb-0">
+                                                                            <i class="fe fe-clock" style="margin-right: 3px;"></i>  {{task['task_terminator']}}                        
+                                                                        </p>
+                                                                    </div>
+                                                                    <!-- Avatar group -->
+                                                                    <div class="col-auto col-sm-auto">
+                                                                        <div class="avatar-group">
+                                                                            <a href="/profile" class="avatar avatar-xs" data-bs-toggle="tooltip" title="{{current_user.firstname}} {{current_user.lastname}}"> <!-- donet-->
+                                                                                <img src="{{url_for('static', filename='assets/img/avatars/profiles/davidpersin.jpg')}}" class="avatar-img rounded-circle" alt="..."> <!-- todot-->
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div> <!-- / .row -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </div>
+
+                                        <!-- Add -->
+                                        <div class="kanban-add">
+                                            <div class="card card-sm card-flush mb-0">
+                                                <div class="card-body">
+                                                    <!-- Link -->
+                                                    <a class="kanban-add-link" href="#!">+ Aufgabe hinzufügen</a>
+
+                                                    <!-- Form -->
+                                                    <form class="kanban-add-form d-none"> <!-- todo methode hinzufügen-->
+                                                        <div class="row align-items-center">
+                                                            <div class="col-12 col-md">
+                                                                <!-- Input --> <!-- todo -->
+                                                                <input type="text" class="form-control form-control-flush form-control-auto" placeholder="Name der Aufgabe" style="margin-bottom: 15px;">
+                                                                <input type="text" class="form-control form-control-flush form-control-auto" placeholder="Aufgabenbeschreibung">
+                                                            </div>
+                                                            <div class="col-6 col-md-auto d-flex align-items-center">
+                                                                <!-- Icon -->
+                                                                <span class="text-muted small me-2">
+                                                                    <i class="fe fe-clock"></i>
+                                                                </span>
+                                                                <!-- Input -->
+                                                                <input type="text" class="form-control form-control-sm form-control-flush form-control-auto text-muted" data-flatpickr data-options='{"dateFormat": "M j"}' placeholder="Datum">
+                                                            </div>
+                                                            <div class="col-6 col-md-auto">
+                                                                <!-- Buttons -->
+                                                                <button class="btn btn-sm btn-white" type="reset" style="margin-right: 8px;">Abbrechen</button>
+                                                                <button class="btn btn-sm btn-primary" type="submit">Hinzufügen</button>
+                                                            </div>
+                                                        </div> <!-- / .row -->
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- ------------------------------------------------------------------------------------------------------------------------ -->
+                                    <!-- Section for Tasks that have status "in progress" -->
+                                    <!-- ------------------------------------------------------------------------------------------------------------------------ -->
+                                    <div class="list-group-item">
+                                        <!-- Header -->
+                                        <div class="row align-items-center mb-4">
+                                            <div class="col" >
+                                                <!-- Heading -->
+                                                <h2 class="mb-0">In Arbeit</h2>
+                                            </div>
+                                        </div> <!-- / .row -->
+                                        <!-- Category -->
+                                        <div class="kanban-category">
+                                            <!-- Card -->
+                                            <div class="kanban-item" >
+                                                <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask" >
+                                                    <div class="card-body" >
+                                                        <div class="row align-items-center">
+                                                            <div class="col-12 col-sm">
+                                                                <!-- task name -->
+                                                                <p class="mb-0" style="padding-bottom: 8px;">
+                                                                    <strong>Übersicht</strong> <!-- todo -->
+                                                                </p>
+                                                                <!-- Body -->
+                                                                <p class="mb-sm-0">
+                                                                    Create the release notes for the new pages so customers are aware. <!-- todo -->
+                                                                </p>
+                                                            </div>
+                                                            <div class="col col-sm-auto">
+                                                                <!-- Time -->
+                                                                <p class="card-text small text-muted mb-0">
+                                                                    <i class="fe fe-clock" style="margin-right: 3px;"></i> Jun 9
+                                                                </p>
+                                                            </div>
+                                                            <div class="col-auto col-sm-auto">
+                                                                <!-- Avatar group -->
+                                                                <div class="avatar-group">
+                                                                    <a href="/profile" class="avatar avatar-xs" data-bs-toggle="tooltip" title="{{current_user.firstname}} {{current_user.lastname}}"> <!-- donet -->
+                                                                        <img src="{{url_for('static', filename='assets/img/avatars/profiles/davidpersin.jpg')}}" class="avatar-img rounded-circle" alt="...">       <!-- todot -->
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div> <!-- / .row -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Add -->
+                                        <div class="kanban-add">
+                                            <div class="card card-sm card-flush mb-0">
+                                                <div class="card-body">
+                                                    <!-- Link -->
+                                                    <a class="kanban-add-link" href="#!">+ Aufgabe hinzufügen</a>
+
+                                                    <!-- Form -->
+                                                    <form class="kanban-add-form d-none">                               <!-- todo -->
+                                                        <div class="row align-items-center">
+                                                            <div class="col-12 col-md">
+                                                                <!-- Input -->
+                                                                <input type="text" class="form-control form-control-flush form-control-auto" placeholder="Name der Aufgabe" style="margin-bottom: 15px;">
+                                                                <input type="text" class="form-control form-control-flush form-control-auto" placeholder="Aufgabenbeschreibung">
+                                                            </div>
+                                                            <div class="col-6 col-md-auto d-flex align-items-center">
+                                                                <!-- Icon -->
+                                                                <span class="text-muted small me-2">
+                                                                    <i class="fe fe-clock"></i>
+                                                                </span>
+                                                                <!-- Input -->
+                                                                <input type="text" class="form-control form-control-sm form-control-flush form-control-auto text-muted" data-flatpickr data-options='{"dateFormat": "M j"}' placeholder="Datum">
+                                                            </div>
+                                                            <!-- Buttons -->
+                                                            <div class="col-6 col-md-auto">
+                                                                <button class="btn btn-sm btn-white" type="reset" style="margin-right: 8px;">Abbrechen</button>
+                                                                <button class="btn btn-sm btn-primary" type="submit">Hinzufügen</button>                            <!-- todo -->
+                                                            </div>
+                                                        </div> <!-- / .row -->
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- ################################################################################################################## -->
+                <!--    Section where project information are displayed         -->
+                <!-- ################################################################################################################## -->
+                <div class="col-12 col-xl-4">
+                    <!-- Activity -->
+                    <div class="card" style="margin-top: 25px;">
+                        <div class="card-header">
+                            <!-- Title -->
+                            <h2 class="mb-0">Projektinformationen</h2>
+                            <!-- Button -->
+                            <a class="small" href="/projectsettings">Bearbeiten</a>
+                        </div>
+
+                        <div class="card-body">
+                            <!-- Text -->
+                            <p class="small text-gray-700 mb-0" style="padding-bottom: 5px;">Projektname</p>                <!-- todo -->
+                            <!-- task description -->
+                            <p style="margin-bottom: 22px;">Python Projekt</p>                                              <!-- todo -->
+                            <!-- Text -->
+                            <p class="small text-gray-700 mb-0" style="padding-bottom: 5px;">Projekbeschreibung</p>         <!-- todo -->
+                            <!-- task description -->
+                            <p style="margin-bottom: 30px;">                                                                <!-- todo -->
+                              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. 
+                            </p>
+                            <!-- List group -->
+                            <div class="list-group list-group-flush list-group-activity my-n3">
+                                <div class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-auto">
+                                            <!-- Avatar -->
+                                            <div class="avatar avatar-sm">
+                                                <div class="avatar-title fs-lg bg-primary-soft rounded-circle text-primary">
+                                                    <i class="fe fe-compass"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col ms-n2">
+                                            <!-- Heading -->
+                                            <h5 class="mb-1" style="font-size: 1em;">11.11.2021</h5>                    <!-- todo -->
+                                            <!-- Text -->
+                                            <p class="small text-gray-700 mb-0">Startdatum</p>
+                                        </div>
+                                    </div> <!-- / .row -->
+                                </div>
+                                <div class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-auto">
+                                            <!-- Avatar -->
+                                            <div class="avatar avatar-sm">
+                                                <div class="avatar-title fs-lg bg-primary-soft rounded-circle text-primary">
+                                                    <i class="fe fe-award"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col ms-n2">
+                                            <!-- Heading -->
+                                            <h5 class="mb-1" style="font-size: 1em;">05.12.2001</h5>                    <!-- todo -->
+                                            <!-- Text -->
+                                            <p class="small text-gray-700 mb-0">vorraussichtliches Projektende</p>
+                                        </div>
+                                    </div> <!-- / .row -->
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- / .row -->
+        </div>
+    {% endblock %}
+

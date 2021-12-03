@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        <!-- Load Website Titel dynamically -->
+        <title>
+            {% block title %}
+                Home
+            {% endblock %}
+        </title>
+
+        <!-- Define Website meta data -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <!-- Include static CSS Stylesheets to style the webpages which are used on each website -->
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="{{url_for('static', filename='assets/favicon/python_favicon.png')}}" type="image/x-icon"/>
+    
+        <!-- Map CSS -->
+        <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css" />
+        
+        <!-- Libs CSS -->
+        <link rel="stylesheet" href="{{url_for('static', filename='assets/css/libs.bundle.css')}}" />
+        
+        <!-- Theme CSS -->
+        <link rel="stylesheet" href="{{url_for('static', filename='assets/css/theme.bundle.css')}}" />
+        
+        <!-- Theme CSS -->
+        <link rel="stylesheet" href="{{url_for('static', filename='css/master.css')}}" /> 
+        
+
+
+        
+
+        <!-- Include CSS Stylesheets to style the webpages dynamiccaly which are not used on each website -->
+        {% block include_style_sheets %}
+        
+        {% endblock%}
+
+        <!-- Section to include jQuery -->
+        <script src="{{url_for('static', filename='js/jquery-3.5.1.min.js')}}" charset="utf-8"></script>
+    </head>
+
+    <!-- ################################################################################################################## -->
+    <!--                                        Section to load Body content                                                -->
+    <!-- ################################################################################################################## -->
+    {% block body %}
+    {% endblock %}
+
+
+    <!-- ################################################################################################################## -->
+    <!--                                        Section to Java Script Files                                                -->
+    <!-- ################################################################################################################## -->
+    <!-- Popper JS -->
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"
+    ></script>
+
+
+    <!-- Bootstrap JS -->
+    <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"
+    ></script>
+
+
+    <!-- Map JS -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.js'></script>
+
+
+    <!-- Vendor JS -->
+    <script src="{{url_for('static', filename='assets/js/vendor.bundle.js')}}"></script>
+
+    
+    <!-- Theme JS -->
+    <script src="{{url_for('static', filename='assets/js/theme.bundle.js')}}"></script>
+    
+    <!-- Master JS -->
+    <script src="{{url_for('static', filename='js/master.js')}}"></script>
+
+    
+    {% block include_java_script %}
+    
+    {% endblock %}
+</html>

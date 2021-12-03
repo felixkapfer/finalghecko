@@ -1,0 +1,258 @@
+<!-- ################################################################################################################## -->
+<!--                                        Section for general Configuration                                           -->
+<!-- ################################################################################################################## -->
+<!-- Define template were this page extends from -->
+{% extends "main/base.html" %} 
+
+  {% block body %}
+
+  <!-- Left Sidebar NAVIGATION -->
+  <nav class="navbar navbar-vertical fixed-start navbar-expand-md navbar-light" id="sidebar">
+      <div class="container-fluid">
+    
+        <!-- Toggler -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarCollapse" aria-controls="sidebarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <!-- Brand -->
+        <a class="navbar-brand" href="/dashboard">
+          <img src="{{url_for('static', filename='assets/favicon/python_favicon.png')}}" class="navbar-brand-img mx-auto" alt="...">
+        </a>
+    
+        <!-- User (xs) -->
+        <div class="navbar-user d-md-none">
+          <!-- Dropdown -->
+          <div class="dropdown">
+
+            <!-- Toggle -->
+            <a href="#" id="sidebarIcon" class="dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <div class="avatar avatar-sm">
+                <img src="{{url_for('static', filename='assets/img/avatars/profiles/davidpersin.jpg')}}" class="avatar-img rounded-circle" alt="...">
+              </div>
+            </a>
+    
+            <!-- Menu -->
+            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="sidebarIcon">
+              <a href="/profile" class="dropdown-item">Profil</a>
+              <a href="/settings" class="dropdown-item">Einstellungen</a>
+              <hr class="dropdown-divider">
+              <a href="/auth/sign-in" class="dropdown-item">Logout</a>
+            </div>
+    
+          </div>
+        </div>
+        <!-- Collapse -->
+        <div class="collapse navbar-collapse" id="sidebarCollapse">
+          <!-- Heading -->
+          <h6 class="navbar-heading" style="margin-top: 15px;">Meine Projekte</h6>
+
+          <!-- Navigation -->
+          <ul class="navbar-nav">
+            {% if projects['result-set-data'] %}
+              {% for project in projects['result-set-data'] %}
+                <li class="nav-item">
+                  <a 
+                    class="nav-link" 
+                    href="#sidebarDashboards-id-{{project['id']}}" 
+                    data-bs-toggle="collapse" 
+                    role="button" 
+                    aria-expanded="false" 
+                    aria-controls="sidebarDashboards">
+                    {{project['project_title']}}
+                  </a>
+                  <div class="collapse " id="sidebarDashboards-id-{{project['id']}}">
+                    <ul class="nav nav-sm flex-column">
+                      <li class="nav-item">
+                        <a href="/dashboard/{{project['id']}}" class="nav-link ">Dashboard</a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="/kanban/{{project['id']}}" class="nav-link ">Kanban</a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="/statistics/{{project['id']}}" class="nav-link ">Statistik</a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="/projectsettings/{{project['id']}}" class="nav-link ">Einstellungen</a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+              {% endfor %}
+            {% endif %}
+          </ul>
+        </div>
+
+
+            
+            <!-- <li class="nav-item">
+              <a 
+                class="nav-link" 
+                href="#sidebarDashboards" 
+                data-bs-toggle="collapse" 
+                role="button" 
+                aria-expanded="false" 
+                aria-controls="sidebarDashboards">
+                Python Projekt
+              </a>
+              <div class="collapse " id="sidebarDashboards">
+                <ul class="nav nav-sm flex-column">
+                  <li class="nav-item">
+                    <a href="/dashboard" class="nav-link ">Dashboard</a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/kanban" class="nav-link ">Kanban</a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/statistics" class="nav-link ">Statistik</a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/projectsettings" class="nav-link ">Einstellungen</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ul> -->
+    
+          <!-- Divider -->
+          <hr class="navbar-divider my-3">
+    
+          <!-- Heading -->
+          <h6 class="navbar-heading" style="margin-top: 5px;">Allgemeines</h6>
+    
+          <!-- Navigation -->
+          <ul class="navbar-nav mb-md-4">
+
+            <li class="nav-item">
+              <a class="nav-link " href="/profile"><i class="fe fe-user"></i>Profil</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link " href="/statisticsproject"><i class="fe fe-bar-chart"></i>Übersicht</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link " href="/settings"><i class="fe fe-settings"></i>Einstellungen</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link " href="/auth/logout"><i class="fe fe-log-out"></i> Ausloggen</a>
+            </li>
+          </ul>
+    
+          <!-- Push content down -->
+          <div class="mt-auto"></div>
+    
+          <!-- new Project button -->
+          <button 
+            type="button" 
+            class="btn btn-primary" 
+            style="margin-bottom: 10px;"
+            onclick= "window.location.href = '/new-project';">
+            neues Projekt
+          </button>
+    
+        </div> <!-- / .navbar-collapse -->
+    
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+
+      {% block project_header %}
+      {% endblock %}
+    
+      {% block content %}
+      {% endblock %}
+    
+    </div>
+  {% endblock %}
+
+
+
+  {% block include_java_script %}
+    <script>
+      $(document).ready(function() {                                   // Only execute the code below if page was fully load
+        $("form input[name=project-start-date]").val(new Date().toDateInputValue());
+        
+        
+        // Send data from sign-in and sign-up from if submit button is clicked by user
+          $('#Form-Button').click(function (event) {
+              event.preventDefault();                                 // prevent pagereload or page redirecting when submit button is clicked
+              $('.form-validation-feedback').html('')                 // reset each form-validation-feedback section to null when sumbit button is clicked
+              
+
+              let target             = $(this).attr('data-api-target')            // Get attribute which defines the url where the date get send to via REST
+              let method             = $(this).attr('data-api-method')            // Get attribute which defines what kind of REST Method it is
+              let task               = $(this).attr('data-api-task')              // Get attribute which defines what Api is going to do with the data
+              let text_area_attr     = $(this).attr('data-textarea-attr');
+              let text_area_name     = $(this).attr('data-textarea-name');
+              let text_area_val      = $(text_area_attr).children('div').text(); 
+              let submit_data        = 'task=' + task;
+              let form_serialization = $('form').serialize();
+              let data               = submit_data + '&' + form_serialization + '&' + text_area_name + text_area_val;
+
+              // Createing jQuery AJAX function to send form data to REST API
+              $.ajax({
+                  type    : method,
+                  url     : target,
+                  data    : data,
+                  dataType: 'HTML',
+                  success: function (response) {                                      // defines function which will be executed if AJAX request was successfull
+                      let responseObj    = JSON.parse(response)                       // create a JSON object from the data received from the API
+                      let responseLength = Object.keys(responseObj).length            // Get amount of JSON Objects that are received
+                      $(responseObj[1]['display-messages-target']).slideUp(400)
+                      
+
+                      if (responseObj[1]['status'] == false) {                                                                                // validate if an error occured and following error message object(s) was/ were returned
+                            $('error-feedback-section').fadeIn(200)                                                                             // display HTML section with class 'error-feedback-section' 
+                                                                                                     
+                            for (let i = 2; i <= responseLength; i++) {                                                                         // Looping through all error message objects that are returned by the API
+                                let writeHtml = 'Error-Code: ' + responseObj[i]['Error-Code'] + ' - ' + responseObj[i]['Description']           // Creating output string Text that will be displayed below the input box where error occured
+                                $(responseObj[i]['Render-Output']).html(writeHtml)                                                              // Writing error messages from each error object to the corresponing feedback section in the HTML code
+                            }
+
+                            if (responseObj[1]['display-messages'] == 'inpage-alert') {
+                                // console.log(responseObj[])
+                                $(responseObj[1]['display-messages-target']).slideDown(600)
+                            }
+                        }
+
+
+                        else if (responseObj[1]['status'] == true ) {                       // if no error were returened, validate that task send was done successfull 
+                            if (responseObj[1]['redirect-status']) {
+                                let url = responseObj[1]['redirect-target']                 // Get URL were User gets rediretected to if everything was successfull
+                                window.location = url                                       // Redirect User to the URL
+                            }
+                        }
+                      // if (responseObj[1]['status'] == false) {                                                                            // validate if an error occured and following error message object(s) was/ were returned
+                      //     $('error-feedback-section').fadeIn(200)                                                                         // display HTML section with class 'error-feedback-section' 
+                      //     for (let i = 2; i <= responseLength; i++) {                                                                      // Looping through all error message objects that are returned by the API
+                      //         let writeHtml = 'Error-Code: ' + responseObj[i]['Error-Code'] + ' - ' + responseObj[i]['Description']       // Creating output string Text that will be displayed below the input box where error occured
+                      //         $(responseObj[i]['Render-Output']).html(writeHtml)                                                          // Writing error messages from each error object to the corresponing feedback section in the HTML code
+                      //     }
+                      // }
+                      // else if (responseObj[1]['status'] == true ) {                   // if no error were returened, validate that task send was done successfull 
+                      //     let url         = responseObj[1]['redirect-target']         // Get URL were User gets rediretected to if everything was successfull
+                      //     window.location = url                                       // Redirect User to the URL
+                      // }
+
+                      // if (responseObj[2]['error-code'] == 'inpage-alert') {
+                      //       $(responseObj[2]['error-feedback-target']).slideDown(600)
+                      //   }
+                  }
+              });
+              
+          })
+
+
+          // $('.nav-link').click(function(){
+          //   console.log(this)
+          //   $(this).next('div').slideToggle()
+          //   $(this '.navbar-vertical .navbar-nav .nav-link[data-bs-toggle="collapse"]::after').css('rotate', '180deg!important')
+          // })
+      })
+    </script>  
+    
+  {% endblock %}

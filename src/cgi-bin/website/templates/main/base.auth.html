@@ -1,0 +1,74 @@
+<!-- ################################################################################################################## -->
+<!--                                        Section for general Configuration                                           -->
+<!-- ################################################################################################################## -->
+<!-- Define template were this page extends from -->
+{% extends "main/base.html" %} 
+
+{% block body %}
+{% endblock %}
+
+
+
+
+
+<!-- ################################################################################################################## -->
+<!--                                        Section for Java Script Code                                                -->
+<!-- ################################################################################################################## -->
+
+
+{% block include_java_script %}
+    <script>
+        $(document).ready(function() {                                   // Only execute the code below if page was fully load
+
+            // Send data from sign-in and sign-up from if submit button is clicked by user
+            $('#Form-Button').click(function (event) {
+                event.preventDefault();                                 // prevent pagereload or page redirecting when submit button is clicked
+                $('.form-validation-feedback').html('')                 // reset each form-validation-feedback section to null when sumbit button is clicked
+
+                let target             = $(this).attr('data-api-target')            // Get attribute which defines the url where the date get send to via REST
+                let method             = $(this).attr('data-api-method')            // Get attribute which defines what kind of REST Method it is
+                let task               = $(this).attr('data-api-task')              // Get attribute which defines what Api is going to do with the data
+                let submit_data        = 'task=' + task;
+                let form_serialization = $('form').serialize();
+                let data               = submit_data + '&' + form_serialization;
+
+                // Createing jQuery AJAX function to send form data to REST API
+                $.ajax({
+                    type    : method,
+                    url     : target,
+                    data    : data,
+                    dataType: 'HTML',
+                    success: function (response) {                                      // defines function which will be executed if AJAX request was successfull
+                        let responseObj    = JSON.parse(response)                       // create a JSON object from the data received from the API
+                        let responseLength = Object.keys(responseObj).length            // Get amount of JSON Objects that are received
+                        
+                        $(responseObj[1]['display-messages-target']).slideUp(400)
+
+                        if (responseObj[1]['status'] == false) {                                                                                // validate if an error occured and following error message object(s) was/ were returned
+                            $('error-feedback-section').fadeIn(200)                                                                             // display HTML section with class 'error-feedback-section' 
+                                                                                                     
+                            for (let i = 2; i <= responseLength; i++) {                                                                         // Looping through all error message objects that are returned by the API
+                                let writeHtml = 'Error-Code: ' + responseObj[i]['Error-Code'] + ' - ' + responseObj[i]['Description']           // Creating output string Text that will be displayed below the input box where error occured
+                                $(responseObj[i]['Render-Output']).html(writeHtml)                                                              // Writing error messages from each error object to the corresponing feedback section in the HTML code
+                            }
+
+                            if (responseObj[1]['display-messages'] == 'inpage-alert') {
+                                // console.log(responseObj[])
+                                $(responseObj[1]['display-messages-target']).slideDown(600)
+                            }
+                        }
+
+                        else if (responseObj[1]['status'] == true ) {                       // if no error were returened, validate that task send was done successfull 
+                            if (responseObj[1]['redirect-status']) {
+                                let url = responseObj[1]['redirect-target']                 // Get URL were User gets rediretected to if everything was successfull
+                                window.location = url                                       // Redirect User to the URL
+                            }
+                            
+                        }
+                    }
+                });
+                
+            })
+        })
+    </script>
+{% endblock %}

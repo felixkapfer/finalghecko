@@ -1,0 +1,129 @@
+<!-- ################################################################################################################## -->
+<!--                                        Section for general Configuration                                           -->
+<!-- ################################################################################################################## -->
+{% extends "main/base.auth.html" %}
+
+    <!-- Set Webpage Title -->
+    {% block title %}Registrieren{% endblock %}
+
+    <!-- ################################################################################################################## -->
+    <!--                                        Section for general Configuration                                           -->
+    <!-- ################################################################################################################## -->
+    {% block body %}
+        <body class="d-flex align-items-center bg-auth border-top border-top-2 border-primary">
+
+            <!-- CONTENT -->
+            <div class="container">
+                <div class="row align-items-center">
+                    
+                    <div class="col-12 col-md-6 offset-xl-2 offset-md-1 order-md-2 mb-5 mb-md-0">
+                        <!-- Image -->
+                        <div class="text-center">
+                            <img src="{{url_for('static', filename='assets/img/illustrations/python_img2.jpg')}}" alt="..." class="img-fluid">
+                        </div>
+                    </div>
+                    
+                    <div class="col-12 col-md-5 col-xl-4 order-md-1 my-5">
+                        <!-- Heading -->
+                        <h1 class="display-4 text-center mb-3">Registrieren</h1>
+
+                        <!-- Subheading -->
+                        <p class="text-muted text-center mb-5">Erstellen Sie ein kostenloses Benutzerkonto</p>
+            
+
+                        <!-- Feedback section for Error Messages with jQuery -->
+                        <div id="Register-Feedback-Error-Wrapper" class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <div id="Register-Feedback-Error"></div>
+                            <!-- Close -->
+                            <button type="button" class="btn-close" aria-label="Close"></button>
+                        </div>
+
+                        <!-- Form -->
+                        <form>
+                            <!-- First name -->
+                            <div class="form-group">
+                                <!-- Label -->
+                                <label class="form-label">Vorname</label>
+                                <!-- Input -->
+                                <input type="text" class="form-control" placeholder="Max" name="firstname">
+                                <!-- Input Validation Feedback Section -->
+                                <div id="Firstname" class="form-validation-feedback-feedback"></div>
+                            </div>
+                
+                            <!-- Last name -->
+                            <div class="form-group">
+                                <!-- Label -->
+                                <label class="form-label">Nachname</label>
+                                <!-- Input -->
+                                <input type="text" class="form-control" placeholder="Mustermann"  name="lastname">
+                                <!-- Input Validation Feedback Section -->
+                                <div id="Lastname" class="form-validation-feedback"></div>
+                            </div>
+                
+                
+                            <!-- Email address -->
+                            <div class="form-group">
+                                <!-- Label -->
+                                <label class="form-label">Email-Adresse</label>
+                                <!-- Input -->
+                                <input type="email" class="form-control" placeholder="name@address.com" name="email">
+                                <!-- Input Validation Feedback Section -->
+                                <div id="Email" class="form-validation-feedback"></div>
+                            </div>
+                
+                            <!-- Password -->
+                            <div class="form-group">
+                                <!-- Label -->
+                                <label class="form-label">Passwort</label>
+                                <!-- Input group -->
+                                <div class="input-group input-group-merge">
+                                    <!-- Input -->
+                                    <input class="form-control" type="password" placeholder="Passwort anlegen" name="pwd">
+                                    <!-- Icon -->
+                                    <span class="input-group-text" data-input-target="pwd"></span>
+                                </div>
+                                <!-- Input Validation Feedback Section -->
+                                <div id="Password" class="form-validation-feedback"></div>
+                            </div>
+                
+                            <!-- Confirm Password -->
+                            <div class="form-group">
+                                <!-- Label -->
+                                <label class="form-label">Passwort bestätigen</label>
+                                <!-- Input group -->
+                                <div class="input-group input-group-merge">
+                                    <!-- Input -->
+                                    <input class="form-control" type="password" placeholder="Passwort anlegen" name="confirm-pwd">
+                                    <!-- Icon -->
+                                    <span class="input-group-text" data-input-target="confirm-pwd"></span>
+                                </div>
+                                <!-- Input Validation Feedback Section -->
+                                <div id="Confirm-Password" class="form-validation-feedback"></div>
+                            </div>
+                
+                            <!-- Submit Button-->
+                            <button 
+                                id                 = "Form-Button" 
+                                class              = "btn btn-lg w-100 btn-primary mb-3" 
+                                type               = "button" 
+                                name               = "submit-btn" 
+                                data-serialization = "True"
+                                data-api-target    = "http://127.0.0.1:5000/api/create-user"
+                                data-api-method    = "POST"
+                                data-api-task      = "registerData"
+                                data-page-reload   = "False">
+                                Registrieren
+                            </button>
+                
+                            <!-- Link -->
+                            <div class="text-center">
+                                <small class="text-muted text-center">
+                                    Sie haben bereits ein Konto? <a href="/auth/sign-in">zum Login</a>.
+                                </small>
+                            </div>
+                        </form>
+                    </div>
+                </div> <!-- / .row -->
+            </div> <!-- / .container -->
+        </body>
+    {% endblock %}

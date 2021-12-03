@@ -1,0 +1,118 @@
+<!-- ################################################################################################################## -->
+<!--                                        Section for general Configuration                                           -->
+<!-- ################################################################################################################## -->
+{% extends "main/base.auth.html" %}
+
+    <!-- Set Webpage Title -->
+    {% block title %}Anmelden{% endblock %}
+
+    <!-- ################################################################################################################## -->
+    <!--                                        Section for general Configuration                                           -->
+    <!-- ################################################################################################################## -->
+    {% block body %}
+        <body class="d-flex align-items-center bg-auth border-top border-top-2 border-primary">
+            <!-- CONTENT -->
+            <div class="container">
+                <div class="row align-items-center">
+                    
+                    <div class="col-12 col-md-6 offset-xl-2 offset-md-1 order-md-2 mb-5 mb-md-0">
+                        <!-- Image -->
+                        <div class="text-center">
+                            <img src="{{url_for('static', filename='assets/img/illustrations/python_img1.jpg')}}" alt="..." class="img-fluid">
+                        </div>
+                    </div>
+                    
+                    <div class="col-12 col-md-5 col-xl-4 order-md-1 my-5">
+                        <!-- Heading -->
+                        <h1 class="display-4 text-center mb-3">Login</h1>
+                        <!-- Subheading -->
+                        <p class="text-muted text-center mb-5">Loggen Sie sich mit Ihren Benutzerdaten ein</p> 
+                        <!-- Alert Serction for Python Flash Alerts -->
+                        <div id="Login-Feedback-Success-Wrapper" role="alert">
+                            <!-- {{flashArea}} -->
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                                {% if messages %}
+                                    {% for category, message in messages %}
+                                        <div class="alert {{ category }} alert-dismissible fade show">
+                                            <ul class="flashes">
+                                                <li style="list-style-type: none;" class="{{ category }}">{{ message }}</li>
+                                            </ul>
+                                            <button type="button" class="btn-close" aria-label="Close"></button>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
+                            <!-- Close -->
+                        </div>
+                        <!-- Feedback section for Error Messages with jQuery -->
+                        <div id="Login-Feedback-Error-Wrapper" class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <div id="Login-Feedback-Error"></div>
+                            <!-- Close -->
+                            <button type="button" class="btn-close" aria-label="Close"></button>
+                        </div>
+
+                        <!-- Form -->
+                        <form>
+
+                            <!-- Email address -->
+                            <div class="form-group">
+                                <!-- Label -->
+                                <label class="form-label">Email-Adresse</label>
+                                <!-- Input -->
+                                <input type="email" class="form-control" placeholder="name@address.com" name="email">
+                                <!-- Input Validation Feedback Section -->
+                                <div id="Email" class="form-validation-feedback"></div>
+                            </div>
+
+                            <!-- Password -->
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col">
+                                        <!-- Label -->
+                                        <label class="form-label">Passwort</label>
+                                    </div>
+                                </div> <!-- / .row -->
+
+                                <!-- Input group -->
+                                <div class="input-group input-group-merge">
+                                    <!-- Input -->
+                                    <input class="form-control" type="password" placeholder="Passwort eingeben" name="pwd">
+                                    <!-- Icon -->
+                                    <span class="input-group-text"></span>
+                                </div>
+                                <div id="Password" class="form-validation-feedback"></div>
+                            </div>
+
+                            <!-- Alert -->
+                            <div id="Invalid-User-Credentials" class="alert alert-danger alert-dismissible fade show" role="alert" id="Sign-In-Infos">
+                                Ungültige Email-Adresse oder ungültiges Passwort
+                                <!-- Close -->
+                                <button type="button" class="btn-close" aria-label="Close"></button>
+                            </div>
+
+                            <!-- Submit -->
+                            <button 
+                                id                 = "Form-Button" 
+                                class              = "btn btn-lg w-100 btn-primary mb-3" 
+                                type               = "button" 
+                                name               = "submit-btn" 
+                                data-serialization = "True"
+                                data-api-target    = "http://127.0.0.1:5000/api/log-user-in"
+                                data-api-method    = "POST"
+                                data-api-task      = "receiveData"
+                                data-page-reload   = "False">
+                                Login
+                            </button>
+
+                            <!-- Link -->
+                            <div class="text-center">
+                                <small class="text-muted text-center">
+                                    Sie haben noch kein Konto? <a href="/auth/sign-up">kostenlos registrieren</a>.
+                                </small>
+                            </div>
+                        </form>
+                    </div>
+                </div> <!-- / .row -->
+            </div> <!-- / .container -->
+        </body>
+    {% endblock %}
