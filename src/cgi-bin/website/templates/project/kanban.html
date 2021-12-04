@@ -100,7 +100,7 @@
                                 <i class="fe fe-clock" style="margin-right: 3px;"></i> {{ task['task_terminator'] }}
                               </p>
                             </div>
-                            <div class="col-auto">
+                            <div class="col-auto" onclick="delete_task_js({{task['id']}})">
                               <!-- delete -->
                               <i class="fe fe-trash-2"></i>
                             </div>
@@ -210,7 +210,7 @@
                                   <i class="fe fe-clock" style="margin-right: 3px;"></i> {{ task['task_terminator'] }}
                                 </p>
                               </div>
-                              <div class="col-auto">
+                              <div class="col-auto" onclick="delete_task_js({{task['id']}})">
                                 <!-- delete -->
                                 <i class="fe fe-trash-2"></i>
                               </div>
@@ -320,7 +320,7 @@
                                   <i class="fe fe-clock" style="margin-right: 3px;"></i> {{ task['task_terminator'] }}
                                 </p>
                               </div>
-                              <div class="col-auto">
+                              <div class="col-auto" onclick="delete_task_js({{task['id']}})">
                                 <!-- delete -->
                                 <i class="fe fe-trash-2"></i>
                               </div>
