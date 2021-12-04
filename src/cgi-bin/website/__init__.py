@@ -16,7 +16,16 @@ ma = Marshmallow()
 
 
 def createApp():
-    app = Flask(__name__)
+    """This function binds the different modules used into a package, so if it is called it runs through all the initializations and imports
+    
+    Returns:
+        Flask: our application
+    
+    Test 1: call the function and test if all initializations and imports work correct
+    Test 2: test if the database is created successfully
+    """
+    
+    app = Flask(__name__) # initializing flask
 
     #app.config['SECRET KEY'] = 'gheckoprojectname2021 - Group: Programmieren Next Level'
     app.secret_key = 'gheckoprojectname2021 - Group: Programmieren Next Level'
@@ -52,13 +61,25 @@ def createApp():
     app.register_blueprint(auth, url_prefix='/auth/')
     app.register_blueprint(api, url_prefix='/api/')
 
-    login_manager = LoginManager()
+    #This will bind the Flask-Login to the server
+    login_manager = LoginManager() 
     login_manager.init_app(app)
-    login_manager.login_view = 'auth/login.html'
+    login_manager.login_view = 'auth/login.html' #gives the standard url when logging in
     
     @login_manager.user_loader
     def load_user(id):
-        return UserList.query.get(int(id))
+        """This callback is used to reload the user object from the user ID stored in the session.
+
+        Args:
+            id (sqlalchemy.orm.attributes.InstrumentedAttribute): is used as primary key in the UserList table
+
+        Returns:
+            UserList: corresponding user object
+            
+        Test 1: test if the right user is given back for a certain id
+        Test 2: test if the right data type is returned
+        """
+        return  UserList.query.get(int(id))
 
 
 
