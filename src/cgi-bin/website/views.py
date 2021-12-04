@@ -146,6 +146,9 @@ async def statistics():
 
 @views.route('/settings/')
 async def settings():
+# @views.route('/settings/<project_id>')
+# async def settings(project_id):
+    project_id = int(project_id)
     if current_user.is_authenticated:
         user_id = current_user.id
        
@@ -164,6 +167,7 @@ async def settings():
 
 @views.route('/projectsettings/<project_id>')
 async def projectsettings(project_id):
+# async def projectsettings():
     project_id = int(project_id)
     if current_user.is_authenticated:
         user_id = current_user.id
