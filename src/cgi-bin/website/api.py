@@ -2867,9 +2867,6 @@ def api_updateTask():
 
 
 
-
-
-
 @api.route('/update-task-status', methods=['PUT'])
 def api_updateTaskStatus():
     """
@@ -3156,9 +3153,6 @@ def api_deleteTaskById():
                     return result
 
         return result
-
-
-
 
 
 
