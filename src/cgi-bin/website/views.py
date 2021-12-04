@@ -228,28 +228,28 @@ async def newtask(project_id):
 
 
 
-@views.route('/statisticsproject/<project_id>')
-async def statisticsproject(project_id):
-    project_id = int(project_id)
-    if current_user.is_authenticated:
-        user_id = current_user.id
-        count_date_since_start = httpx.get(f'http://127.0.0.1:5000/api/get-date-difference-stt-by-project-id?user-id={{user_id}}&project-id={project_id}')            # get date differences between project start date and current date
+# @views.route('/statisticsproject/<project_id>')
+# async def statisticsproject(project_id):
+#     project_id = int(project_id)
+#     if current_user.is_authenticated:
+#         user_id = current_user.id
+#         count_date_since_start = httpx.get(f'http://127.0.0.1:5000/api/get-date-difference-stt-by-project-id?user-id={{user_id}}&project-id={project_id}')            # get date differences between project start date and current date
 
-        async with httpx.AsyncClient() as client:
-            all_projects_by_user        = await client.get(f"http://127.0.0.1:5000/api/get-all-projects-by-user?user-id={user_id}")                                                                                 # get all projects that belongs to the loged in user
-            current_project             = await client.get(f"http://127.0.0.1:5000/api/get-single-project-by-users-project-id?user-id={user_id}&project-id={project_id}")                                           # get only the project, the user is looking for to see prject details
-            all_tasks_by_user_obj       = await client.get(f"http://127.0.0.1:5000/api/get-all-tasks-by-user?user-id={user_id}")                                                                                    # get all tasks that belongs to a user --> needed for statistics
-            all_tasks_by_project        = await client.get(f"http://127.0.0.1:5000/api/get-all-task-by-username-and-project?user-id={user_id}&project-id={project_id}")                                                                     # get all tasks that belongs to a user and the project the user is looking for
-                        # get all tasks that belongs to a user and the project the user is looking for and groups them by status todo
+#         async with httpx.AsyncClient() as client:
+#             all_projects_by_user        = await client.get(f"http://127.0.0.1:5000/api/get-all-projects-by-user?user-id={user_id}")                                                                                 # get all projects that belongs to the loged in user
+#             current_project             = await client.get(f"http://127.0.0.1:5000/api/get-single-project-by-users-project-id?user-id={user_id}&project-id={project_id}")                                           # get only the project, the user is looking for to see prject details
+#             all_tasks_by_user_obj       = await client.get(f"http://127.0.0.1:5000/api/get-all-tasks-by-user?user-id={user_id}")                                                                                    # get all tasks that belongs to a user --> needed for statistics
+#             all_tasks_by_project        = await client.get(f"http://127.0.0.1:5000/api/get-all-task-by-username-and-project?user-id={user_id}&project-id={project_id}")                                                                     # get all tasks that belongs to a user and the project the user is looking for
+#                         # get all tasks that belongs to a user and the project the user is looking for and groups them by status todo
 
-        return render_template(
-                'project/statistics.html',
-                projects                      = all_projects_by_user.json(),
-                current_project               = current_project.json(), 
-                all_tasks                     = all_tasks_by_user_obj.json(),
-                project_tasks                 = all_tasks_by_project.json(),
-                project_diff_date_start_today = count_date_since_start.json()
-            )
-    else:
-        flash('To get access to this page, you need to sign-in first!', 'alert-danger')
-        return redirect(url_for('auth.auth_login'))
+#         return render_template(
+#                 'project/statistics.html',
+#                 projects                      = all_projects_by_user.json(),
+#                 current_project               = current_project.json(), 
+#                 all_tasks                     = all_tasks_by_user_obj.json(),
+#                 project_tasks                 = all_tasks_by_project.json(),
+#                 project_diff_date_start_today = count_date_since_start.json()
+#             )
+#     else:
+#         flash('To get access to this page, you need to sign-in first!', 'alert-danger')
+#         return redirect(url_for('auth.auth_login'))
