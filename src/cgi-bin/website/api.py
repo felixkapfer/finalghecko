@@ -2610,7 +2610,7 @@ def api_createTask():
                 result[1]['status']                   = True
                 result[1]['status-code']              = 200
                 result[1]['status-description']       = 'OK'
-                result[1]['redirect-status']          = False
+                result[1]['redirect-status']          = True
                 result[1]['redirect-target']          = "http://127.0.0.1:5000/dashboard/" 
                 result[1]['display-messages']         = None
                 result[1]['display-messages-target '] = None
