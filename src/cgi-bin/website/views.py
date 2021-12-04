@@ -31,6 +31,9 @@ async def dashboard(project_id):
             all_tasks_status_toto       = await client.get(f"http://127.0.0.1:5000/api/get-all-tasks-by-username-group-by?user-id={user_id}&project-id={project_id}&status-id=todo")                         # get all tasks that belongs to a user and the project the user is looking for and groups them by status todo
             all_tasks_status_inprogress = await client.get(f"http://127.0.0.1:5000/api/get-all-tasks-by-username-group-by?user-id={user_id}&project-id={project_id}&status-id=inprogress")                         # get all tasks that belongs to a user and the project the user is looking for and groups them by status todo
             all_tasks_status_finished   = await client.get(f"http://127.0.0.1:5000/api/get-all-tasks-by-username-group-by?user-id={user_id}&project-id={project_id}&status-id=finished")                         # get all tasks that belongs to a user and the project the user is looking for and groups them by status todo
+
+            count_all_tasks_finished_by_project = await client.get(f"http://127.0.0.1:5000/api/get-number-of-tasks-where-status-is?user-id={user_id}=&category-id=finished") 
+        
         print(count_date_since_start.json())
         print(user_id)
         print(current_project.json())
@@ -44,7 +47,8 @@ async def dashboard(project_id):
                 project_tasks_todo            = all_tasks_status_toto.json(),
                 project_tasks_in_progress     = all_tasks_status_inprogress.json(),
                 project_tasks_finished        = all_tasks_status_finished.json(),
-                project_diff_date_start_today = count_date_since_start.json()
+                project_diff_date_start_today = count_date_since_start.json(),
+                count_all_tasks_finished_by_project = count_all_tasks_finished_by_project.json()
             )
     else:
         flash('To get access to this page, you need to sign-in first!', 'alert-danger')
@@ -146,9 +150,6 @@ async def statistics():
 
 @views.route('/settings/')
 async def settings():
-# @views.route('/settings/<project_id>')
-# async def settings(project_id):
-    project_id = int(project_id)
     if current_user.is_authenticated:
         user_id = current_user.id
        
@@ -167,7 +168,6 @@ async def settings():
 
 @views.route('/projectsettings/<project_id>')
 async def projectsettings(project_id):
-# async def projectsettings():
     project_id = int(project_id)
     if current_user.is_authenticated:
         user_id = current_user.id
