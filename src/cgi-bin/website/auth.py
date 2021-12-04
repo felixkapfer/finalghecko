@@ -22,4 +22,4 @@ def logout():
     user = User()
     result = user.logout()
     flash('Log out was successfull!')
-    return render_template('auth/sign-up.html')
+    return render_template('auth/sign-in.html')
