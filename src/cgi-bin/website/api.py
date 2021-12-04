@@ -2172,7 +2172,7 @@ def api_getAllTaskByUsernameGroupBy():
 
 
 
-@api.route('/get-all-task-by-username-group-by-project', methods=['GET'])
+@api.route('/get-all-task-by-username-and-project', methods=['GET'])
 def api_getAllTasksByUsernmaeProject():
     """
     This method is used to get all task that are grouped by a category and belongs to a specific user and which are stored in the database table tbl_task_list, convert them into a formated JSON object, and return it to the client, which sent the request to this API.
