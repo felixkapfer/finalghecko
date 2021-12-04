@@ -2,7 +2,7 @@
 <!--                                        Section for general Configuration                                           -->
 <!-- ################################################################################################################## -->
 {% extends "main/base.project.html" %} 
-{% block title %}Neues Projekt{% endblock %}
+{% block title %}Projekt Einstellungen{% endblock %}
 
 {% block projectnavigation %}
 <ul class="nav nav-tabs nav-overflow header-tabs">
@@ -17,7 +17,7 @@
     </a>
   </li>
   <li class="nav-item">
-    <a href="/statistics/{{current_project['result-set-data'][0]['id']}}" class="nav-link">
+    <a href="/statisticsproject/{{current_project['result-set-data'][0]['id']}}" class="nav-link">
       Statistik
     </a>
   </li>
@@ -68,7 +68,7 @@
                       </label>
       
                       <!-- Input -->
-                      <input type="text" class="form-control" placeholder="Python Projekt">
+                      <input type="text" class="form-control" placeholder="{{current_project['result-set-data'][0]['project_title']}}">
       
                     </div>
       
@@ -103,7 +103,7 @@
                           </label>
       
                           <!-- Input -->
-                          <input type="text" class="form-control" data-flatpickr placeholder="01.12.2001">
+                          <input type="text" class="form-control" data-flatpickr placeholder="{{current_project['result-set-data'][0]['project_start_date']}}">
       
                         </div>
       
@@ -119,7 +119,7 @@
                           </label>
       
                           <!-- Input -->
-                          <input type="text" class="form-control" data-flatpickr placeholder="12.12.2001">
+                          <input type="text" class="form-control" data-flatpickr placeholder="{{current_project['result-set-data'][0]['project_terminator']}}">
       
                         </div>
       
@@ -165,7 +165,7 @@
               </p>
               <!-- task description -->
               <p style="margin-bottom: 22px;">
-                Python Projekt
+                {{current_project['result-set-data'][0]['project_title']}}
               </p>
 
               <!-- Text -->
@@ -174,7 +174,7 @@
               </p>
               <!-- task description -->
               <p style="margin-bottom: 30px;">
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. 
+                {{current_project['result-set-data'][0]['project_description']}} 
               </p>
 
               <!-- List group -->
@@ -195,7 +195,7 @@
 
                       <!-- Heading -->
                       <h5 class="mb-1" style="font-size: 1em;">
-                        11.11.2021
+                        {{current_project['result-set-data'][0]['project_start_date']}}
                       </h5>
 
                       <!-- Text -->
@@ -222,7 +222,7 @@
 
                       <!-- Heading -->
                       <h5 class="mb-1" style="font-size: 1em;">
-                        05.12.2001
+                        {{current_project['result-set-data'][0]['project_terminator']}}
                       </h5>
 
                       <!-- Text -->
@@ -238,6 +238,13 @@
 
             </div>
           </div>
+
+          <!-- Buttons -->
+          <center>
+          <a href="#" class="btn w-100 btn-danger" style="max-width: 200px;">
+           Projekt löschen
+          </a>
+          </center>
 
           </div>
       </div> <!-- / .row -->

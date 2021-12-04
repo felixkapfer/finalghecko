@@ -32,7 +32,7 @@ async def dashboard(project_id):
             all_tasks_status_inprogress = await client.get(f"http://127.0.0.1:5000/api/get-all-tasks-by-username-group-by?user-id={user_id}&project-id={project_id}&status-id=inprogress")                         # get all tasks that belongs to a user and the project the user is looking for and groups them by status todo
             all_tasks_status_finished   = await client.get(f"http://127.0.0.1:5000/api/get-all-tasks-by-username-group-by?user-id={user_id}&project-id={project_id}&status-id=finished")                         # get all tasks that belongs to a user and the project the user is looking for and groups them by status todo
 
-            count_all_tasks_finished_by_project = await client.get(f"http://127.0.0.1:5000/api/get-number-of-tasks-where-status-is?user-id={user_id}=&category-id=finished") 
+            count_all_tasks_finished_by_project = await client.get(f"http://127.0.0.1:5000/api/get-number-of-tasks-where-status-is?user-id={user_id}&category-id=finished") 
         
         print(count_date_since_start.json())
         print(user_id)
