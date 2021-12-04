@@ -48,8 +48,13 @@ async def dashboard(project_id):
         return redirect(url_for('auth.auth_login'))
 
 @views.route('/new-project')
-def newproject():
-    return render_template('project/new-project.html')
+async def newproject():
+    if current_user.is_authenticated:
+        user_id = current_user.id
+        return render_template('project/new-project.html')
+    else:
+        flash('To get access to this page, you need to sign-in first!', 'alert-danger')
+        return redirect(url_for('auth.auth_login'))
 
 @views.route('/kanban')
 def kanban():
