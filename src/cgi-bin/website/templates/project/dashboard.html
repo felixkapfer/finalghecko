@@ -65,7 +65,7 @@
                                         <h6 class="text-uppercase text-muted mb-2">Aufgaben Anzahl</h6>
                                         <!-- Heading -->
                                         <span class="h2 mb-0"> 
-                                          {{project_tasks_finished['count-result-set']}}
+                                          {{project_tasks['count-result-set']}}
                                         </span>                                
                                     </div>
                                     <div class="col-auto">
@@ -89,7 +89,7 @@
                                         <h6 class="text-uppercase text-muted mb-2">Erledigte Aufgabe</h6>
                                         <!-- Heading -->
                                         <span class="h2 mb-0">
-   
+                                          {{project_tasks_finished['count-result-set']}}
                                         </span>
                                     </div>
                                     <div class="col-auto">
@@ -202,8 +202,8 @@
                                                                         </div>
                                                                         <!-- Time -->
                                                                         <div class="col col-sm-auto">
-                                                                            <p class="card-text small text-muted mb-0">
-                                                                                <i class="fe fe-clock" style="margin-right: 3px;"></i>                         
+                                                                            <p class="card-text small text-muted mb-0">           
+                                                                                <i class="fe fe-clock" style="margin-right: 3px;"></i>   {{ task['task_terminator'] }}                       
                                                                             </p>
                                                                         </div>
                                                                         <div class="col-auto">
@@ -265,39 +265,39 @@
                                             </div> <!-- / .row -->
                                             <!-- Category -->
                                             <div class="kanban-category">
-
-                                                <!-- Card -->
-                                                <div class="kanban-item" >
-                                                    <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask" >
-                                                        <div class="card-body" >
-                                                            <div class="row align-items-center">
-                                                                <div class="col-12 col-sm">
-                                                                    <!-- task name -->
-                                                                    <p class="mb-0" style="padding-bottom: 8px;">
-                                                                        <strong>Übersicht</strong> <!-- todo -->
-                                                                    </p>
-                                                                    <!-- Body -->
-                                                                    <p class="mb-sm-0">
-                                                                        Create the release notes for the new pages so customers are aware. <!-- todo -->
-                                                                    </p>
+                                              {% if project_tasks_in_progress['result-set-data'] %}
+                                                {% for task in project_tasks_in_progress['result-set-data'] %}
+                                                        <!-- Card -->
+                                                        <div id="" class="kanban-item" >
+                                                            <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask" >
+                                                                <div class="card-body">
+                                                                    <div class="row align-items-center">
+                                                                        <div class="col-12 col-sm" >
+                                                                            <!-- task name -->
+                                                                            <p class="mb-0" style="padding-bottom: 8px;">                         
+                                                                                <strong>{{ task['task_title'] }}</strong>                                                          
+                                                                            </p>                 
+                                                                            <!-- Body -->
+                                                                            <p class="mb-sm-0">
+                                                                              {{ task['task_description'] }}         
+                                                                            </p>
+                                                                        </div>
+                                                                        <!-- Time -->
+                                                                        <div class="col col-sm-auto">
+                                                                            <p class="card-text small text-muted mb-0">           
+                                                                                <i class="fe fe-clock" style="margin-right: 3px;"></i>   {{ task['task_terminator'] }}                       
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="col-auto">
+                                                                          <!-- delete -->
+                                                                          <i class="fe fe-trash-2 text-muted mb-0"></i>
+                                                                        </div>
+                                                                    </div> <!-- / .row -->
                                                                 </div>
-                                                                <div class="col col-sm-auto">
-                                                                    <!-- Time -->
-                                                                    <p class="card-text small text-muted mb-0">
-                                                                        <i class="fe fe-clock" style="margin-right: 3px;"></i> Jun 9
-                                                                    </p>
-                                                                </div>
-                                                                <div class="col-auto col-sm-auto">
-                                                                  <div class="col-auto">
-                                                                    <!-- delete -->
-                                                                    <i class="fe fe-trash-2 text-muted mb-0"></i>
-                                                                  </div>
-                                                                </div>
-                                                            </div> <!-- / .row -->
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-
+                                                      {% endfor %}
+                                                  {% endif %}
                                             </div>
                                             <!-- Add -->
                                             <div class="kanban-add">
@@ -358,12 +358,12 @@
                                 <!-- Text -->
                                 <p class="small text-gray-700 mb-0" style="padding-bottom: 5px;">Projektname</p>                <!-- todo -->
                                 <!-- task description -->
-                                <p style="margin-bottom: 22px;">Python Projekt</p>                                              <!-- todo -->
+                                <p style="margin-bottom: 22px;">{{current_project['result-set-data'][0]['project_title']}}</p>                                              <!-- todo -->
                                 <!-- Text -->
                                 <p class="small text-gray-700 mb-0" style="padding-bottom: 5px;">Projekbeschreibung</p>         <!-- todo -->
                                 <!-- task description -->
                                 <p style="margin-bottom: 30px;">                                                                <!-- todo -->
-                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. 
+                                  {{current_project['result-set-data'][0]['project_description']}} 
                                 </p>
                                 <!-- List group -->
                                 <div class="list-group list-group-flush list-group-activity my-n3">
@@ -379,7 +379,7 @@
                                             </div>
                                             <div class="col ms-n2">
                                                 <!-- Heading -->
-                                                <h5 class="mb-1" style="font-size: 1em;">11.11.2021</h5>                    <!-- todo -->
+                                                <h5 class="mb-1" style="font-size: 1em;">{{current_project['result-set-data'][0]['project_start_date']}}</h5>                    <!-- todo -->
                                                 <!-- Text -->
                                                 <p class="small text-gray-700 mb-0">Startdatum</p>
                                             </div>
@@ -397,7 +397,7 @@
                                             </div>
                                             <div class="col ms-n2">
                                                 <!-- Heading -->
-                                                <h5 class="mb-1" style="font-size: 1em;">05.12.2001</h5>                    <!-- todo -->
+                                                <h5 class="mb-1" style="font-size: 1em;">{{current_project['result-set-data'][0]['project_terminator']}}</h5>                    <!-- todo -->
                                                 <!-- Text -->
                                                 <p class="small text-gray-700 mb-0">vorraussichtliches Projektende</p>
                                             </div>
