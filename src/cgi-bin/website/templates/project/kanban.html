@@ -81,7 +81,7 @@
                   {% if project_tasks_todo['result-set-data'] %}
                     {% for task in project_tasks_todo['result-set-data'] %}
                     <!-- Card -->
-                    <div id="{{task['id']}}" class="kanban-item">
+                    <div id="{{task['id']}}" class="kanban-item delete-task-fnc">
                       <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask">
                         <div class="card-body">
                           <!-- task name -->
@@ -100,7 +100,7 @@
                                 <i class="fe fe-clock" style="margin-right: 3px;"></i> {{ task['task_terminator'] }}
                               </p>
                             </div>
-                            <div class="col-auto" onclick="delete_task_js({{task['id']}})">
+                            <div class="col-auto">
                               <!-- delete -->
                               <i class="fe fe-trash-2"></i>
                             </div>
@@ -210,7 +210,7 @@
                                   <i class="fe fe-clock" style="margin-right: 3px;"></i> {{ task['task_terminator'] }}
                                 </p>
                               </div>
-                              <div class="col-auto" onclick="delete_task_js({{task['id']}})">
+                              <div class="col-auto">
                                 <!-- delete -->
                                 <i class="fe fe-trash-2"></i>
                               </div>
@@ -320,7 +320,7 @@
                                   <i class="fe fe-clock" style="margin-right: 3px;"></i> {{ task['task_terminator'] }}
                                 </p>
                               </div>
-                              <div class="col-auto" onclick="delete_task_js({{task['id']}})">
+                              <div class="col-auto">
                                 <!-- delete -->
                                 <i class="fe fe-trash-2"></i>
                               </div>
