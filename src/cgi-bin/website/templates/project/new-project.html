@@ -1,110 +1,125 @@
-<!-- ################################################################################################################## -->
-<!--                                        Section for general Configuration                                           -->
-<!-- ################################################################################################################## -->
-{% extends "main/base.project.html" %} 
-    {% block title %}Dashboard{% endblock %}
+{% extends "main/base_general.html" %} 
+{% block title %}Neues Projekt{% endblock %}
 
+{% block content %}
+  
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
 
-    <!-- ################################################################################################################## -->
-    <!--    Content Section, where alerts get displayed          -->
-    <!-- ################################################################################################################## -->
-    {% block content %}
+      <div class="container-fluid">
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-10 col-xl-8">
 
-        <!-- MAIN CONTENT -->
-        <div class="main-content">
-            <div class="container-fluid">
-                <div class="row justify-content-center">
-                    <div class="col-12 col-lg-10 col-xl-8">
+            <!-- Header -->
+            <div class="header mt-md-5">
+              <div class="header-body">
+                <div class="row align-items-center">
+                  <div class="col">
 
-                        <!-- Header -->
-                        <div class="header mt-md-5">
-                            <div class="header-body">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <!-- Pretitle -->
-                                        <h6 class="header-pretitle">Neues Projekt</h6>
-                                        <!-- Title -->
-                                        <h1 class="header-title">Neues Projekt erstellen</h1>
-                                    </div>
-                                </div> <!-- / .row -->
-                            </div>
-                            <br>
-                            <div id="Project-Feedback-Error-Wrapper" class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <div id="Project-Feedback-Error"></div>
-                                <!-- Close -->
-                                <!-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> -->
-                            </div>
-                        </div>
-                        <!-- Form -->
-                        <form class="mb-4">
-                            <!-- Project name -->
-                            <div class="form-group">
-                                <!-- Label  -->
-                                <label class="form-label">Projekt Name</label>
-                                <!-- Input -->
-                                <input type="text" class="form-control" name="project-title">
-                                <!-- Input Validation Feedback Section -->
-                                <div id="Project-Title" class="form-validation-feedback"></div>
-                            </div>
-                            <!-- Project description -->
-                            <div class="form-group">
-                                <!-- Label -->
-                                <label class="form-label mb-1">Projekt Beschreibung</label>
-                                <!-- Text -->
-                                <small class="form-text text-muted">
-                                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam.
-                                </small>
-                                <!-- Textarea -->
-                                <div id="Project-Description-Ta" class="project-description-wrapper" name="project-description" data-quill></div>
-                                <!-- Input Validation Feedback Section -->
-                                <div id="Project-Description" class="form-validation-feedback"></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 col-md-6">
-                                    <!-- Start date -->
-                                    <div class="form-group">
-                                        <!-- Label -->
-                                        <label class="form-label">Startdatum</label>
-                                        <!-- Input -->
-                                        <input type="text" class="form-control" name="project-start-date" data-flatpickr>
-                                        <!-- Input Validation Feedback Section -->
-                                        <div id="Project-Start-Date" class="form-validation-feedback"></div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6">
-                                    <!-- Start date -->
-                                    <div class="form-group">
-                                        <!-- Label -->
-                                        <label class="form-label">Enddatum</label>
-                                        <!-- Input -->
-                                        <input type="text" class="form-control" name="project-end-date" data-flatpickr>
-                                        <!-- Input Validation Feedback Section -->
-                                        <div id="Project-End-Date" class="form-validation-feedback"></div>
-                                    </div>
-                                </div>
-                            </div> <!-- / .row -->
-                            <!-- Divider -->
-                            <hr class="mt-5 mb-5">
-                            <!-- Buttons and hidden Inputs-->
-                            <input type="hidden" name="user-id" value="{{current_user.id}}">
-                            <button 
-                                id                 = "Form-Button"
-                                class              = "btn w-100 btn-primary"
-                                type               = "sumbit" 
-                                name               = "submit-btn"
-                                data-serialization = "True"
-                                data-api-target    = "http://127.0.0.1:5000/api/create-project"
-                                data-api-method    = "POST"
-                                data-api-task      = "registerData"
-                                data-page-reload   = "False"
-                                data-textarea-attr = "#Project-Description-Ta"
-                                data-textarea-name = "project-description=">
-                                Projekt erstellen
-                            </button>
-                            <a href="javascript:history.back()" class="btn w-100 btn-link text-muted mt-2">Abbrechen</a>
-                        </form>
-                    </div>
+                    <!-- Pretitle -->
+                    <h6 class="header-pretitle">
+                      Neues Projekt
+                    </h6>
+
+                    <!-- Title -->
+                    <h1 class="header-title">
+                      Neues Projekt erstellen
+                    </h1>
+
+                  </div>
                 </div> <!-- / .row -->
+              </div>
             </div>
-        </div> <!-- / .main-content -->
+
+            <!-- Form -->
+            <form class="mb-4">
+
+              <!-- Project name -->
+              <div class="form-group">
+
+                <!-- Label  -->
+                <label class="form-label">
+                  Projekt Name
+                </label>
+
+                <!-- Input -->
+                <input type="text" class="form-control">
+
+              </div>
+
+              <!-- Project description -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label class="form-label mb-1">
+                  Projekt Beschreibung
+                </label>
+
+                <!-- Text -->
+                <small class="form-text text-muted">
+                  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam.
+                </small>
+
+                <!-- Textarea -->
+                <div data-quill></div>
+
+              </div>
+
+
+              <div class="row">
+                <div class="col-12 col-md-6">
+
+                  <!-- Start date -->
+                  <div class="form-group">
+
+                    <!-- Label -->
+                    <label class="form-label">
+                      Startdatum
+                    </label>
+
+                    <!-- Input -->
+                    <input type="text" class="form-control" data-flatpickr>
+
+                  </div>
+
+                </div>
+                <div class="col-12 col-md-6">
+
+                  <!-- Start date -->
+                  <div class="form-group">
+
+                    <!-- Label -->
+                    <label class="form-label">
+                      Enddatum
+                    </label>
+
+                    <!-- Input -->
+                    <input type="text" class="form-control" data-flatpickr>
+
+                  </div>
+
+                </div>
+              </div> <!-- / .row -->
+
+              <!-- Divider -->
+              <hr class="mt-5 mb-5">
+
+              <!-- Buttons -->
+              <a href="#" class="btn w-100 btn-primary">
+                Projekt erstellen
+              </a>
+              <a href="javascript:history.back()" class="btn w-100 btn-link text-muted mt-2">
+                Abbrechen
+              </a>
+
+            </form>
+
+          </div>
+        </div> <!-- / .row -->
+      </div>
+
+    </div> <!-- / .main-content -->
+
     {% endblock %}
+    
+</html>

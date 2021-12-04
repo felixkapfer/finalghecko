@@ -5,6 +5,9 @@
 """
 from flask import json
 
+#This function is used to store the error messages and customize it for the output section. 
+            #Gets executed if no results were found in db
+
 class DbError():
     """This class defines various methods used for error handling. 
         
@@ -29,21 +32,31 @@ class DbError():
 
         Returns:
             JSON objects: information about the error and the error message in JSON format
+            
+
+        Test:
+            * Test 1: test if the given parameter is added to error and displayed correctly
+            * Test 2: test behaviour if the parameter is not string but another datatype 
+            * Test 3 test what happens when the quote marks are missing
+            * Test 4:  test behaviour when multiple parameters are given instead of one
+            * Test 5: test test if the error object is correctly saved and returned
+            * Test 6: test if both parts of the error object function correctly.ö
+
         """
         error = {
             'No-Result-Found' : {
-                'Error-Code'   : '01-1',
-                'Error-Type'   : 'No-Result-Found:',
-                'Render-Output': output,
-                'Description'  : 'Mhhh... It seems you do not have submitted any data yet',
-                'Excuse'       : 'We are sorry, but it seems we do not have any records about the requested source.'
+                'Error-Code' : '01-1',
+                'Error-Type' : 'No-Result-Found:',
+                'Render-Output' : output,
+                'Description' : 'Mhhh... It seems you do not have submitted any data yet',
+                'Excuse': 'We are sorry, but it seems we do not have any records about the requested source.'
             },
             'No-User-Found' : {
-                'Error-Code'   : '01-2',
-                'Error-Type'   : 'No-User-Found:',
-                'Render-Output': output,
-                'Description'  : 'Mhhh... It seems you do not have any account yet - Please create one first, before you try to log-in',
-                'Excuse'       : 'We are sorry, but it seems we do not have any records about the requested source.'
+                'Error-Code' : '01-2',
+                'Error-Type' : 'No-User-Found:',
+                'Render-Output' : output,
+                'Description' : 'Mhhh... It seems you do not have any account yet - Please create one first, before you try to log-in',
+                'Excuse': 'We are sorry, but it seems we do not have any records about the requested source.'
             }
         }
         return error
@@ -55,21 +68,27 @@ class DbError():
 
         Returns:
             JSON objects: information about the error and the error message in JSON format
+            
+        Tests: 
+            * Test 1: test behaviour if the parameter is not string but another datatype and test what happens when the quote marks are missing
+            * Test 2: test behaviour when multiple parameters are given instead of one
+            * Test 3: test if the given parameter is added to error correctly, and test test if the error object is correctly returned
+            
         """
         error = {
             'Multiple-Records-Found' : {
-                'Error-Code'   : '02-1',
-                'Error-Type'   : 'Already-Existing-Record-Found:',
-                'Render-Output': output,
-                'Description'  : 'Mhhh... It seems a similar record is already existing but has to be unique! Therefore your record-submission failed!',
-                'Excuse'       : 'We are sorry, but it seems a similar record is already existing.'
+                'Error-Code' : '02-1',
+                'Error-Type' : 'Already-Existing-Record-Found:',
+                'Render-Output' : output,
+                'Description' : 'Mhhh... It seems a similar record is already existing but has to be unique! Therefore your record-submission failed!',
+                'Excuse' : 'We are sorry, but it seems a similar record is already existing.'
             },
             'Multiple-Users-Found' : {
-                'Error-Code'   : '02-2',
-                'Error-Type'   : 'Already-Existing-User-Found:',
-                'Render-Output': output,
-                'Description'  : 'Mhhh... It seems that this E-Mail Address is already in use and therefore not available for registration!',
-                'Excuse'       : 'We are sorry, but it seems this email is already taken.'
+                'Error-Code' : '02-2',
+                'Error-Type' : 'Already-Existing-User-Found:',
+                'Render-Output' : output,
+                'Description' : 'Mhhh... It seems that this E-Mail Address is already in use and therefore not available for registration!',
+                'Excuse': 'We are sorry, but it seems this email is already taken.'
             }
         }
         return error
@@ -80,14 +99,21 @@ class DbError():
             output (String):  HTML Id of the div Box
 
         Returns:
-            JSON object: information about the error and the error message in JSON format"""
+            JSON object: information about the error and the error message in JSON format
+            
+        Tests: 
+            * Test 1: test behaviour if the parameter is not string but another datatype and test what happens when the quote marks are missing
+            * Test 2: test behaviour when multiple parameters are given instead of one
+            * Test 3: test if the given parameter is added to error correctly, and test whether the error object is correctly returned
+            * Test 4: test if the json format works correctly on the site
+            """
         error = {
             'Compile-Error' : {
-                'Error-Code'   : '03-1',
-                'Error-Type'   : 'Compile Error:',
-                'Render-Output': output,
-                'Description'  : 'Mhhh... It seems an error occured during SQL compilation.   Therefore your request could not be executed.',
-                'Excuse'       : 'We are sorry, but it seems  an error occured during SQL compilation.'
+                'Error-Code' : '03-1',
+                'Error-Type' : 'Compile Error:',
+                'Render-Output' : output,
+                'Description' : 'Mhhh... It seems an error occured during SQL compilation.   Therefore your request could not be executed.',
+                'Excuse': 'We are sorry, but it seems  an error occured during SQL compilation.'
             }
         }
         return error
@@ -98,14 +124,20 @@ class DbError():
             output (String):  HTML Id of the div Box
 
         Returns:
-            JSON object: information about the error and the error message in JSON format"""
+            JSON object: information about the error and the error message in JSON format
+            
+        Tests: 
+            * Test 1: test if the error object is returned and displayed correctly 
+            * Test 2: test behaviour when multiple parameters are given instead of one
+            * Test 3: test if the json format works correctly on the site
+            """
         error = {
             'DBAPI-Error' : {
-                'Error-Code'   : '04-1',
-                'Error-Type'   : 'DBAPI-Error:',
-                'Render-Output': output,
-                'Description'  : 'Mhhh... It seems  there is an error from the DB-API. The execution of the database operation failed!',
-                'Excuse'       : 'We are sorry, but it seems there is an error from the DB-API.'
+                'Error-Code' : '04-1',
+                'Error-Type' : 'DBAPI-Error:',
+                'Render-Output' : output,
+                'Description' : 'Mhhh... It seems  there is an error from the DB-API. The execution of the database operation failed!',
+                'Excuse' : 'We are sorry, but it seems there is an error from the DB-API.'
             }
         }
         return error
@@ -117,14 +149,18 @@ class DbError():
 
         Returns:
             JSON object: information about the error and the error message in JSON format
+        
+        Tests: 
+            * Test 1: test behaviour when multiple or no parameters are given instead of one
+            * Test 2: test if the error object is returned and displayed as expected   
         """
         error = {
-            'Internal-Error' : {
-                'Error-Code'   : '05-1',
-                'Error-Type'   : 'Internal Error:',
-                'Render-Output': output,
-                'Description'  : 'Mhhh... It seems a similar an internal error occurred in the DB!',
-                'Excuse'       : 'We are sorry, but it seems there is an internal error in the DB.'
+            'Internal Error' : {
+                'Error-Code' : '05-1',
+                'Error-Type' : 'Internal Error:',
+                'Render-Output' : output,
+                'Description' : 'Mhhh... It seems an internal error occurred in the DB!',
+                'Excuse': 'We are sorry, but it seems there is an internal error in the DB.'
             }
         }
         return error
@@ -136,21 +172,25 @@ class DbError():
 
         Returns:
             JSON objects: information about the error and the error messages in JSON format
+            
+        Test:
+            * Test 1: test behaviour if there is a missing or too many parameter given
+            * Test 2: test if the given parameter is added to error object correctly, and test if the error object is correctly returned         
         """
         error = {
             'Multi-Records-Found' : {
-                'Error-Code'   : '06-1',
-                'Error-Type'   : 'Multi-Records-Found:',
-                'Render-Output': output,
-                'Description'  : 'Mhhh... It seems a single database result was asked for but more than one were found.',
-                'Excuse'       : 'We are sorry, but it seems there are multiple records.'
+                'Error-Code' : '06-1',
+                'Error-Type' : 'Multi-Records-Found:',
+                'Render-Output' : output,
+                'Description' : 'Mhhh... It seems a single database result was asked for but more than one were found.',
+                'Excuse' : 'We are sorry, but it seems there are multiple records.'
             },
             'Multi-User-Found' : {
-                'Error-Code'   : '06-2',
-                'Error-Type'   : 'Multi-User-Found:',
-                'Render-Output': output,
-                'Description'  : 'Mhhh... It seems you asked for a single user but more than one were found.',
-                'Excuse'       : 'We are sorry, but it seems there are several users instead of one.'
+                'Error-Code' : '06-2',
+                'Error-Type' : 'Multi-User-Found:',
+                'Render-Output' : output,
+                'Description' : 'Mhhh... It seems you asked for a single user but more than one were found.',
+                'Excuse' : 'We are sorry, but it seems there are several users instead of one.'
             }
         }
         return error
@@ -162,14 +202,18 @@ class DbError():
 
         Returns:
             JSON object: information about the error and the error message in JSON format
-        """
+        
+        Test:
+            * Test 1: test the behaviour if different datatypes are given
+            * Test 2: test if all parts of the error message are returned as expected
+            """
         error = {
             'No-Referenced-Table' : {
-                'Error-Code'   : '07-1',
-                'Error-Type'   : 'No-Referenced-Table:',
-                'Render-Output': output,
-                'Description'  : 'Mhhh... It seems a foreign key triggered this error since the referred table could not be found.',
-                'Excuse'       : 'We are sorry, but a table referenced through a foreign key could not be located.'
+                'Error-Code' : '07-1',
+                'Error-Type' : 'No-Referenced-Table:',
+                'Render-Output' : output,
+                'Description' : 'Mhhh... It seems a foreign key triggered this error since the referred table could not be found.',
+                'Excuse' : 'We are sorry, but a table referenced through a foreign key could not be located.'
             }
             
         }
@@ -182,14 +226,18 @@ class DbError():
 
         Returns:
             JSON object: information about the error and the error message in JSON format
+            
+        Test:
+            * Test 1: test the behaviour if different datatypes are given
+            * Test 2: test if all parts of the error message are returned as expected 
         """
         error = {
             'Object-Not-Executable' : {
-                'Error-Code'   : '08-1',
-                'Error-Type'   : 'Object-Not-Executable',
-                'Render-Output': output,
-                'Description'  : 'Mhhh... It seems an object was passed to .execute() and it can’t be executed as SQL.',
-                'Excuse'       : 'We are sorry but this object can not be executed.'
+                'Error-Code' : '08-1',
+                'Error-Type' : 'Object-Not-Executable',
+                'Render-Output' : output,
+                'Description' : 'Mhhh... It seems an object was passed to .execute() and it can’t be executed as SQL.',
+                'Excuse' : 'We are sorry but this object can not be executed.'
             }
         }
         return error
@@ -201,14 +249,18 @@ class DbError():
 
         Returns:
             JSON object: information about the error and the error message in JSON format
+         
+        Tests:    
+            * Test 1: test the behaviour if different datatypes are given
+            * Test 2: test if all parts of the error message are returned as expected
         """
         error = {
             'SQL-Alchemy-Error' : {
-                'Error-Code'   : '10-1',
-                'Error-Type'   : 'SQL-Alchemy-Error:',
-                'Render-Output': output,
-                'Description'  : 'Mhhh... It seems something went wrong in SQL Alchemy.A not further specified error occured.     ',
-                'Excuse'       : 'We are sorry but an unspecified error occured.'
+                'Error-Code' : '10-1',
+                'Error-Type' : 'SQL-Alchemy-Error:',
+                'Render-Output' : output,
+                'Description' : 'Mhhh... It seems something went wrong in SQL Alchemy.A not further specified error occured.     ',
+                'Excuse' : 'We are sorry but an unspecified error occured.'
             }
         }
         return error
@@ -236,6 +288,11 @@ class FormError():
 
         Returns:
             error(JSON objects): information about the error and the error message in JSON format
+            
+        Tests:
+            * Test 1: test if the input parameters are correctly identified, test what happens if they are given in the wrong order
+            * Test 2: test if all parts of the error message are returned as expected
+        
         """
         error = {
             'Invalid-Format' : {
@@ -272,6 +329,10 @@ class FormError():
 
         Returns:
             error(JSON object): information about the error and the error message in JSON format
+            
+        Tests:
+            * Test 1: test if the input parameters are correctly identified, test what happens if they are given in the wrong order, or when not all of them are given
+            * Test 2: test if all parts of the error message are returned as expected    
         """
         error = {
             'Invalid-Empty-String' : {
@@ -304,19 +365,23 @@ class FormError():
 
         Returns:
             error (JSON object): information about the error and the error message in JSON format
+            
+        Tests:
+            * Test 1: test whether both parts of the error object are accessible
+            * Test 2: test if the error object is returned and displayed as expected   
         """
         error = {
             'Invalid-Format' : {
-                'Error-Code'   : '13-1',
-                'Error-Type'   : 'Invalid-Email-Failure:',
-                'Render-Output': output,
-                'Description'  : 'Incorrect E-Mail Format! - Please enter the correct format!'
+                'Error-Code' : '13-1',
+                'Error-Type' : 'Invalid-Email-Failure:',
+                'Render-Output' : output,
+                'Description' : 'Incorrect E-Mail Format! - Please enter the correct format!'
             },
             'Already-Taken': {
-                'Error-Code'   : '13-2',
-                'Error-Type'   : 'Unique-Failure:',
-                'Render-Output': output,
-                'Description'  : 'E-Mail is already taken!'
+                'Error-Code' : '13-2',
+                'Error-Type' : 'Unique-Failure:',
+                'Render-Output' : output,
+                'Description' : 'E-Mail is already taken!'
             }
         }
         return error
@@ -332,25 +397,30 @@ class FormError():
 
         Returns:
             error (JSON object): information about the error and the error message in JSON format
+            
+        Tests:
+            * Test 1:  test behaviour when multiple parameters are given instead of one
+            * Test 2: test if the given parameter is added to error correctly, and test whether the error object is returned correctly 
+                  
         """
         error = {
             'Invalid-Format': {
-                'Error-Code'   : '14-1',
-                'Error-Type'   : 'Unique-Failure:',
-                'Render-Output': output,
-                'Description'  : 'Password cannot contain Firstname, Lastname or your E-Mail address!'
+                'Error-Code' : '14-1',
+                'Error-Type' : 'Unique-Failure:',
+                'Render-Output' : output,
+                'Description' : 'Password cannot contain Firstname, Lastname or your E-Mail address!'
             },
             'Confirmation-Error' : {
-                'Error-Code'   : '14-2',
-                'Error-Type'   : 'Confirmation-Failure:',
-                'Render-Output': output,
-                'Description'  : 'Passwords do not match, please try again!'
+                'Error-Code' : '14-2',
+                'Error-Type' : 'Confirmation-Failure:',
+                'Render-Output' : output,
+                'Description' : 'Passwords do not match, please try again!'
             },
             'Login-Error' : {
-                'Error-Code'   : '14-3',
-                'Error-Type'   : 'Invalid-Credentials:',
-                'Render-Output': output,
-                'Description'  : 'Invalid E-Mail Address or Password!'
+                'Error-Code' : '14-3',
+                'Error-Type' : 'Invalid-Credentials:',
+                'Render-Output' : output,
+                'Description' : 'Invalid E-Mail Address or Password!'
             }
         }
         return error

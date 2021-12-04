@@ -1,197 +1,250 @@
-<!-- ################################################################################################################## -->
-<!--                                        Section for general Configuration                                           -->
-<!-- ################################################################################################################## -->
-{% extends "main/base.project.html" %} 
-    {% block title %}Neue Aufgabe{% endblock %}
+{% extends "main/base_project.html" %} 
+{% block title %}Neue Aufgabe{% endblock %}
 
+{% block projectnavigation %}
+<ul class="nav nav-tabs nav-overflow header-tabs">
+  <li class="nav-item">
+    <a href="/dashboard" class="nav-link">
+      Dashboard
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="/kanban" class="nav-link">
+      Kanban
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="/statistics" class="nav-link">
+      Statistik
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="/projectsettings" class="nav-link">
+      Einstellungen
+    </a>
+  </li>
+</ul>
+{% endblock %}
 
+{% block content %}
+  
+     <!-- MAIN CONTENT -->
+     <div class="container-fluid">
+      <div class="row" >
+        <div class="col-12 col-xl-8">
 
-    <!-- ################################################################################################################## -->
-    <!--                                        Section for general Configuration                                           -->
-    <!-- ################################################################################################################## -->
-    {% block projectnavigation %}
-        <ul class="nav nav-tabs nav-overflow header-tabs">
-            <li class="nav-item">
-                <a href="/dashboard/ {{project['result-set-data'][0]['id']}}" class="nav-link">Dashboard</a>
-            </li>
-            <li class="nav-item">
-                <a href="/kanban/ {{project['result-set-data'][0]['id']}}" class="nav-link">Kanban</a>
-            </li>
-            <li class="nav-item">
-                <a href="/statistics/ {{project['result-set-data'][0]['id']}}" class="nav-link">Statistik</a>
-            </li>
-            <li class="nav-item">
-                <a href="/projectsettings/ {{project['result-set-data'][0]['id']}}" class="nav-link">Einstellungen</a>
-            </li>
-        </ul>
-    {% endblock %}
-    <!-- ################################################################################################################## -->
-    <!--    Content Section, where alerts get displayed          -->
-    <!-- ################################################################################################################## -->
-    {% block content %}
-        <!-- MAIN CONTENT -->
-        <div class="container-fluid">
+          <div class="container-fluid" > 
             <div class="row" >
-                <div class="col-12 col-xl-8">
-                    <div class="container-fluid" > 
-                        <div class="row" >
-                            <div class="col-12" style="padding-left: 0px;">
-                                <!-- Header -->
-                                <div class="header mt-md-5">
-                                    <div class="header-body" style="padding-top: 0px;">
-                                        <div class="row align-items-center">
-                                            <div class="col">
-                                                <!-- Title -->
-                                                <h1 class="header-title">Neue Aufgabe erstellen</h1>
-                                            </div>
-                                        </div> <!-- / .row -->
-                                    </div>
-                                </div>
-                                <!-- Form -->
-                                <form class="mb-4">
+              <div class="col-12" style="padding-left: 0px;">
 
-                                    <!-- Task name -->
-                                    <div class="form-group">
-                                        <!-- Label  -->
-                                        <label class="form-label">Name der Aufgabe</label> 
-                                        <!-- Input -->
-                                        <input type="text" class="form-control" name="task-title">
-                                        <!-- Input Validation Feedback Section -->
-                                        <div id="Task-Title" class="form-validation-feedback"></div>
-                                    </div>
+                <!-- Header -->
+            <div class="header mt-md-5">
+              <div class="header-body" style="padding-top: 0px;">
+                <div class="row align-items-center">
+                  <div class="col">
 
-                                    <!-- Task description -->
-                                    <div class="form-group">
-                                        <!-- Label -->
-                                        <label class="form-label mb-1">Aufgabenbeschreibung</label>
-                                        <!-- Text -->
-                                        <small class="form-text text-muted">
-                                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam.
-                                        </small>
-                                        <!-- Textarea -->
-                                        <div id="Task-Description-Ta" class="task-description-wrapper" name="task-description" data-quill></div>
-                                        <!-- Input Validation Feedback Section -->
-                                        <div id="Task-Description" class="form-validation-feedback"></div>
-                                    </div>
+                    <!-- Title -->
+                    <h1 class="header-title">
+                      Neue Aufgabe erstellen
+                    </h1>
 
-                                    <div class="row">
-                                        <div class="col-12 col-md-6">
-                                            <!-- Task tags -->
-                                            <div class="form-group">
-                                                <!-- Label -->
-                                                <label class="form-label">Status der Aufgabe</label>
-                                                <!-- Select -->
-                                                <select class="form-control" name="task-status" value="to-do">
-                                                    <option value="todo">Zu erledigen</option>
-                                                    <option value="inprogress">In Arbeit</option>
-                                                    <option value="finished">Fertig</option>
-                                                </select>
-                                                <!-- Input Validation Feedback Section -->
-                                                <div id="Task-Description" class="form-validation-feedback"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-md-6">
-                                            <!-- Start date -->
-                                            <div class="form-group">
-                                                <!-- Label -->
-                                                <label class="form-label">Fälligkeitsdatum</label>
-                                                <!-- Input -->
-                                                <input type="text" class="form-control" name="task-end-date" data-flatpickr>
-                                                <!-- Input Validation Feedback Section -->
-                                                <div id="Task-End-Date" class="form-validation-feedback"></div>
-                                            </div>
-                                        </div>
-                                    </div> <!-- / .row -->
+                  </div>
+                </div> <!-- / .row -->
+              </div>
+            </div>
 
-                                    <!-- Divider -->
-                                    <hr class="mt-5 mb-5">
+            <!-- Form -->
+            <form class="mb-4">
 
-                                    <!-- Buttons and hidden Inputs -->
-                                    <input type="hidden" name="user-id" value="{{current_user.id}}">
-                                    <input type="hidden" name="project-id" value="{{project['result-set-data'][0]['id']}}">
-                                    <button 
-                                        id                 = "Form-Button"
-                                        class              = "btn w-100 btn-primary"
-                                        type               = "sumbit" 
-                                        name               = "submit-btn"
-                                        data-serialization = "True"
-                                        data-api-target    = "http://127.0.0.1:5000/api/create-task"
-                                        data-api-method    = "POST"
-                                        data-api-task      = "registerData"
-                                        data-page-reload   = "False"
-                                        data-textarea-attr = "#Task-Description-Ta"
-                                        data-textarea-name = "task-description=">
-                                        Aufgabe erstellen
-                                    </button>
-                                    <a href="javascript:history.back()" class="btn w-100 btn-link text-muted mt-2">Abbrechen</a>
-                                </form>
-                            </div>
-                        </div> <!-- / .row -->
-                    </div>
+              <!-- Project name -->
+              <div class="form-group">
+
+                <!-- Label  -->
+                <label class="form-label">
+                  Name der Aufgabe
+                 </label>
+
+                <!-- Input -->
+                <input type="text" class="form-control">
+
+              </div>
+
+              <!-- Project description -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label class="form-label mb-1">
+                  Aufgabenbeschreibung
+                </label>
+
+                <!-- Text -->
+                <small class="form-text text-muted">
+                  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam.
+                </small>
+
+                <!-- Textarea -->
+                <div data-quill></div>
+
+              </div>
+
+
+              <div class="row">
+                <div class="col-12 col-md-6">
+
+                 <!-- Project tags -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label class="form-label">
+                  Status der Aufgabe
+                </label>
+
+                <!-- Select -->
+                <select class="form-control" >
+                  <option>Zu erledigen</option>
+                  <option>In Arbeit</option>
+                  <option>Fertig</option>
+                </select>
+
+              </div>
+
                 </div>
-                <div class="col-12 col-xl-4">
-                    <!-- Activity -->
-                    <div class="card" style="margin-top: 25px;">
-                        <div class="card-header">
-                            <!-- Title -->
-                            <h2 class="mb-0">Projektinformationen</h2>
-                            <!-- Button -->
-                            <a class="small" href="/projectsettings/ {{project['result-set-data'][0]['id']}}">Bearbeiten</a>
-                        </div>
-                        <div class="card-body">
-                            <!-- Text -->
-                            <p class="small text-gray-700 mb-0" style="padding-bottom: 5px;">Projektname</p>
-                            <!-- project description -->
-                            <p style="margin-bottom: 22px;"> {{project['result-set-data'][0]['project_title']}} </p>
-                            <!-- Text -->
-                            <p class="small text-gray-700 mb-0" style="padding-bottom: 5px;">Projekbeschreibung</p>
-                            <!-- project description -->
-                            <p style="margin-bottom: 30px;"> {{project['result-set-data'][0]['project_description']}} </p>
+                <div class="col-12 col-md-6">
 
-                            <!-- List group -->
-                            <div class="list-group list-group-flush list-group-activity my-n3">
-                                <div class="list-group-item">
-                                    <div class="row">
-                                        <div class="col-auto">
-                                            <!-- Avatar -->
-                                            <div class="avatar avatar-sm">
-                                                <div class="avatar-title fs-lg bg-primary-soft rounded-circle text-primary">
-                                                    <i class="fe fe-compass"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col ms-n2">
-                                            <!-- Heading -->
-                                            <h5 class="mb-1" style="font-size: 1em;"> {{project['result-set-data'][0]['project_start_date']}} </h5>
-                                            <!-- Text -->
-                                            <p class="small text-gray-700 mb-0">Startdatum</p>
-                                        </div>
-                                    </div> <!-- / .row -->
-                                </div>
-                                <div class="list-group-item">
-                                    <div class="row">
-                                        <div class="col-auto">
-                                            <!-- Avatar -->
-                                            <div class="avatar avatar-sm">
-                                                <div class="avatar-title fs-lg bg-primary-soft rounded-circle text-primary">
-                                                    <i class="fe fe-award"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col ms-n2">
-                                            <!-- Heading -->
-                                            <h5 class="mb-1" style="font-size: 1em;"> {{project['result-set-data'][0]['project_terminator']}} </h5>
-                                            <!-- Text -->
-                                            <p class="small text-gray-700 mb-0"> vorraussichtliches Projektende </p>
-                                        </div>
-                                    </div> <!-- / .row -->
-                                </div> 
-                            </div>
-                        </div>
-                    </div>
+                  <!-- Start date -->
+                  <div class="form-group">
+
+                    <!-- Label -->
+                    <label class="form-label">
+                      Fälligkeitsdatum
+                    </label>
+
+                    <!-- Input -->
+                    <input type="text" class="form-control" data-flatpickr>
+
+                  </div>
+
                 </div>
+              </div> <!-- / .row -->
+
+              <!-- Divider -->
+              <hr class="mt-5 mb-5">
+
+              <!-- Buttons -->
+              <a href="#" class="btn w-100 btn-primary">
+                Aufgabe erstellen
+              </a>
+              <a href="javascript:history.back()" class="btn w-100 btn-link text-muted mt-2">
+                Abbrechen
+              </a>
+
+            </form>
+
+              </div>
             </div> <!-- / .row -->
-        </div> <!-- / .main-content -->
+          </div>
+          
+
+        </div>
+        <div class="col-12 col-xl-4">
+
+          <!-- Activity -->
+        <div class="card" style="margin-top: 25px;">
+          <div class="card-header">
+
+            <!-- Title -->
+            <h2 class="mb-0">
+              Projektinformationen
+            </h2>
+
+            <!-- Button -->
+            <a class="small" href="/projectsettings">Bearbeiten</a>
+
+          </div>
+          <div class="card-body">
+
+            <!-- Text -->
+            <p class="small text-gray-700 mb-0" style="padding-bottom: 5px;">
+              Projektname
+            </p>
+            <!-- task description -->
+            <p style="margin-bottom: 22px;">
+              Python Projekt
+            </p>
+
+            <!-- Text -->
+            <p class="small text-gray-700 mb-0" style="padding-bottom: 5px;">
+              Projekbeschreibung
+            </p>
+            <!-- task description -->
+            <p style="margin-bottom: 30px;">
+              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. 
+            </p>
+
+            <!-- List group -->
+            <div class="list-group list-group-flush list-group-activity my-n3">
+              <div class="list-group-item">
+                <div class="row">
+                  <div class="col-auto">
+
+                    <!-- Avatar -->
+                    <div class="avatar avatar-sm">
+                      <div class="avatar-title fs-lg bg-primary-soft rounded-circle text-primary">
+                        <i class="fe fe-compass"></i>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="col ms-n2">
+
+                    <!-- Heading -->
+                    <h5 class="mb-1" style="font-size: 1em;">
+                      11.11.2021
+                    </h5>
+
+                    <!-- Text -->
+                    <p class="small text-gray-700 mb-0">
+                      Startdatum
+                    </p>
+
+                  </div>
+                </div> <!-- / .row -->
+              </div>
+              <div class="list-group-item">
+                <div class="row">
+                  <div class="col-auto">
+
+                    <!-- Avatar -->
+                    <div class="avatar avatar-sm">
+                      <div class="avatar-title fs-lg bg-primary-soft rounded-circle text-primary">
+                        <i class="fe fe-award"></i>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="col ms-n2">
+
+                    <!-- Heading -->
+                    <h5 class="mb-1" style="font-size: 1em;">
+                      05.12.2001
+                    </h5>
+
+                    <!-- Text -->
+                    <p class="small text-gray-700 mb-0">
+                      vorraussichtliches Projektende
+                    </p>
+
+
+                  </div>
+                </div> <!-- / .row -->
+              </div> 
+            </div>
+
+          </div>
+        </div>
+
+        </div>
+    </div> <!-- / .row -->
+  </div> <!-- / .main-content -->
+
     {% endblock %}
-
-

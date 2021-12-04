@@ -1,0 +1,721 @@
+{% extends "main/base_project.html" %} 
+{% block title %}Kanban{% endblock %}
+
+{% block projectnavigation %}
+<ul class="nav nav-tabs nav-overflow header-tabs">
+  <li class="nav-item">
+    <a href="/dashboard" class="nav-link">
+      Dashboard
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="/kanban" class="nav-link active">
+      Kanban
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="/statistics" class="nav-link">
+      Statistik
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="/projectsettings" class="nav-link">
+      Einstellungen
+    </a>
+  </li>
+</ul>
+{% endblock %}
+
+{% block navbuttongroup %}
+<div class="col-12 col-md-auto mt-3 mt-md-0">
+
+    <!-- new task button -->
+    <button 
+    type="button" 
+    class="btn btn-primary" 
+    style="margin-right: 15px; padding-left: 25px; padding-right: 25px;"
+    onclick= "window.location.href = '/newtask';">
+    Aufgabe hinzufügen
+    </button>
+
+<!-- Navigation (button group) -->
+  <div class="nav btn-group d-inline-flex" role="tablist">
+   <button class="btn btn-white active" id="kanbanColumnsToggle" data-bs-toggle="tab" data-bs-target="#kanbanColumns" role="tab" aria-controls="kabbanColumns" aria-selected="true">
+     <span class="fe fe-grid"></span>
+   </button>
+   <button class="btn btn-white" id="kanbanListToggle" data-bs-toggle="tab" data-bs-target="#kanbanList" role="tab" aria-controls="kanbanList" aria-selected="false">
+     <span class="fe fe-list"></span>
+   </button>
+ </div> <!-- / .nav -->
+ </div>
+{% endblock %}
+
+{% block content %}
+
+      <!-- CONTENT -->
+      <div class="tab-content">
+        <div class="tab-pane fade show active" id="kanbanColumns" role="tabpanel" aria-labelledby="kanbanColumnsToggle">
+          <div class="container-fluid kanban-container">
+            <div class="row">
+              <div class="col-12">
+
+                <!-- Card -->
+                <div class="card">
+                  <div class="card-header card-header-flush">
+
+                    <!-- Title -->
+                    <h4 class="card-header-title">
+                      Zu erledigen
+                    </h4>
+
+                  </div>
+                  <div class="card-body">
+
+                    <!-- Category -->
+                    <div class="kanban-category">
+
+                    <!-- Card -->
+                    <div class="kanban-item">
+                      <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask">
+                        <div class="card-body">
+                          <!-- task name -->
+                          <p class="mb-0" style="padding-bottom: 8px;">
+                            <strong>Übersicht</strong> 
+                          </p>
+                          <!-- task description -->
+                          <p>
+                            Create the release notes for the new pages so customers are aware.
+                          </p>
+                          <!-- Footer -->
+                          <div class="row align-items-center">
+                            <div class="col">
+                              <!-- Time -->
+                              <p class="card-text small text-muted">
+                                <i class="fe fe-clock" style="margin-right: 3px;"></i> Jun 9
+                              </p>
+                            </div>
+                            <div class="col-auto">
+                              <!-- Avatar group -->
+                              <div class="avatar-group">
+                                <a href="profile-posts.html" class="avatar avatar-xs" data-bs-toggle="tooltip" title="Ab Hadley">
+                                  <img src="{{url_for('static', filename='assets/img/avatars/profiles/davidpersin.jpg')}}" class="avatar-img rounded-circle" alt="...">
+                                </a>
+                              </div>
+                            </div>
+                          </div> <!-- / .row -->
+                        </div>
+                      </div>
+                    </div>
+
+                      <!-- Card -->
+                    <div class="kanban-item">
+                      <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask">
+                        <div class="card-body">
+                          <!-- task name -->
+                          <p class="mb-0" style="padding-bottom: 8px;">
+                            <strong>Übersicht</strong> 
+                          </p>
+                          <!-- task description -->
+                          <p>
+                            Create the release notes for the new pages so customers are aware.
+                          </p>
+                          <!-- Footer -->
+                          <div class="row align-items-center">
+                            <div class="col">
+                              <!-- Time -->
+                              <p class="card-text small text-muted">
+                                <i class="fe fe-clock" style="margin-right: 3px;"></i> Jun 9
+                              </p>
+                            </div>
+                            <div class="col-auto">
+                              <!-- Avatar group -->
+                              <div class="avatar-group">
+                                <a href="profile-posts.html" class="avatar avatar-xs" data-bs-toggle="tooltip" title="Ab Hadley">
+                                  <img src="{{url_for('static', filename='assets/img/avatars/profiles/davidpersin.jpg')}}" class="avatar-img rounded-circle" alt="...">
+                                </a>
+                              </div>
+                            </div>
+                          </div> <!-- / .row -->
+                        </div>
+                      </div>
+                    </div>
+
+                 <!-- Card -->
+                 <div class="kanban-item">
+                  <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask">
+                    <div class="card-body">
+                      <!-- task name -->
+                      <p class="mb-0" style="padding-bottom: 8px;">
+                        <strong>Übersicht</strong> 
+                      </p>
+                      <!-- task description -->
+                      <p>
+                        Create the release notes for the new pages so customers are aware.
+                      </p>
+                      <!-- Footer -->
+                      <div class="row align-items-center">
+                        <div class="col">
+                          <!-- Time -->
+                          <p class="card-text small text-muted">
+                            <i class="fe fe-clock" style="margin-right: 3px;"></i> Jun 9
+                          </p>
+                        </div>
+                        <div class="col-auto">
+                          <!-- Avatar group -->
+                          <div class="avatar-group">
+                            <a href="profile-posts.html" class="avatar avatar-xs" data-bs-toggle="tooltip" title="Ab Hadley">
+                              <img src="{{url_for('static', filename='assets/img/avatars/profiles/davidpersin.jpg')}}" class="avatar-img rounded-circle" alt="...">
+                            </a>
+                          </div>
+                        </div>
+                      </div> <!-- / .row -->
+                    </div>
+                  </div>
+                </div>
+
+                
+
+                    </div>
+
+                    <!-- Add -->
+                    <div class="kanban-add">
+                      <div class="card card-sm card-flush mb-0">
+                        <div class="card-body">
+
+                          <!-- Link -->
+                          <div class="text-center">
+                            <a class="kanban-add-link" href="#!">Aufgabe hinzufügen</a>
+                          </div>
+
+                          <!-- Form -->
+                          <form class="kanban-add-form d-none">
+
+                            <!-- Input -->
+                            <div class="form-group" style="margin-bottom: 0px; padding-bottom:0px">
+                              <textarea class="form-control form-control-flush form-control-auto" placeholder="Name der Aufgabe"></textarea>
+                            </div>
+                            <!-- Input -->
+                            <div class="form-group">
+                              <textarea class="form-control form-control-flush form-control-auto" placeholder="Aufgabenbeschreibung"></textarea>
+                            </div>
+
+                            <!-- Footer -->
+                            <div class="row align-items-center">
+                              <div class="col d-flex align-items-center">
+
+                                <!-- Icon -->
+                                <span class="text-muted small me-2">
+                                  <i class="fe fe-clock"></i>
+                                </span>
+
+                                <!-- Input -->
+                                <input type="text" class="form-control form-control-sm form-control-flush form-control-auto" text-muted data-flatpickr data-options='{"dateFormat": "M j"}' placeholder="Datum">
+
+                              </div>
+                              <div class="col-auto" style="margin-top: 25px;">
+
+                                <!-- Buttons -->
+                                <button class="btn btn-sm btn-white" type="reset" style="margin-right: 8px;">
+                                  Abbrechen
+                                </button>
+                                <button class="btn btn-sm btn-primary" type="submit">
+                                  Hinzufügen
+                                </button>
+
+                              </div>
+                            </div> <!-- / .row -->
+
+                          </form>
+
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+              <div class="col-12">
+
+                <!-- Card -->
+                <div class="card">
+                  <div class="card-header card-header-flush">
+
+                    <!-- Title -->
+                    <h4 class="card-header-title">
+                      In Arbeit
+                    </h4>
+
+                  </div>
+                  <div class="card-body">
+
+                    <!-- Category -->
+                    <div class="kanban-category">
+
+                      <!-- Card -->
+                      <div class="kanban-item">
+                        <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask">
+                          <div class="card-body">
+
+                            <!-- task name -->
+                            <p class="mb-0" style="padding-bottom: 8px;">
+                              <strong>Übersicht</strong> 
+                            </p>
+
+                            <!-- task description -->
+                            <p>
+                              Create the release notes for the new pages so customers are aware.
+                            </p>
+
+                            <!-- Footer -->
+                            <div class="row align-items-center">
+                              <div class="col">
+
+                                <!-- Time -->
+                                <p class="card-text small text-muted">
+                                  <i class="fe fe-clock" style="margin-right: 3px;"></i> Jun 9
+                                </p>
+
+                              </div>
+                              <div class="col-auto">
+
+                                <!-- Avatar group -->
+                                <i class="fe fe-check"></i>
+                        
+                              </div>
+                            </div> <!-- / .row -->
+
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <!-- Add -->
+                    <div class="kanban-add">
+                      <div class="card card-sm card-flush mb-0">
+                        <div class="card-body">
+
+                          <!-- Link -->
+                          <div class="text-center">
+                            <a class="kanban-add-link" href="#!">Aufgabe hinzufügen</a>
+                          </div>
+
+                          <!-- Form -->
+                          <form class="kanban-add-form d-none">
+
+                            <!-- Input -->
+                            <div class="form-group" style="margin-bottom: 0px; padding-bottom:0px">
+                              <textarea class="form-control form-control-flush form-control-auto" placeholder="Name der Aufgabe"></textarea>
+                            </div>
+                            <!-- Input -->
+                            <div class="form-group">
+                              <textarea class="form-control form-control-flush form-control-auto" placeholder="Aufgabenbeschreibung"></textarea>
+                            </div>
+
+                            <!-- Footer -->
+                            <div class="row align-items-center">
+                              <div class="col d-flex align-items-center">
+
+                                <!-- Icon -->
+                                <span class="text-muted small me-2">
+                                  <i class="fe fe-clock"></i>
+                                </span>
+
+                                <!-- Input -->
+                                <input type="text" class="form-control form-control-sm form-control-flush form-control-auto" text-muted data-flatpickr data-options='{"dateFormat": "M j"}' placeholder="Datum">
+
+                              </div>
+                              <div class="col-auto" style="margin-top: 25px;">
+
+                                <!-- Buttons -->
+                                <button class="btn btn-sm btn-white" type="reset" style="margin-right: 8px;">
+                                  Abbrechen
+                                </button>
+                                <button class="btn btn-sm btn-primary" type="submit">
+                                  Hinzufügen
+                                </button>
+
+                              </div>
+                            </div> <!-- / .row -->
+
+                          </form>
+
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+              <div class="col-12">
+
+                <!-- Card -->
+                <div class="card">
+                  <div class="card-header card-header-flush">
+
+                    <!-- Title -->
+                    <h4 class="card-header-title">
+                      Fertig
+                    </h4>
+
+                  </div>
+                  <div class="card-body">
+
+                    <!-- Category -->
+                    <div class="kanban-category">
+
+                    </div>
+                  </div>
+                </div>
+              </div>             
+            </div> <!-- / .row -->
+          </div>
+        </div>
+
+        <!-- andere Darstellung -->
+        <div class="tab-pane fade" id="kanbanList" role="tabpanel" aria-labelledby="kanbanListToggle">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-12">
+
+                <!-- List group -->
+                <div class="list-group list-group-lg list-group-flush">
+                  <div class="list-group-item">
+
+                    <!-- Header -->
+                    <div class="row align-items-center mb-4">
+                      <div class="col">
+
+                        <!-- Heading -->
+                        <h2 class="mb-0">Zu erledigen</h2>
+
+                      </div>
+                     
+                    </div> <!-- / .row -->
+
+                    <!-- Category -->
+                    <div class="kanban-category">
+
+                      <!-- Card -->
+                      <div class="kanban-item">
+                        <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask">
+                          <div class="card-body">
+                            <div class="row align-items-center">
+                              <div class="col-12 col-sm">
+                                <!-- task name -->
+                            <p class="mb-0" style="padding-bottom: 8px;">
+                              <strong>Übersicht</strong> 
+                            </p>
+                                <!-- Body -->
+                                <p class="mb-sm-0">
+                                  Create the release notes for the new pages so customers are aware.
+                                </p>
+                              </div>
+                              <div class="col col-sm-auto">
+                                <!-- Time -->
+                                <p class="card-text small text-muted mb-0">
+                                  <i class="fe fe-clock" style="margin-right: 3px;"></i> Jun 9
+                                </p>
+                              </div>
+                              <div class="col-auto col-sm-auto">
+                                <!-- Avatar group -->
+                                <div class="avatar-group">
+                                  <a href="/profile" class="avatar avatar-xs" data-bs-toggle="tooltip" title="David Persin">
+                                    <img src="{{url_for('static', filename='assets/img/avatars/profiles/davidpersin.jpg')}}" class="avatar-img rounded-circle" alt="...">
+                                  </a>
+                                </div>
+                              </div>
+                            </div> <!-- / .row -->
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Card -->
+                      <div class="kanban-item">
+                        <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask">
+                          <div class="card-body">
+                            <div class="row align-items-center">
+                              <div class="col-12 col-sm">
+                                <!-- task name -->
+                            <p class="mb-0" style="padding-bottom: 8px;">
+                              <strong>Übersicht</strong> 
+                            </p>
+                                <!-- Body -->
+                                <p class="mb-sm-0">
+                                  Create the release notes for the new pages so customers are aware.
+                                </p>
+                              </div>
+                              <div class="col col-sm-auto">
+                                <!-- Time -->
+                                <p class="card-text small text-muted mb-0">
+                                  <i class="fe fe-clock" style="margin-right: 3px;"></i> Jun 9
+                                </p>
+                              </div>
+                              <div class="col-auto col-sm-auto">
+                                <!-- Avatar group -->
+                                <div class="avatar-group">
+                                  <a href="/profile" class="avatar avatar-xs" data-bs-toggle="tooltip" title="David Persin">
+                                    <img src="{{url_for('static', filename='assets/img/avatars/profiles/davidpersin.jpg')}}" class="avatar-img rounded-circle" alt="...">
+                                  </a>
+                                </div>
+                              </div>
+                            </div> <!-- / .row -->
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Card -->
+                      <div class="kanban-item">
+                        <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask">
+                          <div class="card-body">
+                            <div class="row align-items-center">
+                              <div class="col-12 col-sm">
+                                <!-- task name -->
+                            <p class="mb-0" style="padding-bottom: 8px;">
+                              <strong>Übersicht</strong> 
+                            </p>
+                                <!-- Body -->
+                                <p class="mb-sm-0">
+                                  Create the release notes for the new pages so customers are aware.
+                                </p>
+                              </div>
+                              <div class="col col-sm-auto">
+                                <!-- Time -->
+                                <p class="card-text small text-muted mb-0">
+                                  <i class="fe fe-clock" style="margin-right: 3px;"></i> Jun 9
+                                </p>
+                              </div>
+                              <div class="col-auto col-sm-auto">
+                                <!-- Avatar group -->
+                                <div class="avatar-group">
+                                  <a href="/profile" class="avatar avatar-xs" data-bs-toggle="tooltip" title="David Persin">
+                                    <img src="{{url_for('static', filename='assets/img/avatars/profiles/davidpersin.jpg')}}" class="avatar-img rounded-circle" alt="...">
+                                  </a>
+                                </div>
+                              </div>
+                            </div> <!-- / .row -->
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <!-- Add -->
+                    <div class="kanban-add">
+                      <div class="card card-sm card-flush mb-0">
+                        <div class="card-body">
+
+                          <!-- Link -->
+                          <a class="kanban-add-link" href="#!">+ Aufgabe hinzufügen</a>
+
+                          <!-- Form -->
+                          <form class="kanban-add-form d-none">
+                            <div class="row align-items-center">
+                              <div class="col-12 col-md">
+
+                                <!-- Input -->
+                                <input type="text" class="form-control form-control-flush form-control-auto" placeholder="Name der Aufgabe" style="margin-bottom: 15px;">
+
+                                <input type="text" class="form-control form-control-flush form-control-auto" placeholder="Aufgabenbeschreibung">
+
+                              </div>
+                              <div class="col-6 col-md-auto d-flex align-items-center">
+
+                                <!-- Icon -->
+                                <span class="text-muted small me-2">
+                                  <i class="fe fe-clock"></i>
+                                </span>
+
+                                <!-- Input -->
+                                <input type="text" class="form-control form-control-sm form-control-flush form-control-auto text-muted" data-flatpickr data-options='{"dateFormat": "M j"}' placeholder="Datum">
+
+                              </div>
+                              <div class="col-6 col-md-auto">
+
+                                <!-- Buttons -->
+                                <button class="btn btn-sm btn-white" type="reset" style="margin-right: 8px;">
+                                  Abbrechen
+                                </button>
+                                <button class="btn btn-sm btn-primary" type="submit">
+                                  Hinzufügen
+                                </button>
+
+                              </div>
+                            </div> <!-- / .row -->
+                          </form>
+
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="list-group-item">
+
+                    <!-- Header -->
+                    <div class="row align-items-center mb-4">
+                      <div class="col">
+
+                        <!-- Heading -->
+                        <h2 class="mb-0">In Arbeit</h2>
+
+                      </div>
+                      <div class="col-auto">
+
+                      </div>
+                    </div> <!-- / .row -->
+
+                    <!-- Category -->
+                    <div class="kanban-category">
+
+                      <!-- Card -->
+                      <div class="kanban-item">
+                        <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask">
+                          <div class="card-body">
+                            <div class="row align-items-center">
+                              <div class="col-12 col-sm">
+                                <!-- task name -->
+                            <p class="mb-0" style="padding-bottom: 8px;">
+                              <strong>Übersicht</strong> 
+                            </p>
+                                <!-- Body -->
+                                <p class="mb-sm-0">
+                                  Create the release notes for the new pages so customers are aware.
+                                </p>
+                              </div>
+                              <div class="col col-sm-auto">
+                                <!-- Time -->
+                                <p class="card-text small text-muted mb-0">
+                                  <i class="fe fe-clock" style="margin-right: 3px;"></i> Jun 9
+                                </p>
+                              </div>
+                              <div class="col-auto col-sm-auto">
+                                <!-- Avatar group -->
+                                <div class="avatar-group">
+                                  <a href="/profile" class="avatar avatar-xs" data-bs-toggle="tooltip" title="David Persin">
+                                    <img src="{{url_for('static', filename='assets/img/avatars/profiles/davidpersin.jpg')}}" class="avatar-img rounded-circle" alt="...">
+                                  </a>
+                                </div>
+                              </div>
+                            </div> <!-- / .row -->
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <!-- Add -->
+                    <div class="kanban-add">
+                      <div class="card card-sm card-flush mb-0">
+                        <div class="card-body">
+
+                          <!-- Link -->
+                          <a class="kanban-add-link" href="#!">+ Aufgabe hinzufügen</a>
+
+                          <!-- Form -->
+                          <form class="kanban-add-form d-none">
+                            <div class="row align-items-center">
+                              <div class="col-12 col-md">
+
+                                <!-- Input -->
+                                <input type="text" class="form-control form-control-flush form-control-auto" placeholder="Name der Aufgabe" style="margin-bottom: 15px;">
+
+                                <input type="text" class="form-control form-control-flush form-control-auto" placeholder="Aufgabenbeschreibung">
+
+                              </div>
+                              <div class="col-6 col-md-auto d-flex align-items-center">
+
+                                <!-- Icon -->
+                                <span class="text-muted small me-2">
+                                  <i class="fe fe-clock"></i>
+                                </span>
+
+                                <!-- Input -->
+                                <input type="text" class="form-control form-control-sm form-control-flush form-control-auto text-muted" data-flatpickr data-options='{"dateFormat": "M j"}' placeholder="Datum">
+
+                              </div>
+                              <div class="col-6 col-md-auto">
+
+                                <!-- Buttons -->
+                                <button class="btn btn-sm btn-white" type="reset" style="margin-right: 8px;">
+                                  Abbrechen
+                                </button>
+                                <button class="btn btn-sm btn-primary" type="submit">
+                                  Hinzufügen
+                                </button>
+
+                              </div>
+                            </div> <!-- / .row -->
+                          </form>
+
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="list-group-item">
+
+                    <!-- Header -->
+                    <div class="row align-items-center mb-4">
+                      <div class="col">
+
+                        <!-- Heading -->
+                        <h2 class="mb-0">Fertig</h2>
+
+                      </div>
+                      <div class="col-auto">
+
+                      </div>
+                    </div> <!-- / .row -->
+
+                    <!-- Category -->
+                    <div class="kanban-category">
+
+                      <!-- Card -->
+                      <div class="kanban-item">
+                        <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask">
+                          <div class="card-body">
+                            <div class="row align-items-center">
+                              <div class="col-12 col-sm">
+                                <!-- task name -->
+                            <p class="mb-0" style="padding-bottom: 8px;">
+                              <strong>Übersicht</strong> 
+                            </p>
+                                <!-- Body -->
+                                <p class="mb-sm-0">
+                                  Create the release notes for the new pages so customers are aware.
+                                </p>
+                              </div>
+                              <div class="col col-sm-auto">
+                                <!-- Time -->
+                                <p class="card-text small text-muted mb-0">
+                                  <i class="fe fe-clock" style="margin-right: 3px;"></i> Jun 9
+                                </p>
+                              </div>
+                              <div class="col-auto col-sm-auto">
+                                <!-- Avatar group -->
+                                <div class="avatar-group">
+                                  <a href="/profile" class="avatar avatar-xs" data-bs-toggle="tooltip" title="David Persin">
+                                    <img src="{{url_for('static', filename='assets/img/avatars/profiles/davidpersin.jpg')}}" class="avatar-img rounded-circle" alt="...">
+                                  </a>
+                                </div>
+                              </div>
+                            </div> <!-- / .row -->
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div> <!-- / .row -->
+          </div>
+        </div>
+      </div>
+
+    {% endblock %}
+
+</html>
