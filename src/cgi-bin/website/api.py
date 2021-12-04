@@ -469,18 +469,19 @@ def api_login():
 @api.route('get-all-projects', methods=['GET'])
 def api_getAllProjects():
     """
-    This method is used to get all projects that are stored in the database, convert them into a formated JSON object, and return it to the client, which sent the request to this API. During this process, errorhandling will also be established,
-    in case of some database failure or errors.
+    This method is used to get all projects that are stored in the database, convert them into a formated JSON object, 
+    and return that to the client, who sent the request to this API.
+    During this process, errorhandling will also be established, in case of a database failure or errors.
 
     Args:
         * Contains or uses no Arguments
 
     Returns:
-        * JSON object: This method will return a JSON object list with all projects that are available in the databasetable tbl_project_list
+        * JSON object: This method will return a JSON object list with all projects that are available in the database table tbl_project_list
 
     Tests:
-        * test that databse connection can be established
-        * test stability and performance if database contains a huge amout of projects such as hundred thousands of projects
+        * test that a databse connection can be established
+        * test stability and performance if the database contains a huge amount of projects such as hundred thousands of projects
     """
 
     method = request.method
