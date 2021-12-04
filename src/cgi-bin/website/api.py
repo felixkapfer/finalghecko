@@ -16,10 +16,10 @@ api   = Blueprint('api', __name__)
 @api.route('/create-user' , methods=['POST'])
 def api_createUser():
     """
-    This method is used to validate that all necessary data needed to create a user account are provided by the user. 
+    This function is used to validate that all necessary data needed to create a user account are provided by the user. 
     All input fields will be validated that it only contains the right data.
-    This method will also call the user_createUser function to connect to the database and write the data into the user table.
-    This method will be executed when the URL extension /create-user is triggered.
+    This function will also call the user_createUser function to connect to the database and write the data into the user table.
+    This function will be executed when the URL extension /create-user is triggered.
     The form data will be validated for:
     * Firstname
         * isEmpty  : will add an Error to the JSON object if no firstname is provided
@@ -50,7 +50,7 @@ def api_createUser():
 
     Returns:
         JSON object: 
-        This method returns a JSON object that contains information about occured errors in case the registration was not successfull.
+        This function returns a JSON object that contains information about occured errors in case the registration was not successfull.
         Furthermore that JSON object contains some metadata regarding where these error messages are going to be displayed. 
         If the registration was successful it will return a JSON object with some meta data about the successful completion of the registration 
         as well as a link to where the user will be redirected to.
@@ -292,10 +292,10 @@ def api_createUser():
 @api.route('/log-user-in', methods=['POST'])
 def api_login():
     """
-    This method is used to validate that all necessary data needed to log a user in are provided by the user.
+    This function is used to validate that all necessary data needed to log a user in are provided by the user.
     Both input fields, namely User-Email and User-Password, are checked whether they only contain the correct data in the right format.
     
-    Therefor this method will call the user_login function to connect to the database to get the corresponding user matching the email that has been entered to the login form. 
+    Therefor this function will call the user_login function to connect to the database to get the corresponding user matching the email that has been entered to the login form. 
     Before returning the user data from the database and store it into the flask_login modul, the data will be validated first. 
     * E-Mail Address
         * isEmpty: will add an Error to the JSON object if no email address is provided
@@ -310,7 +310,7 @@ def api_login():
 
     Returns:
         JSON object: 
-        This method returns a JSON object that contains information about occured errors if login was not successful.
+        This function returns a JSON object that contains information about occured errors if login was not successful.
         Furthermore that JSON object contains some metadata regarding where these error messages are going to be displayed. 
         If the login was successful it will return a JSON object with some meta data about the successful completion of the login process
         as well as a link to where the user will be redirected to.
@@ -469,7 +469,7 @@ def api_login():
 @api.route('get-all-projects', methods=['GET'])
 def api_getAllProjects():
     """
-    This method is used to get all projects that are stored in the database, convert them into a formated JSON object, 
+    This function is used to get all projects that are stored in the database, convert them into a formated JSON object, 
     and return that to the client, who sent the request to this API.
     During this process, errorhandling will also be established, in case of a database failure or errors.
 
@@ -477,7 +477,7 @@ def api_getAllProjects():
         * Contains or uses no Arguments
 
     Returns:
-        * JSON object: This method will return a JSON object list with all projects that are available in the database table tbl_project_list
+        * JSON object: This function will return a JSON object list with all projects that are available in the database table tbl_project_list
 
     Tests:
         * test that a databse connection can be established
@@ -590,18 +590,22 @@ def api_getAllProjects():
 @api.route('/get-all-projects-by-user', methods=['GET'])
 def api_getAllProjectsByUser():
     """
-    This method is used to get all projects that belongs to a specific user and that are stored in the database table tbl_project_list, convert them into a formated JSON object, and return it to the client, which sent the request to this API.
-    During this process, errorhandling will also be established in case of some database failure or errors.
+    This function is used to get all projects that belong to a specific user and that are stored in the database table tbl_project_list.
+    The function will then convert the received projects into a formated JSON object, and return that to the client, who sent the request to this API.
+    During this process, errorhandling will also be established in case of a database failure or errors.
 
-    Args:
-        * user-id (Integer): When sending a request to the api.rout(/get-all-projects-by-user), a user id has to be send within the request, otherwise it is not possible to get only the projects, that belongs to a specific user.
+    Input:
+        * user-id (Integer): When sending a request to the api.route(/get-all-projects-by-user), 
+          a user id has to be send within the request, otherwise it is not possible to get only the projects, that belong to a specific user.
 
     Returns:
-        * JSON object: This method will return a JSON object list, with all projects that belongs to the spcific user, from which the user-id was given and are available in the databasetable tbl_project_list
+        * JSON object: This function will return a JSON object list, with all in the database table tbl_project_list  available projects 
+          that belong to the spcific user, from which the user-id was given 
+          
 
     Test:
-        * test what will happen, if an string or char is given with the request to identify the users project, instead of an interger
-        * test what will happen if an user id is given with the request which does not exists in the user table tbl_user_list
+        * test what will happen, if a string or char is given within the request to identify the users project, instead of an interger
+        * test what will happen if a user id is given within the request which does not exists in the user table tbl_user_list
     """
 
     method = request.method
@@ -725,10 +729,25 @@ def api_getAllProjectsByUser():
 @api.route('get-single-project-by-users-project-id', methods=['GET'])
 def api_getSingleProjectByUser():
     """
-    This function is used to 
+    This function is used to get one project that belongs to a specific user and that is stored in the database table tbl_project_list.
+    The function will then convert the received project into a formated JSON object, and return that object to the client, who sent the request to this API.
+    During this process, errorhandling will also be established in case of a database failure or errors.
+
+    Input:
+        * user-id (Integer): When sending a request to the api.route(/get-single-project-by-users-project-id), 
+          a user id has to be send within the request, otherwise it is not possible to only get  the project, that belongs to a specific user.
+        * project-id (Integer):   When sending a request to the api.route(/get-single-project-by-users-project-id), 
+          a project id has to be send aswell within the request, to the identify which project the user means
 
     Returns:
-        [type]: [description]
+        * JSON object: This function will return a JSON object list, with the specified, by its project-id identified, in the database table tbl_project_list  available project 
+          that belongs to the specified user identified by the given user-id
+          
+
+    Test:
+        * test what will happen, if a string or char is given within the request to identify the users project, instead of an interger
+        * test what will happen if a project id is given within the request which does not exists in the project table tbl_project_list
+        * test what will happen if the user and the project id do not match, meaning the project exists but does not belong to that user
     """
 
     method = request.method
@@ -865,7 +884,8 @@ def api_getSingleProjectByUser():
 @api.route('/get-date-difference-ste-by-project-id', methods=['GET'])
 def api_getNumberObfDaysFromStartToEndByProjectId():
     """
-    This method is used to get date difference between the project end date and the project start date, which means that this method will call the project database method wich caclulates the amount of days between project start date and project end date.
+    This function is used to get the  date difference between the project's end date and the project's start date. 
+    That means this method will call the project database method which caclulates the amount of days between project start date and project end date.
     To do so, a specific project id is required.
     """
 
