@@ -436,7 +436,7 @@ class Task(): #Initialzing the Class 'Task'
 
 
 
-
+    # donet
     def task_createTask(self, user_id, project_id, task):
         """
         A new task will be created.
@@ -447,9 +447,8 @@ class Task(): #Initialzing the Class 'Task'
         Returns:
 			[Boolean] : Returns true if the task was created successfully
         """
-
-        try:
-            date_object_end = datetime.strptime(task['task-end-date'], "%Y-%m-%d").date()
+        try: 
+            date_object_end = datetime.strptime(str(task['task-end-date']), "%Y-%m-%d").date()
             task            = TaskList(task_owner=user_id, assigned_to_project_id=project_id, task_title=task['task-title'], task_description=task['task-description'], task_status=task['task-status'], task_terminator=date_object_end)
             db.session.add(task)
             db.session.commit()
@@ -499,105 +498,130 @@ class Task(): #Initialzing the Class 'Task'
 
 
         
+    # donet
+    def task_updateTaskById(self, user_id, task_id, task):
+        """
+        A task with a specific ID should get updated
 
-    def task_updateTaskById(self, id, Task):
+        Args:
+			task_id ([Integer]) : ID of the entry, which should get updated
+			task ([String]) : Class Task with all arguments on order to update an entry
+
+        Returns:
+			[Boolean] : Returns true if the task was updated successfully
+        """
+
         try:
-            doi = datetime.now()
-            update_task = TaskList.query.filter_by(taak_id=id).update(dict(project_id = Task['project-id'], task_owner = Task['owner'], task_description = Task['description'], task_status = Task['status'], task_terminator = Task['terminator']))
+            last_modified = datetime.now()
+            date_object_end = datetime.strptime(str(task['task-end-date']), "%Y-%m-%d").date()
+            update_task = TaskList.query.filter_by(task_owner=user_id, id=task_id).update(dict(task_title=task['task-title'], task_description=task['task-description'], task_status=task['task-status'], task_terminator=date_object_end, last_modified=last_modified))
             db.session.commit()
+
+            task_schema = TaskSchema()
+            output      = task_schema.dump(update_task)
         
         except NoResultFound:
             db.session.rollback()
-            self.__task_setError('1')
+            self.__task_setError('1')   # If no Result is found return false, that an exception can be returned with the index '1'
             return False
         except IntegrityError:
             db.session.rollback()
-            self.__task_setError('2')
+            self.__task_setError('2')   # If there is an Integrity Error return false, that an exception can be returned with the index '2'
             return False
         except CompileError:
             db.session.rollback()
-            self.__task_setError('3')
+            self.__task_setError('3')   # If there is a compile error return false, that an exception can be returned with the index '3'
             return False
         except DBAPIError:
             db.session.rollback()
-            self.__task_setError('4')
+            self.__task_setError('4')   # If there is a API error of the DB (not Supported error) then this error is returned with the index '4'
             return False
         except InternalError:
             db.session.rollback()
-            self.__task_setError('5')
+            self.__task_setError('5')   # If there is an internal error return false, that an exception can be returned with the index '5'
             return False
         except MultipleResultsFound:
             db.session.rollback()
-            self.__task_setError('6')
+            self.__task_setError('6')   # If there are multiple possible results found return false, that an exception can be returned with the index '6'
             return False
         except NoReferencedTableError:
             db.session.rollback()
-            self.__task_setError('7')
+            self.__task_setError('7')   # If there is no table to reference to return false, that an exception can be returned with the index '7'
             return False
         except ObjectNotExecutableError:
             db.session.rollback()
-            self.__task_setError('8')
+            self.__task_setError('8')   # If the object can't be processed return false, that an exception can be returned with the index '8'
             return False
-        # except PendingRollBackError:
-        #     db.session.rollback()
-        #     self.__task_setError('9')
-        #     return False
         except SQLAlchemyError:
             db.session.rollback()
-            self.__task_setError('9')
+            self.__task_setError('9')   # If there is a SQLALchemy error return false, that an exception can be returned with the index '9'
             return False
         else:
-            self.__task_setResult(Task)
+            self.__task_setResult(update_task)
             return True
         
 
-    def task_updateTaskStatusById(self, id, Task):
+    def task_updateTaskStatusById(self, user_id, task_id, args):
+        """
+        The Tasks status should get updated. The task is specified with a given ID
+
+        Args:
+			id ([Integer]) : ID of the entry, which should get updated
+			task ([String]) : Class Task with all arguments on order to update an entries status
+
+        Returns:
+			[Boolean] : Returns true if the task was updated successfully
+        """
+
         try:
-            update_task_status = TaskList.query.filter_by(task_id=id).update(task_status = Task['status'])
+            update_task_status = TaskList.query.filter_by(task_id=task_id, taskOwner=user_id).update(task_status=args['task-status'])
             db.session.commit()
         except NoResultFound:
             db.session.rollback()
-            self.__task_setError('1')
+            self.__task_setError('1')   # If no Result is found return false, that an exception can be returned with the index '1'
             return False
         except IntegrityError:
             db.session.rollback()
-            self.__task_setError('2')
+            self.__task_setError('2')   # If there is an Integrity Error return false, that an exception can be returned with the index '2'
             return False
         except CompileError:
             db.session.rollback()
-            self.__task_setError('3')
+            self.__task_setError('3')   # If there is a compile error return false, that an exception can be returned with the index '3'
             return False
         except DBAPIError:
             db.session.rollback()
-            self.__task_setError('4')
+            self.__task_setError('4')   # If there is a API error of the DB (not Supported error) then this error is returned with the index '4'
             return False
         except InternalError:
             db.session.rollback()
-            self.__task_setError('5')
+            self.__task_setError('5')   # If there is an internal error return false, that an exception can be returned with the index '5'
             return False
         except MultipleResultsFound:
             db.session.rollback()
-            self.__task_setError('6')
+            self.__task_setError('6')   # If there are multiple possible results found return false, that an exception can be returned with the index '6'
             return False
         except NoReferencedTableError:
             db.session.rollback()
-            self.__task_setError('7')
+            self.__task_setError('7')   # If there is no table to reference to return false, that an exception can be returned with the index '7'
             return False
         except ObjectNotExecutableError:
             db.session.rollback()
-            self.__task_setError('8')
+            self.__task_setError('8')   # If the object can't be processed return false, that an exception can be returned with the index '8'
             return False
-        # except PendingRollBackError:
-        #     db.session.rollback()
-        #     self.__task_setError('9')
-        #     return False
         except SQLAlchemyError:
             db.session.rollback()
-            self.__task_setError('9')
+            self.__task_setError('9')   # If there is a SQLALchemy error return false, that an exception can be returned with the index '9'
             return False
         else:
-            self.__task_setResult(Task)
+            self.__task_setResult(update_task_status)
             return True
+
+
+
+
+
+
+
 
 
     def task_deleteTaskById(self, id):
