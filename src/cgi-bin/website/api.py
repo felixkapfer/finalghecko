@@ -49,25 +49,26 @@ def api_createUser():
             * noMath : will add an Error to the JSON object if password and confirm password do not match
 
     Returns:
-        JSON object: This method returns a JSON object that contains information about occured errors in case the registration was not successfull.
-        Furthermore that JSON object contains some metadata regarding where these error messages are going to display. 
-        If the registration was successfull it will return a JSON object with some meta data about the successful completion of the registration 
+        JSON object: 
+        This method returns a JSON object that contains information about occured errors in case the registration was not successfull.
+        Furthermore that JSON object contains some metadata regarding where these error messages are going to be displayed. 
+        If the registration was successful it will return a JSON object with some meta data about the successful completion of the registration 
         as well as a link to where the user will be redirected to.
-                     The JSON object will look something like the following. It may contain different values, depending on if an error occured and what kind of error occurred.
-                     result[1] = {                                  
+        The JSON object will look something like the following. It may contain different values, depending on if an error occured and what kind of error occurred.
+                    result[1] = {                                  
                             'status'                 : False,       # False if an error occured, True if everything went as planned
                             'status-code'            : None,        # Contains a status code
                             'status-description'     : None,        # contains a description about the current status
                             'redirect-status'        : False,       # true when the user will be redirected to another page so when the function was successfully executed, false if the user should stay on the same page
                             'redirect-target'        : None,        # Contains the URL to where the user will be redirected in case the redirection is enabled (meaning the redirect status is true)
-                            'display-messages'       : None,        # Contains information about if the message should appear on the same webpage or on another one where it will be flashed
+                            'display-messages'       : None,        # Contains information whether the message should appear on the same webpage or on another page
                             'display-messages-target': None         # Contains the HTML Id from the wrapper div-box where the message will be displayed
                         }
 
     Tests:
         * Test if it is secure against Java Script code that is entered into the HTML input fields and could mainpulate our databases
         * Verify that it is not possible to register multiple times with the same email address
-        * Test what happens if a user disables javascript in his browser                  
+        * Test what happens if a user disables javascript in his browser                      
     """
 
 
@@ -291,9 +292,11 @@ def api_createUser():
 @api.route('/log-user-in', methods=['POST'])
 def api_login():
     """
-    This method is used to validate that all necessary data needed to log user in are provided by the user. The both input fields User-Email and User-Password will be validated that it only containts data of the right format.
-    This method will also call the user_login function to connect to the database gets the corresponding user for the email that has been entered by the user to the login form. Before returning the user data from the database
-    and store it into the flask_login modul, the data will be validated first. 
+    This method is used to validate that all necessary data needed to log a user in are provided by the user.
+    Both input fields, namely User-Email and User-Password, are checked whether they only contain the correct data in the right format.
+    
+    Therefor this method will call the user_login function to connect to the database to get the corresponding user matching the email that has been entered to the login form. 
+    Before returning the user data from the database and store it into the flask_login modul, the data will be validated first. 
     * E-Mail Address
         * isEmpty: will add an Error to the JSON object if no email address is provided
         * isEmail: will add an Error to the JSON object if email has no valid email format
@@ -301,26 +304,29 @@ def api_login():
     * Password
         * isEmpty: will add an Error to the JSON object if no password is provided
 
-    Args:
-        * email (String)   : this contains the email address which the usere entered into the HTML form on the sign-in webpage to login
+    Input data enterd to the login form:
+        * email (String)   : this contains the email address which the user entered into the HTML form on the sign-in webpage to login
         * password (String): this contains the password the user entered into the HTML form on the sign-in webpage to log in
 
     Returns:
-        JSON object: This method returns a JSON object that contains information about occured errors if login was not successfull as well as some metadata where this error messages are going to display. If 
-                     login was successfull it will return a JSON object with some meta data about the successfull completion of lgoin as well as a linke where the user will be redirected to.
-                     The JSON object looks like the following ony contains different values, depending on what kind of error or success
+        JSON object: 
+        This method returns a JSON object that contains information about occured errors if login was not successful.
+        Furthermore that JSON object contains some metadata regarding where these error messages are going to be displayed. 
+        If the login was successful it will return a JSON object with some meta data about the successful completion of the login process
+        as well as a link to where the user will be redirected to.
+        The JSON object will look something like the following. It may contain different values, depending on if an error occured and what kind of error occurred.
                      result[1] = {                                  
                             'status'                 : False,       # False if an error occured, True if everything went as planned
-                            'status-code'            : None,        # Contains an status code
+                            'status-code'            : None,        # Contains a status code
                             'status-description'     : None,        # contains a description about the current status
-                            'redirect-status'        : False,       # true when use will be redirected to another page when function was successfully executed, false if user should stay on the same page
-                            'redirect-target'        : None,        # Contains the URL where user will be redirected if redirection is enabled (true)
-                            'display-messages'       : None,        # Contains information about if the message should appear on the same webpage or on another one where it will be flashed
+                            'redirect-status'        : False,       # true when the user will be redirected to another page so when the function was successfully executed, false if the user should stay on the same page
+                            'redirect-target'        : None,        # Contains the URL to where the user will be redirected in case the redirection is enabled (meaning the redirect status is true)
+                            'display-messages'       : None,        # Contains information whether the message should appear on the same webpage or on another page
                             'display-messages-target': None         # Contains the HTML Id from the wrapper div-box where the message will be displayed
                         }
     Tests:
-        * Validate that flask-login works well without any problemes and that the information about the loged in user is right and properly stored in seesions
-        * Validate that user can only log in if the user has the right credentials and that password verifying works well
+        * Validate that flask-login works well without any problmes and that the information about the logged user is correct and properly stored in seesions
+        * Validate that a user can only log in if the user has the right credentials i.a. meaning that password verification works well
     """
 
 
