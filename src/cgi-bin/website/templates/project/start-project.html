@@ -11,7 +11,7 @@
     {% block body %}
 
         <!-- MAIN CONTENT -->
-        <div class="main-content">
+        <center><div class="main-content" style="max-width: 1000px;">
             <div class="container-fluid">
                 <div class="row justify-content-center">
                     <div class="col-12 col-lg-10 col-xl-8">
@@ -22,9 +22,9 @@
                                 <div class="row align-items-center">
                                     <div class="col">
                                         <!-- Pretitle -->
-                                        <h6 class="header-pretitle">Neues Projekt</h6>
+                                        <h6 class="header-pretitle">Willkommen!</h6>
                                         <!-- Title -->
-                                        <h1 class="header-title">Neues Projekt erstellen</h1>
+                                        <h1 class="header-title">Erstes Projekt anlegen</h1>
                                     </div>
                                 </div> <!-- / .row -->
                             </div>
@@ -52,7 +52,7 @@
                                 <label class="form-label mb-1">Projekt Beschreibung</label>
                                 <!-- Text -->
                                 <small class="form-text text-muted">
-                                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam.
+                                  Um was soll es bei Ihrem Projekt gehen:
                                 </small>
                                 <!-- Textarea -->
                                 <div id="Project-Description-Ta" class="project-description-wrapper" name="project-description" data-quill></div>
@@ -101,12 +101,13 @@
                                 data-textarea-name = "project-description=">
                                 Projekt erstellen
                             </button>
-                            <a href="javascript:history.back()" class="btn w-100 btn-link text-muted mt-2">Abbrechen</a>
+                            
                         </form>
                     </div>
                 </div> <!-- / .row -->
             </div>
         </div> <!-- / .main-content -->
+      </center>
     {% endblock %}
 
     {% block include_java_script %}
