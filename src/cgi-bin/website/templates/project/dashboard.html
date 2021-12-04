@@ -12,20 +12,20 @@
     {% block projectnavigation %}
         <ul class="nav nav-tabs nav-overflow header-tabs">
             <li class="nav-item">
-                <a href="/dashboard/{{current_project['id']}}" class="nav-link active">Dashboard</a>
+                <a href="/dashboard/{{current_project['result-set-data']['id']}}" class="nav-link active">Dashboard</a>
             </li>
             <li class="nav-item">
-                <a href="/kanban/{{current_project['id']}}" class="nav-link">Kanban</a>
+                <a href="/kanban/{{current_project['result-set-data']['id']}}" class="nav-link">Kanban</a>
             </li>
             <li class="nav-item">
-                <a href="/statistics/{{current_project['id']}}" class="nav-link">Statistik</a>
+                <a href="/statistics/{{current_project['result-set-data']['id']}}" class="nav-link">Statistik</a>
             </li>
             <li class="nav-item">
-                <a href="/projectsettings/{{current_project['id']}}" class="nav-link">Einstellungen</a>
+                <a href="/projectsettings/{{current_project['result-set-data']['id']}}" class="nav-link">Einstellungen</a>
             </li>
         </ul>
     {% endblock %}
-    {% if projects %}
+
         <!-- ################################################################################################################## -->
         <!--    Content Section, where alerts get displayed          -->
         <!-- ################################################################################################################## -->
@@ -65,14 +65,8 @@
                                         <h6 class="text-uppercase text-muted mb-2">Aufgaben Anzahl</h6>
                                         <!-- Heading -->
                                         <span class="h2 mb-0"> 
-                                            {% if project_tasks['count-result-set'] %}
-                                                {{project_tasks['count-result-set']}}
-                                            {% else %}
-                                                0
-                                            {% endif %}
+
                                         </span>                                
-                                        <!-- Badge -->
-                                        <span class="badge bg-success-soft mt-n1">+3.5%</span>
                                     </div>
                                     <div class="col-auto">
                                         <!-- Icon -->
@@ -95,11 +89,7 @@
                                         <h6 class="text-uppercase text-muted mb-2">Erledigte Aufgabe</h6>
                                         <!-- Heading -->
                                         <span class="h2 mb-0">
-                                            {% if project_tasks_finished['count-result-set'] %}
-                                                {{ project_tasks_finished['count-result-set']}}
-                                            {% else %}
-                                                0
-                                            {% endif %}
+   
                                         </span>
                                     </div>
                                     <div class="col-auto">
@@ -125,18 +115,13 @@
                                             <div class="col-auto">
                                                 <!-- Heading -->
                                                 <span class="h2 me-2 mb-0">
-                                                    {% if project_tasks_finished['count-result-set'] and project_tasks['count-result-set'] %}
-                                                        {% set projects_finished_percent = ((project_tasks_finished['count-result-set'] / project_tasks['count-result-set'] *100) | round(1, 'floor'))%}
-                                                        {{projects_finished_percent}} %
-                                                    {% else %}
-                                                        0%
-                                                    {% endif %}
+
                                                 </span>                      
                                             </div>
                                             <div class="col">
                                                 <!-- Progress Bar -->
                                                 <div class="progress progress-sm me-4">
-                                                   <!-- <div class="progress-bar" role="progressbar" style='width: {% if projects_finished_percent %} {{projects_finished_percent}}% {% else %}0% {% endif %}' aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div> -->
+                                                   
                                                 </div>
                                             </div>
                                         </div> <!-- / .row -->
@@ -161,11 +146,7 @@
                                         <h6 class="text-uppercase text-muted mb-2">Zeit seit Projektstart</h6> 
                                         <!-- Heading -->
                                         <span class="h2 mb-0">
-                                            {% if project_diff_date_start_today%}
-                                                {{project_diff_date_start_today['result-set-data']['Difference-of-Days']}} Tage
-                                            {% else %}
-                                                0 Tage
-                                            {% endif %}    
+            
                                         </span>                                    
                                     </div>
                                     <div class="col-auto">
@@ -207,43 +188,37 @@
                                             </div> <!-- / .row -->
                                             <!-- Category -->
                                             <div class="kanban-category" >
-                                                {% if project_tasks_todo['result-set-data'] %}
-                                                    {% for task in project_tasks_todo['result-set-data'] %}
+                                                
                                                         <!-- Card -->
-                                                        <div id="{{task['id']}}" class="kanban-item" >
+                                                        <div id="" class="kanban-item" >
                                                             <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask" >
                                                                 <div class="card-body">
                                                                     <div class="row align-items-center">
                                                                         <div class="col-12 col-sm" >
                                                                             <!-- task name -->
                                                                             <p class="mb-0" style="padding-bottom: 8px;">                         
-                                                                                <strong>{{task['task_title']}}</strong>                                                          
+                                                                                <strong></strong>                                                          
                                                                             </p>                 
                                                                             <!-- Body -->
                                                                             <p class="mb-sm-0">
-                                                                                {{task['task_description']}}                 
+                                                                                               
                                                                             </p>
                                                                         </div>
                                                                         <!-- Time -->
                                                                         <div class="col col-sm-auto">
                                                                             <p class="card-text small text-muted mb-0">
-                                                                                <i class="fe fe-clock" style="margin-right: 3px;"></i>  {{task['task_terminator']}}                        
+                                                                                <i class="fe fe-clock" style="margin-right: 3px;"></i>                         
                                                                             </p>
                                                                         </div>
-                                                                        <!-- Avatar group -->
-                                                                        <div class="col-auto col-sm-auto">
-                                                                            <div class="avatar-group">
-                                                                                <a href="/profile" class="avatar avatar-xs" data-bs-toggle="tooltip" title="{{current_user.firstname}} {{current_user.lastname}}"> 
-                                                                                    <img src="{{url_for('static', filename='assets/img/avatars/profiles/davidpersin.jpg')}}" class="avatar-img rounded-circle" alt="...">
-                                                                                </a>
-                                                                            </div>
+                                                                        <div class="col-auto">
+                                                                          <!-- delete -->
+                                                                          <i class="fe fe-trash-2"></i>
                                                                         </div>
                                                                     </div> <!-- / .row -->
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    {% endfor %}
-                                                {% endif %}
+                                                  
                                             </div>
 
                                             <!-- Add -->
@@ -315,12 +290,10 @@
                                                                     </p>
                                                                 </div>
                                                                 <div class="col-auto col-sm-auto">
-                                                                    <!-- Avatar group -->
-                                                                    <div class="avatar-group">
-                                                                        <a href="/profile" class="avatar avatar-xs" data-bs-toggle="tooltip" title="{{current_user.firstname}} {{current_user.lastname}}"> <!-- donet -->
-                                                                            <img src="{{url_for('static', filename='assets/img/avatars/profiles/davidpersin.jpg')}}" class="avatar-img rounded-circle" alt="...">       <!-- todot -->
-                                                                        </a>
-                                                                    </div>
+                                                                  <div class="col-auto">
+                                                                    <!-- delete -->
+                                                                    <i class="fe fe-trash-2"></i>
+                                                                  </div>
                                                                 </div>
                                                             </div> <!-- / .row -->
                                                         </div>
@@ -438,5 +411,5 @@
                 </div> <!-- / .row -->
             </div>
         {% endblock %}
-    {% endif %}
+ 
 
