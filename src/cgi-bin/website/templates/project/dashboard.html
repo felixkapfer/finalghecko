@@ -12,16 +12,16 @@
     {% block projectnavigation %}
         <ul class="nav nav-tabs nav-overflow header-tabs">
             <li class="nav-item">
-                <a href="/dashboard/{{current_project['result-set-data']['id']}}" class="nav-link active">Dashboard</a>
+                <a href="/dashboard/{{current_project['result-set-data'][0]['id']}}" class="nav-link active">Dashboard </a>
             </li>
             <li class="nav-item">
-                <a href="/kanban/{{current_project['result-set-data']['id']}}" class="nav-link">Kanban</a>
+                <a href="/kanban/{{current_project['result-set-data'][0]['id']}}" class="nav-link">Kanban</a>
             </li>
             <li class="nav-item">
-                <a href="/statistics/{{current_project['result-set-data']['id']}}" class="nav-link">Statistik</a>
+                <a href="/statistics/{{current_project['result-set-data'][0]['id']}}" class="nav-link">Statistik</a>
             </li>
             <li class="nav-item">
-                <a href="/projectsettings/{{current_project['result-set-data']['id']}}" class="nav-link">Einstellungen</a>
+                <a href="/projectsettings/{{current_project['result-set-data'][0]['id']}}" class="nav-link">Einstellungen</a>
             </li>
         </ul>
     {% endblock %}
@@ -70,7 +70,7 @@
                                     </div>
                                     <div class="col-auto">
                                         <!-- Icon -->
-                                        <span class="h2 fe fe-dollar-sign text-muted mb-0"></span>
+                                        <span class="h2 fe fe-bar-chart text-muted mb-0"></span>
                                     </div>
                                 </div> <!-- / .row -->
                             </div>
@@ -94,7 +94,7 @@
                                     </div>
                                     <div class="col-auto">
                                         <!-- Icon -->
-                                        <span class="h2 fe fe-briefcase text-muted mb-0"></span>
+                                        <span class="h2 fe fe-check-circle text-muted mb-0"></span>
                                     </div>
                                 </div> <!-- / .row -->
                             </div>
@@ -126,10 +126,7 @@
                                             </div>
                                         </div> <!-- / .row -->
                                     </div>
-                                    <div class="col-auto">
-                                        <!-- Icon -->
-                                        <span class="h2 fe fe-clipboard text-muted mb-0"></span>
-                                    </div>
+
                                 </div> <!-- / .row -->
                             </div>
                         </div>
@@ -150,11 +147,9 @@
                                         </span>                                    
                                     </div>
                                     <div class="col-auto">
-                                        <!-- Chart -->
-                                        <div class="chart chart-sparkline">
-                                            <canvas class="chart-canvas" id="sparklineChart"></canvas>
-                                        </div>
-                                    </div>
+                                      <!-- Icon -->
+                                      <span class="h2 fe fe-clock text-muted mb-0"></span>
+                                  </div>
                                 </div> <!-- / .row -->
                             </div>
                         </div>
@@ -188,7 +183,8 @@
                                             </div> <!-- / .row -->
                                             <!-- Category -->
                                             <div class="kanban-category" >
-                                                
+                                              {% if project_tasks_todo['result-set-data'] %}
+                                                {% for task in project_tasks_todo['result-set-data'] %}
                                                         <!-- Card -->
                                                         <div id="" class="kanban-item" >
                                                             <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask" >
@@ -197,11 +193,11 @@
                                                                         <div class="col-12 col-sm" >
                                                                             <!-- task name -->
                                                                             <p class="mb-0" style="padding-bottom: 8px;">                         
-                                                                                <strong></strong>                                                          
+                                                                                <strong>{{ task['task_title'] }}</strong>                                                          
                                                                             </p>                 
                                                                             <!-- Body -->
                                                                             <p class="mb-sm-0">
-                                                                                               
+                                                                              {{ task['task_description'] }}         
                                                                             </p>
                                                                         </div>
                                                                         <!-- Time -->
@@ -212,14 +208,15 @@
                                                                         </div>
                                                                         <div class="col-auto">
                                                                           <!-- delete -->
-                                                                          <i class="fe fe-trash-2"></i>
+                                                                          <i class="fe fe-trash-2 text-muted mb-0"></i>
                                                                         </div>
                                                                     </div> <!-- / .row -->
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                  
-                                            </div>
+                                                      {% endfor %}
+                                                  {% endif %}
+                                                </div>
 
                                             <!-- Add -->
                                             <div class="kanban-add">
@@ -268,6 +265,7 @@
                                             </div> <!-- / .row -->
                                             <!-- Category -->
                                             <div class="kanban-category">
+
                                                 <!-- Card -->
                                                 <div class="kanban-item" >
                                                     <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask" >
@@ -292,13 +290,14 @@
                                                                 <div class="col-auto col-sm-auto">
                                                                   <div class="col-auto">
                                                                     <!-- delete -->
-                                                                    <i class="fe fe-trash-2"></i>
+                                                                    <i class="fe fe-trash-2 text-muted mb-0"></i>
                                                                   </div>
                                                                 </div>
                                                             </div> <!-- / .row -->
                                                         </div>
                                                     </div>
                                                 </div>
+
                                             </div>
                                             <!-- Add -->
                                             <div class="kanban-add">

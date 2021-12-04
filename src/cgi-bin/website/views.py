@@ -31,6 +31,7 @@ async def dashboard(project_id):
             all_tasks_status_finished   = await client.get(f"http://127.0.0.1:5000/api/get-all-tasks-by-username-group-by?user-id={user_id}&project-id={project_id}&status-id=finished")                         # get all tasks that belongs to a user and the project the user is looking for and groups them by status todo
         print(count_date_since_start.json())
         print(user_id)
+        print(current_project.json())
 
         return render_template(
                 'project/dashboard.html',
@@ -110,10 +111,11 @@ async def newtask(project_id):
             all_tasks_status_inprogress = await client.get(f"http://127.0.0.1:5000/api/get-all-tasks-by-username-group-by?user-id={user_id}&project-id={project_id}&status-id=inprogress")                         # get all tasks that belongs to a user and the project the user is looking for and groups them by status todo
             all_tasks_status_finished   = await client.get(f"http://127.0.0.1:5000/api/get-all-tasks-by-username-group-by?user-id={user_id}&project-id={project_id}&status-id=finished")                         # get all tasks that belongs to a user and the project the user is looking for and groups them by status todo
         print(count_date_since_start.json())
-        print(user_id)
+        print(current_project.json())
+        print(current_project.json())
 
         return render_template(
-                'project/dashboard.html',
+                'project/new-task.html',
                 projects                      = all_projects_by_user.json(),
                 current_project               = current_project.json(), 
                 all_tasks                     = all_tasks_by_user_obj.json(),
@@ -122,12 +124,11 @@ async def newtask(project_id):
                 project_tasks_in_progress     = all_tasks_status_inprogress.json(),
                 project_tasks_finished        = all_tasks_status_finished.json(),
                 project_diff_date_start_today = count_date_since_start.json(),
-                project_id=project_id
+                page_project_id=project_id
             )
     else:
         flash('To get access to this page, you need to sign-in first!', 'alert-danger')
         return redirect(url_for('auth.auth_login'))
-    return render_template('project/new-task.html')
 
 
 
