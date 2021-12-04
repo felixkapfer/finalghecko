@@ -93,16 +93,16 @@
                   <div class="collapse " id="sidebarDashboards-id-{{project['id']}}">
                     <ul class="nav nav-sm flex-column">
                       <li class="nav-item">
-                        <a href="/dashboard/{{project['id']}}" class="nav-link ">Dashboard</a>
+                        <a href="/dashboard/{{current_project['result-set-data'][0]['id']}}" class="nav-link ">Dashboard</a>
                       </li>
                       <li class="nav-item">
-                        <a href="/kanban/{{project['id']}}" class="nav-link ">Kanban</a>
+                        <a href="/kanban/{{current_project['result-set-data'][0]['id']}}" class="nav-link ">Kanban</a>
                       </li>
                       <li class="nav-item">
-                        <a href="/statistics/{{project['id']}}" class="nav-link ">Statistik</a>
+                        <a href="/statistics/{{current_project['result-set-data'][0]['id']}}" class="nav-link ">Statistik</a>
                       </li>
                       <li class="nav-item">
-                        <a href="/projectsettings/{{project['id']}}" class="nav-link ">Einstellungen</a>
+                        <a href="/projectsettings/{{current_project['result-set-data'][0]['id']}}" class="nav-link ">Einstellungen</a>
                       </li>
                     </ul>
                   </div>
