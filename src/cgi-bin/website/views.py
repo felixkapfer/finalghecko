@@ -142,7 +142,7 @@ async def statistics(project_id):
                 project_tasks_todo            = all_tasks_status_toto.json(),
                 project_tasks_in_progress     = all_tasks_status_inprogress.json(),
                 project_tasks_finished        = all_tasks_status_finished.json(),
-                count_all_tasks_finished_by_project = count_all_tasks_finished_by_project.json()
+                count_all_tasks_finished_by_project = count_date_since_start.json()
             
             )
     else:
