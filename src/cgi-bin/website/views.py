@@ -21,6 +21,7 @@ async def dashboard(project_id):
     project_id = int(project_id)
     if current_user.is_authenticated:
         user_id = current_user.id
+
         count_date_since_start = httpx.get(f'http://127.0.0.1:5000/api/get-date-difference-stt-by-project-id?user-id={user_id}&project-id={project_id}')                   # get date differences between project start date and current date
 
         async with httpx.AsyncClient() as client:
@@ -34,9 +35,9 @@ async def dashboard(project_id):
 
             count_all_tasks_finished_by_project = await client.get(f"http://127.0.0.1:5000/api/get-number-of-tasks-where-status-is?user-id={user_id}&category-id=finished") 
         
-        print(count_date_since_start.json())
+        print(count_all_tasks_finished_by_project.json())
         print(user_id)
-        print(current_project.json())
+        print(count_date_since_start.json())
 
         return render_template(
                 'project/dashboard.html',
@@ -123,11 +124,11 @@ async def profile():
 
 
 
-@views.route('/statistics/')
-async def statistics():
+@views.route('/statistics/<project_id>')
+async def statistics(project_id):
     if current_user.is_authenticated:
         user_id = current_user.id
-
+        count_date_since_start = httpx.get(f'http://127.0.0.1:5000/api/get-date-difference-stt-by-project-id?user-id={user_id}&project-id={project_id}')
         async with httpx.AsyncClient() as client:
             all_projects_by_user        = await client.get(f"http://127.0.0.1:5000/api/get-all-projects-by-user?user-id={user_id}")                                                                                 # get all projects that belongs to the loged in user
             all_tasks_by_user_obj       = await client.get(f"http://127.0.0.1:5000/api/get-all-tasks-by-user?user-id={user_id}")                                                                                    # get all tasks that belongs to a user --> needed for statistics
@@ -140,7 +141,8 @@ async def statistics():
                 all_tasks                     = all_tasks_by_user_obj.json(),
                 project_tasks_todo            = all_tasks_status_toto.json(),
                 project_tasks_in_progress     = all_tasks_status_inprogress.json(),
-                project_tasks_finished        = all_tasks_status_finished.json()
+                project_tasks_finished        = all_tasks_status_finished.json(),
+                count_all_tasks_finished_by_project = count_all_tasks_finished_by_project.json()
             
             )
     else:
