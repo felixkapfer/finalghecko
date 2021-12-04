@@ -77,6 +77,42 @@
                 </li>
           </ul>-->
 
+          <ul class="navbar-nav">
+            {% if projects['result-set-data'] %}
+              {% for project in projects['result-set-data'] %}
+                <li class="nav-item">
+                  <a 
+                    class="nav-link" 
+                    href="#sidebarDashboards-id-{{project['id']}}" 
+                    data-bs-toggle="collapse" 
+                    role="button" 
+                    aria-expanded="false" 
+                    aria-controls="sidebarDashboards">
+                    {{project['project_title']}}
+                  </a>
+                  <div class="collapse " id="sidebarDashboards-id-{{project['id']}}">
+                    <ul class="nav nav-sm flex-column">
+                      <li class="nav-item">
+                        <a href="/dashboard/{{project['id']}}" class="nav-link ">Dashboard</a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="/kanban/{{project['id']}}" class="nav-link ">Kanban</a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="/statistics/{{project['id']}}" class="nav-link ">Statistik</a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="/projectsettings/{{project['id']}}" class="nav-link ">Einstellungen</a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+              {% endfor %}
+            {% endif %}
+          </ul>
+
+
+
         </div> 
     
           <!-- Divider -->
