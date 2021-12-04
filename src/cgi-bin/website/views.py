@@ -26,14 +26,14 @@ async def dashboard(project_id):
             current_project             = await client.get(f"http://127.0.0.1:5000/api/get-single-project-by-users-project-id?user-id={user_id}")                                                                   # get only the project, the user is looking for to see prject details
             all_tasks_by_user_obj       = await client.get(f"http://127.0.0.1:5000/api/get-all-tasks-by-user?user-id={user_id}")                                                                                    # get all tasks that belongs to a user --> needed for statistics
             all_tasks_by_project        = await client.get(f"http://127.0.0.1:5000/api/get-all-task-by-username-and-project?user-id={user_id}")                                                                     # get all tasks that belongs to a user and the project the user is looking for
-            all_tasks_status_toto       = await client.get(f"http://127.0.0.1:5000/api/get-all-task-by-username-group-by-project?user-id={user_id}&project-id={project_id}&status-id=todo")                         # get all tasks that belongs to a user and the project the user is looking for and groups them by status todo
-            all_tasks_status_inprogress = await client.get(f"http://127.0.0.1:5000/api/get-all-task-by-username-group-by-project?user-id={user_id}&project-id={project_id}&status-id=inprogress")                         # get all tasks that belongs to a user and the project the user is looking for and groups them by status todo
-            all_tasks_status_finished   = await client.get(f"http://127.0.0.1:5000/api/get-all-task-by-username-group-by-project?user-id={user_id}&project-id={project_id}&status-id=finished")                         # get all tasks that belongs to a user and the project the user is looking for and groups them by status todo
-        print(user_id)
+            all_tasks_status_toto       = await client.get(f"http://127.0.0.1:5000/api/get-all-tasks-by-username-group-by?user-id={user_id}&project-id={project_id}&status-id=todo")                         # get all tasks that belongs to a user and the project the user is looking for and groups them by status todo
+            all_tasks_status_inprogress = await client.get(f"http://127.0.0.1:5000/api/get-all-tasks-by-username-group-by?user-id={user_id}&project-id={project_id}&status-id=inprogress")                         # get all tasks that belongs to a user and the project the user is looking for and groups them by status todo
+            all_tasks_status_finished   = await client.get(f"http://127.0.0.1:5000/api/get-all-tasks-by-username-group-by?user-id={user_id}&project-id={project_id}&status-id=finished")                         # get all tasks that belongs to a user and the project the user is looking for and groups them by status todo
+        # print(all_projects_by_user.json())
 
         return render_template(
-                'project/dashboard.html', 
-                projects                      = all_projects_by_user.json(), 
+                'project/dashboard.html',
+                projects                      = all_projects_by_user.json(),
                 current_project               = current_project.json(), 
                 all_tasks                     = all_tasks_by_user_obj.json(),
                 project_tasks                 = all_tasks_by_project.json(),

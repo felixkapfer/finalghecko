@@ -842,6 +842,8 @@ def api_getSingleProjectByUser():
                     result[2] = tmp_error['SQL-Alchemy-Error']
                     return result
 
+        return result
+
 
 
 
