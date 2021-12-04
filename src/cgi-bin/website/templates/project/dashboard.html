@@ -4,49 +4,60 @@
 {% extends "main/base.project.html" %} 
     {% block title %}Dashboard{% endblock %}
 
-
-
-
+<!-- ################################################################################################################## -->
+<!--    Navigation in each Project between Default Dashboard, Kanban View, Statistics View und Project Settings         -->
+<!-- ################################################################################################################## -->
 {% block projectnavigation %}
 <ul class="nav nav-tabs nav-overflow header-tabs">
   <li class="nav-item">
-    <a href="/dashboard" class="nav-link active">
+    <a href="/dashboard/{{current_project['id']}}" class="nav-link active">
       Dashboard
     </a>
   </li>
   <li class="nav-item">
-    <a href="/kanban" class="nav-link">
+    <a href="/kanban/{{current_project['id']}}" class="nav-link">
       Kanban
     </a>
   </li>
   <li class="nav-item">
-    <a href="/statistics" class="nav-link">
+    <a href="/statistics/{{current_project['id']}}" class="nav-link">
       Statistik
     </a>
   </li>
   <li class="nav-item">
-    <a href="/projectsettings" class="nav-link">
+    <a href="/projectsettings/{{current_project['id']}}" class="nav-link">
       Einstellungen
     </a>
   </li>
 </ul>
 {% endblock %}
 
+{% if projects %}
+<!-- ################################################################################################################## -->
+<!--    Content Section, where alerts get displayed          -->
+<!-- ################################################################################################################## -->
 {% block content %}
-
     <!-- CONTENT -->
       <div class="container-fluid">
 
-        <!-- Alert -->
-<div class="alert alert-success alert-dismissible fade show" role="alert" id="Dashboard-Alerts">
-  Aufgabe wurde erfolgreich angelegt.
+                <!-- Alert Section -->
+                <div class="alert alert-success alert-dismissible fade show" role="alert" id="Dashboard-Alerts">
+                  <!-- {{flashArea}} -->
+                  {% with messages = get_flashed_messages(with_categories=true) %}
+                      {% if messages %}
+                          {% for category, message in messages %}
+                              <li class="{{ category }}">{{ message }}</li>
+                          {% endfor %}
+                      {% endif %}
+                  {% endwith %}
+                  <!-- Close -->
+                  <button type="button" class="btn-close" aria-label="Close"></button>
+              </div>
 
-  <!-- Close -->
-  <!-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> -->
-  <button type="button" class="btn-close" aria-label="Close"></button>
-
-</div>
-        
+      <!-- ################################################################################################################## -->
+      <!--    Content Section, where Statistic Cards get displayed         -->
+      <!-- ################################################################################################################## -->
+      <!-- Card Wrapper -->
         <div class="row">
           <div class="col-12 col-lg-6 col-xl">
 
@@ -63,12 +74,11 @@
 
                     <!-- Heading -->
                     <span class="h2 mb-0">
-                      20
-                    </span>
-
-                    <!-- Badge -->
-                    <span class="badge bg-success-soft mt-n1">
-                      +3.5%
+                      {% if project_tasks['count-result-set'] %}
+                      {{project_tasks['count-result-set']}}
+                      {% else %}
+                      0
+                      {% endif %}
                     </span>
 
                   </div>
@@ -84,6 +94,9 @@
             </div>
 
           </div>
+
+
+          <!-- Card Wrapper -->
           <div class="col-12 col-lg-6 col-xl">
 
             <!-- Card -->
@@ -99,7 +112,11 @@
 
                     <!-- Heading -->
                     <span class="h2 mb-0">
-                     6
+                      {% if project_tasks_finished['count-result-set'] %}
+                      {{ project_tasks_finished['count-result-set']}}
+                      {% else %}
+                      0
+                      {% endif %}
                     </span>
 
                   </div>
@@ -115,6 +132,9 @@
             </div>
 
           </div>
+
+
+          <!-- Card Wrapper -->
           <div class="col-12 col-lg-6 col-xl">
 
             <!-- Card -->
@@ -132,14 +152,18 @@
                       <div class="col-auto">
 
                         <!-- Heading -->
-                        <span class="h2 me-2 mb-0">
-                          30%
+                        <span class="h2 me-2 mb-0">                                                   {% if project_tasks_finished['count-result-set'] and project_tasks['count-result-set'] %}
+                          {% set projects_finished_percent = ((project_tasks_finished['count-result-set'] / project_tasks['count-result-set'] *100) | round(1, 'floor'))%}
+                          {{projects_finished_percent}} %
+                          {% else %}
+                          0%
+                          {% endif %}
                         </span>
 
                       </div>
                       <div class="col">
 
-                        <!-- Progress -->
+                        <!-- Progress Bar -->
                         <div class="progress progress-sm me-4">
                           <div class="progress-bar" role="progressbar" style="width: 30%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
