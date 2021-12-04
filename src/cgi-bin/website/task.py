@@ -512,13 +512,10 @@ class Task(): #Initialzing the Class 'Task'
         """
 
         try:
-            last_modified = datetime.now()
+            last_modified   = datetime.now()
             date_object_end = datetime.strptime(str(task['task-end-date']), "%Y-%m-%d").date()
-            update_task = TaskList.query.filter_by(task_owner=user_id, id=task_id).update(dict(task_title=task['task-title'], task_description=task['task-description'], task_status=task['task-status'], task_terminator=date_object_end, last_modified=last_modified))
+            update_task     = TaskList.query.filter_by(task_owner=user_id, id=task_id).update(dict(task_title=task['task-title'], task_description=task['task-description'], task_status=task['task-status'], task_terminator=date_object_end, last_modified=last_modified))
             db.session.commit()
-
-            task_schema = TaskSchema()
-            output      = task_schema.dump(update_task)
         
         except NoResultFound:
             db.session.rollback()
@@ -560,8 +557,8 @@ class Task(): #Initialzing the Class 'Task'
             self.__task_setResult(update_task)
             return True
         
-
-    def task_updateTaskStatusById(self, user_id, task_id, args):
+    # donet
+    def task_updateTaskStatusById(self, user_id, task_id, task):
         """
         The Tasks status should get updated. The task is specified with a given ID
 
@@ -574,8 +571,69 @@ class Task(): #Initialzing the Class 'Task'
         """
 
         try:
-            update_task_status = TaskList.query.filter_by(task_id=task_id, taskOwner=user_id).update(task_status=args['task-status'])
+            # update_task_status = TaskList.query.filter_by(task_owner=user_id, id=task_id).update(task_status=args['task-status'])
+            last_modified = datetime.now()
+            update_task   = TaskList.query.filter_by(task_owner=user_id, id=task_id).update(dict(task_status=task['task-status'], last_modified=last_modified))
             db.session.commit()
+
+        except NoResultFound:
+            db.session.rollback()
+            self.__task_setError('1')   # If no Result is found return false, that an exception can be returned with the index '1'
+            return False
+        except IntegrityError:
+            db.session.rollback()
+            self.__task_setError('2')   # If there is an Integrity Error return false, that an exception can be returned with the index '2'
+            return False
+        except CompileError:
+            db.session.rollback()
+            self.__task_setError('3')   # If there is a compile error return false, that an exception can be returned with the index '3'
+            return False
+        except DBAPIError:
+            db.session.rollback()
+            self.__task_setError('4')   # If there is a API error of the DB (not Supported error) then this error is returned with the index '4'
+            return False
+        except InternalError:
+            db.session.rollback()
+            self.__task_setError('5')   # If there is an internal error return false, that an exception can be returned with the index '5'
+            return False
+        except MultipleResultsFound:
+            db.session.rollback()
+            self.__task_setError('6')   # If there are multiple possible results found return false, that an exception can be returned with the index '6'
+            return False
+        except NoReferencedTableError:
+            db.session.rollback()
+            self.__task_setError('7')   # If there is no table to reference to return false, that an exception can be returned with the index '7'
+            return False
+        except ObjectNotExecutableError:
+            db.session.rollback()
+            self.__task_setError('8')   # If the object can't be processed return false, that an exception can be returned with the index '8'
+            return False
+        # except SQLAlchemyError:
+        #     db.session.rollback()
+        #     self.__task_setError('9')   # If there is a SQLALchemy error return false, that an exception can be returned with the index '9'
+        #     return False
+        else:
+            self.__task_setResult(update_task)
+            return True
+
+
+    # donet
+    def task_deleteTaskById(self, user_id, task_id):
+        """
+        A given Task should get deleted
+
+        Args:
+			id (Integer) : ID of the entry, which should get deleted
+
+        Returns:
+			Boolean : Returns true if the task was deleted successfully
+        """
+
+        try:
+            delete_task = TaskList.query.filter_by(id=task_id, task_owner=user_id).one()
+            db.session.delete(delete_task)
+            db.session.commit()
+
         except NoResultFound:
             db.session.rollback()
             self.__task_setError('1')   # If no Result is found return false, that an exception can be returned with the index '1'
@@ -613,388 +671,59 @@ class Task(): #Initialzing the Class 'Task'
             self.__task_setError('9')   # If there is a SQLALchemy error return false, that an exception can be returned with the index '9'
             return False
         else:
-            self.__task_setResult(update_task_status)
             return True
 
 
 
+    def task_getNumberofTasksWhereStatus(self, user_id, task_status, project_id=None):
+        """
+        Count all tasks in the DB that have the given task_status
 
+        Args:
+			user_id (Interger)  : Contains User-Id to identify all projects that belongs to the loged in user
+			task_status (String): Contains Task-Status to identify all projects that have this task_status that is given
+			project_id (Integer): Contains Project-Id to filte result and only select entries with the same task_status in a specific Project. If it is None, all Projects with the status of this users will be counted
 
+        Returns:
+			Integer : Returns the amount of tasks with the status `Finished`
+        """
 
-
-
-
-    def task_deleteTaskById(self, id):
         try:
-            delete_task = TaskList(task_id = id)
-            db.session.delete(delete_task)
-            db.session.commit()
+            if project_id != None:
+                num_result = TaskList.query.filter_by(task_owner=user_id, task_status=task_status, assigned_to_project_id=project_id).count()
+            elif project_id == None:
+                num_result = TaskList.query.filter_by(task_owner=user_id, task_status=task_status).count()
+            else:
+                raise NoResultFound
+
+
         except NoResultFound:
-            db.session.rollback()
-            self.__task_setError('1')
+            self.__task_setError('1') #If no Result is found return false, that an exception can be returned with the index '1'
             return False
         except IntegrityError:
-            db.session.rollback()
-            self.__task_setError('2')
+            self.__task_setError('2') #If there is an Integrity Error return false, that an exception can be returned with the index '2'
             return False
         except CompileError:
-            db.session.rollback()
-            self.__task_setError('3')
+            self.__task_setError('3') #If there is a compile error return false, that an exception can be returned with the index '3'
             return False
         except DBAPIError:
-            db.session.rollback()
-            self.__task_setError('4')
+            self.__task_setError('4') #If there is a API error of the DB (not Supported error) then this error is returned with the index '4'
             return False
         except InternalError:
-            db.session.rollback()
-            self.__task_setError('5')
+            self.__task_setError('5') #If there is an internal error return false, that an exception can be returned with the index '5'
             return False
         except MultipleResultsFound:
-            db.session.rollback()
-            self.__task_setError('6')
+            self.__task_setError('6') #If there are multiple possible results found return false, that an exception can be returned with the index '6'
             return False
         except NoReferencedTableError:
-            db.session.rollback()
-            self.__task_setError('7')
+            self.__task_setError('7') #If there is no table to reference to return false, that an exception can be returned with the index '7'
             return False
         except ObjectNotExecutableError:
-            db.session.rollback()
-            self.__task_setError('8')
+            self.__task_setError('8') #If the object can't be processed return false, that an exception can be returned with the index '8'
             return False
-        # except PendingRollBackError:
-            # db.session.rollback()
-            # self.__task_setError('9')
-            # return False
-        except SQLAlchemyError:
-            db.session.rollback()
-            self.__task_setError('9')
-            return False
+        # except SQLAlchemyError:
+        #     self.__task_setError('9') #If there is a SQLALchemy error return false, that an exception can be returned with the index '10'
+        #     return False
         else:
-            self.__task_setResult()
+            self.__task_setResult(num_result)
             return True
-
-    def task_getNumberOfTaskWhereStatusFinished(self, email, project_name):
-        try:
-            count_task_finished = select(TaskList.task_status).where(TaskList.task_status == "Finished")
-            len(count_task_finished)
-        except NoResultFound:
-            self.__task_setError('1')
-            return False
-        except IntegrityError:
-            self.__task_setError('2')
-            return False
-        except CompileError:
-            self.__task_setError('3')
-            return False
-        except DBAPIError:
-            self.__task_setError('4')
-            return False
-        except InternalError:
-            self.__task_setError('5')
-            return False
-        except MultipleResultsFound:
-            self.__task_setError('6')
-            return False
-        except NoReferencedTableError:
-            self.__task_setError('7')
-            return False
-        except ObjectNotExecutableError:
-            self.__task_setError('8')
-            return False
-        except SQLAlchemyError:
-            self.__task_setError('9')
-            return False
-        else:
-            self.__task_setResult()
-            return True
-
-    def task_getNumberOfTaskWhereStatusInProgress(self, email, project_name):
-        try:
-            count_task_in_progress = select(TaskList.task_status).where(TaskList.task_status == "In Progress")
-            len(count_task_in_progress)
-        except NoResultFound:
-            self.__task_setError('1')
-            return False
-        except IntegrityError:
-            self.__task_setError('2')
-            return False
-        except CompileError:
-            self.__task_setError('3')
-            return False
-        except DBAPIError:
-            self.__task_setError('4')
-            return False
-        except InternalError:
-            self.__task_setError('5')
-            return False
-        except MultipleResultsFound:
-            self.__task_setError('6')
-            return False
-        except NoReferencedTableError:
-            self.__task_setError('7')
-            return False
-        except ObjectNotExecutableError:
-            self.__task_setError('8')
-            return False
-        except SQLAlchemyError:
-            self.__task_setError('9')
-            return False
-        else:
-            self.__task_setResult()
-            return True
-
-    def task_getNumberOfTaskWhereStatusRecieved(self, email, project_name):
-        try:
-            count_task_recieved = select(TaskList.task_status).where(TaskList.task_status == "Recieved")
-            len(count_task_recieved)
-        except NoResultFound:
-            self.__task_setError('1')
-            return False
-        except IntegrityError:
-            self.__task_setError('2')
-            return False
-        except CompileError:
-            self.__task_setError('3')
-            return False
-        except DBAPIError:
-            self.__task_setError('4')
-            return False
-        except InternalError:
-            self.__task_setError('5')
-            return False
-        except MultipleResultsFound:
-            self.__task_setError('6')
-            return False
-        except NoReferencedTableError:
-            self.__task_setError('7')
-            return False
-        except ObjectNotExecutableError:
-            self.__task_setError('8')
-            return False
-        except SQLAlchemyError:
-            self.__task_setError('9')
-            return False
-        else:
-            self.__task_setResult()
-            return True
-
-
-
-
-
-
-
-
-
-
-
-
-# from enum import unique
-# import flask
-# from flask.app import Flask
-# from flask_sqlalchemy import SQLAlchemy
-# from sqlalchemy.orm.query import Query
-# from sqlalchemy.sql.elements import False_
-# from sqlalchemy.sql.expression import table
-# from sqlalchemy.sql.sqltypes import Float, String
-# from sqlalchemy.exc import CompileError, SQLAlchemyError, IntegrityError
-# from sqlalchemy.orm.exc import NoResultFound
-# from website.models import TaskList
-# from website import db
-
-
-# class Task():
-#     def __init__(self):
-#         self.__error = None
-#         self.__result = None
-
-#     def __task_setError(self, args):
-#         self.__error = args
-
-#     def __task_getError(self):
-#         return self.__error
-    
-#     def __task_setResult(self, args):
-#         self.__result = args
-
-#     def __task_getResult(self):
-#         return self.__result
-
-#     Error = property(__task_getError)
-#     Result = property(__task_getResult)
-
-
-
-#     def task_getAllTasks(self):
-#         try:
-#             tasks = TaskList.query.all()
-
-#         except NoResultFound:
-#             self.__task_setError('2')
-#             return False
-
-#         except CompileError
-#             self.__task_setError('3')
-
-
-#         except Exception:
-#             pass
-
-
-#         except SQLAlchemyError:
-#             pass
-#         else:
-#             self.__task_setResult(tasks)
-#             return True
-        
-
-#     def task_getAllTasksByUsername(self, username):
-#         pass
-
-
-
-
-#     # def task_getAllTasksByCompany(self, company):
-#     #     pass
-
-
-
-
-#     def task_getAllTasksByUsernameGroup(self, username, group):
-#         pass
-
-
-
-
-#     def task_getAllTasksByUsernameProject(self, username, project_name):
-#         pass
-
-
-#     def task_getNumberOfTasksWhereStatusFinished(self, email, project_name):
-#         try:
-#             task = Query(status='finished')
-            
-#         except NoResultFound:
-#             self.__task_setError('1')
-#             return False
-#         else:
-#             self.__task_setResult(task)
-#             return True
-
-#     def task_getTaskByID(self, id):
-#         try:
-#             task = TaskList.query.get(id)
-            
-#         except NoResultFound:
-#             self.__task_setError('1')
-#             return False
-#         else:
-#             self.__task_setResult(task)
-#             return True
-
-
-
-
-#     def task_createTask(self, task):
-#         try:
-#             task = TaskList(project_id = task['project-id'], task_owner = task['owner'], task_description = task['description'], task_status = task['status'], task_terminator = task['terminator'], data_of_issue = '22/12/2021')
-#             db.session.add(task)
-#             db.session.commit()
-
-#         except IntegrityError:
-#             db.session.rollback()
-#             self.__task_setError()
-#             return False
-
-#         # except PendingRollbackError()
-
-#         else: 
-#             self.__task_setResult()
-#             return True
-        
-
-
-
-#     def task_updateTaskById(self, id):
-#         pass
-        
-
-
-
-#     def task_deleteTaskById(self, id):
-#         try:
-#             delete_task = TaskList(id = id)
-#             db.session.delete(delete_task)
-#             db.session.commit()
-#         except:
-#             db.session.rollback()
-#             self.__task_setError()
-#             return False
-#         else:
-#             self.__task_setResult()
-#             return True
-
-
-        
-# '''
-# app = Flask(__name__)
-
-# db = SQLAlchemy(app)
-
-# app.config['SQLALCHEMY_TRACK_MODIFIKATIONS'] = False
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'Platzhalter'
-
-# class tasks(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     task_id = db.Column(db.Integer(16), unique=True)
-#     name = db.Column(db.String(150))
-#     project_id = db.Column(db.Integer(16))
-#     describtion = db.Column(db.String(500))
-#     timeline = db.Column(db.Float(150)) # vlt berechnet?
-#     status = db.Column(db.String(20))
-#     owner = db.Coloumn(db.String(150))
-#     date_of_issue = db.Column(db.String(50))
-#     final_date = db.Column(db.String(50))
-# '''
-
-# def create_task():
-#         task = TaskList(name = "Task_1", timeline= 2.25, status = "Angefangen", owner = "User1")
-#         db.session.add(task)
-#         db.session.commit()
-#         return "Task was created successfully"
-
-# def update_status(self, id):
-#         Update_status = TaskList(status = "Erledigt")
-#         db.session.refresh(Update_status) # .update gibt es nicht
-#         db.session.commit()
-#         return "Task status was upated successfully"
-
-# def delete_task(id):
-#         Delete_task = TaskList(id = 1)
-#         db.session.delete(Delete_task)
-#         db.session.commit()
-#         return "Task" + id + "was deleted successfully"
-
-# def update_timeline(id):
-#         Update_timeline = TaskList(timeline = 2.5)
-#         db.session.refresh(Update_timeline)
-#         db.session.commit()
-#         return "Timeline was updated successfully"
-
-# def change_owner(id):
-#         change = TaskList(owner = "Neuer Owner")
-#         db.session.refresh(change)
-#         db.session.commit()
-#         return "Owner was changed sucessfully"
-
-# def change_decribtion(id):
-#         new_describtion = TaskList(descibtion = "Neue Beschreibung")
-#         db.session.refresh(new_describtion)
-#         db.session.commit()
-#         return "Describtion of task" + id + "was changed sucessfully"
-
-# def change_finale_date(id):
-#         new_finale_date = TaskList(final_date = "28.03.2021")
-#         db.session.refresh(new_finale_date)
-#         db.session.commit()
-#         return "Final Date was changed sucessfully"

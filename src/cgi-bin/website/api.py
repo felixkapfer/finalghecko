@@ -2866,3 +2866,447 @@ def api_updateTask():
 
 
 
+
+
+
+
+@api.route('/update-task-status', methods=['PUT'])
+def api_updateTaskStatus():
+    """
+    This method is used to 
+
+    Returns:
+        [type]: [description]
+    """
+
+    method = request.method
+    args   = request.args
+
+    if method == 'PUT':
+        i                   = 1
+        validation          = Validation()
+        error_handling_form = FormError()
+        result              = {}
+        result[1]           = {
+            'status'                 : False,                                       # False if an error occured, True if everything went as planned
+            'status-code'            : None,                                        # Contains an status code
+            'status-description'     : None,                                        # contains a description about the current status
+            'redirect-status'        : False,                                       # true when use will be redirected to another page when function was successfully executed, false if user should stay on the same page
+            'redirect-target'        : None,                                        # Contains the URL where user will be redirected if redirection is enabled (true)
+            'display-messages'       : None,                                        # Contains information about if the message should appear on the same webpage or on another one where it will be flashed
+            'display-messages-target': None                                         # Contains the HTML Id from the wrapper div-box where the message will be displayed
+        }
+
+
+        # -------------------------------------------------------------------------------------------------------
+        # validate that user-id is set and is not empty
+        if not 'user-id' in args or validation.validation_isEmpty(args['user-id']) or 'user-id' == None:
+            i           = i+1
+            user_id_err = (error_handling_form.formError_invalidLength('#Task-Feedback', '', '', 'Please validate that an user is logged in to identify user task!'))
+            result[i]   = user_id_err['Invalid-Empty-String']
+
+        # -------------------------------------------------------------------------------------------------------
+        # validate that task-id is set and is not empty
+        if not 'task-id' in args or validation.validation_isEmpty(args['task-id']) or 'task-id' == None:
+            i           = i+1
+            task_id_err = (error_handling_form.formError_invalidLength('#Task-Feedback','', '', 'Please validate that an Task Id is set to identify the required task!'))
+            result[i]   = task_id_err['Invalid-Empty-String']
+
+        # -------------------------------------------------------------------------------------------------------
+        # validate that task status is set an is not empty
+        if not 'task-status' in args or validation.validation_isEmpty(args['task-status']) or 'task-status' == None:
+            i           = i+1
+            task_status = (error_handling_form.formError_invalidLength('#Task-Status', '', '', 'Please a Task-Status!'))
+            result[i]   = task_status['Invalid-Empty-String']
+
+        # validate that task status contains letters only
+        elif validation.validation_isAlpha(args['task-status']) == False:
+            i           = i+1
+            task_status = (error_handling_form.formError_invalidTypeError('#Task-Status', 'Task-Status', '', 'letters from a-z or A-Z! Spaces are not allowed'))
+            result[i]   = task_status['Invalid-Arguments']
+        
+        # validate that task status has status done or in_progress or todo
+        elif args['task-status'] != 'inprogress' and args['task-status'] != 'todo' and args['task-status'] != 'finished':
+            i           = i+1
+            task_status = (error_handling_form.formError_invalidTypeError('#Task-Status', 'Task-Status', '', 'In Progress, Todo or Done'))
+            result[i]   = task_status['Invalid-Arguments']
+           
+        # -------------------------------------------------------------------------------------------------------
+        # validate that no error was set during the above validating process -> if i = 1 -> no errors occured
+        if i == 1:
+            user_id    = args['user-id']
+            task_id    = args['task-id']
+
+            task       = Task()
+            tmp_result = task.task_updateTaskStatusById(user_id, task_id, args)
+
+
+            if tmp_result:
+                result[1]['status']                   = True
+                result[1]['status-code']              = 200
+                result[1]['status-description']       = 'OK'
+                result[1]['redirect-status']          = False
+                result[1]['redirect-target']          = 'http://127.0.0.1:5000/dashboard'
+                result[1]['display-messages']         = None
+                result[1]['display-messages-target '] = None
+
+                return jsonify({
+                    'status'          : result[1],
+                    'count-result-set': task.NumResult,
+                    'result-set-data' : task.Result
+                })
+
+            else:
+                error_handling_db                     = DbError()
+                result[1]['status']                   = False
+                result[1]['status-code']              = 404
+                result[1]['status-description']       = 'Error'
+                result[1]['redirect-status']          = False
+                result[1]['redirect-target']          = None
+                result[1]['display-messages']         = False
+                result[1]['display-messages-target '] = None
+
+
+                 # error handling in case no results were found
+                if task.Error == '1':
+                    tmp_error = (error_handling_db.dbError_noResultFound('#Task-Feedback'))
+                    result[2] = tmp_error['No-Result-Found']
+                    return result
+                    
+                # error handling in case email is already existing
+                elif task.Error == '2':
+                    tmp_error = (error_handling_db.dbError_IntegrityError('#Task-Feedback'))
+                    result[2] = tmp_error['Multiple-Records-Found']
+                    return result
+
+                # error handling in case of an compile error
+                elif task.Error == '3':
+                    tmp_error = (error_handling_db.dbError_CompileError('#Task-Feedback'))
+                    result[2] = tmp_error['Compile-Error']
+                    return result
+
+                # error handling in case of a DBAPI error
+                elif task.Error == '4':
+                    tmp_error = (error_handling_db.dbError_DBAPIError('#Task-Feedback'))
+                    result[2] = tmp_error['DBAPI-Error']
+                    return result
+                    
+                # error handling in case of some other internal errors or problems
+                elif task.Error == '5':
+                    tmp_error = (error_handling_db.dbError_InternalError('#Task-Feedback'))
+                    result[2] = tmp_error['Internal-Error']
+                    return result
+                    
+                # error handling in case that more than one result were found
+                elif task.Error == '6':
+                    tmp_error = (error_handling_db.dbError_MultipleResultsFound('#Task-Feedback'))
+                    result[2] = tmp_error['Multi-Records-Found']
+                    return result
+                    
+                # error handling in case of an missing reference table error
+                elif task.Error == '7':
+                    tmp_error = (error_handling_db.dbError_NoReferencedTableError('#Task-Feedback'))
+                    result[2] = tmp_error['No-Referenced-Table']
+                    return result
+                    
+                # error handling in case that object is not executable
+                elif task.Error == '8':
+                    tmp_error = (error_handling_db.dbError_ObjectNotExecutableError('#Task-Feedback'))
+                    result[2] = tmp_error['Object-Not-Executable']
+                    return result
+                    
+                # error handling in case of other sqlalchmey errors
+                elif task.Error == '9':
+                    tmp_error = (error_handling_db.dbError_SQLAlchemyError('#Task-Feedback'))
+                    result[2] = tmp_error['SQL-Alchemy-Error']
+                    return result
+        
+        return result
+
+
+
+
+
+@api.route('/delete-task-by-id', methods=['DELETE'])
+def api_deleteTaskById():
+    """
+    This method is used to 
+    """
+
+
+    method = request.method
+    args   = request.args
+
+    if method == 'DELETE':
+        i                   = 1
+        validation          = Validation()
+        error_handling_form = FormError()
+        result              = {}
+        result[1]           = {
+            'status'                 : False,                                       # False if an error occured, True if everything went as planned
+            'status-code'            : None,                                        # Contains an status code
+            'status-description'     : None,                                        # contains a description about the current status
+            'redirect-status'        : False,                                       # true when use will be redirected to another page when function was successfully executed, false if user should stay on the same page
+            'redirect-target'        : None,                                        # Contains the URL where user will be redirected if redirection is enabled (true)
+            'display-messages'       : None,                                        # Contains information about if the message should appear on the same webpage or on another one where it will be flashed
+            'display-messages-target': None                                         # Contains the HTML Id from the wrapper div-box where the message will be displayed
+        }
+
+        # -------------------------------------------------------------------------------------------------------
+        # validate that user-id is set and is not empty
+        if not 'user-id' in args or validation.validation_isEmpty(args['user-id']) or 'user-id' == None:
+            i           = i+1
+            user_id_err = (error_handling_form.formError_invalidLength('#Task-Feedback', '', '', 'Please validate that an user is logged in to be able to delete a specific user Task!'))
+            result[i]   = user_id_err['Invalid-Empty-String']
+        # -------------------------------------------------------------------------------------------------------
+        # validate that project-id is set and is not empty
+        if not 'task-id' in args or validation.validation_isEmpty(args['task-id']) or 'task-id' == None:
+            i           = i+1
+            task_id_err = (error_handling_form.formError_invalidLength('#Task-Feedback','', '', 'Please validate that an Task Id is set to identify the required Task that should be deleted!'))
+            result[i]   = task_id_err['Invalid-Empty-String']
+
+        # -------------------------------------------------------------------------------------------------------
+        # validate that no error was set during the above validating process -> if i = 1 -> no errors occured
+        if i == 1:
+            user_id    = args['user-id']
+            task_id    = args['task-id']
+
+            task       = Task()
+            tmp_result = task.task_deleteTaskById(user_id, task_id)
+
+
+            if tmp_result:
+                result[1]['status']                   = True
+                result[1]['status-code']              = 200
+                result[1]['status-description']       = 'OK'
+                result[1]['redirect-status']          = False
+                result[1]['redirect-target']          = 'http://127.0.0.1:5000/dashboard'
+                result[1]['display-messages']         = None
+                result[1]['display-messages-target '] = None
+
+                return jsonify({
+                    'status'          : result[1],
+                    'count-result-set': task.NumResult,
+                    'result-set-data' : task.Result
+                })
+
+            else:
+                error_handling_db                     = DbError()
+                result[1]['status']                   = False
+                result[1]['status-code']              = 404
+                result[1]['status-description']       = 'Error'
+                result[1]['redirect-status']          = False
+                result[1]['redirect-target']          = None
+                result[1]['display-messages']         = False
+                result[1]['display-messages-target '] = None
+
+
+                 # error handling in case no results were found
+                if task.Error == '1':
+                    tmp_error = (error_handling_db.dbError_noResultFound('#Task-Feedback'))
+                    result[2] = tmp_error['No-Result-Found']
+                    return result
+                    
+                # error handling in case email is already existing
+                elif task.Error == '2':
+                    tmp_error = (error_handling_db.dbError_IntegrityError('#Task-Feedback'))
+                    result[2] = tmp_error['Multiple-Records-Found']
+                    return result
+
+                # error handling in case of an compile error
+                elif task.Error == '3':
+                    tmp_error = (error_handling_db.dbError_CompileError('#Task-Feedback'))
+                    result[2] = tmp_error['Compile-Error']
+                    return result
+
+                # error handling in case of a DBAPI error
+                elif task.Error == '4':
+                    tmp_error = (error_handling_db.dbError_DBAPIError('#Task-Feedback'))
+                    result[2] = tmp_error['DBAPI-Error']
+                    return result
+                    
+                # error handling in case of some other internal errors or problems
+                elif task.Error == '5':
+                    tmp_error = (error_handling_db.dbError_InternalError('#Task-Feedback'))
+                    result[2] = tmp_error['Internal-Error']
+                    return result
+                    
+                # error handling in case that more than one result were found
+                elif task.Error == '6':
+                    tmp_error = (error_handling_db.dbError_MultipleResultsFound('#Task-Feedback'))
+                    result[2] = tmp_error['Multi-Records-Found']
+                    return result
+                    
+                # error handling in case of an missing reference table error
+                elif task.Error == '7':
+                    tmp_error = (error_handling_db.dbError_NoReferencedTableError('#Task-Feedback'))
+                    result[2] = tmp_error['No-Referenced-Table']
+                    return result
+                    
+                # error handling in case that object is not executable
+                elif task.Error == '8':
+                    tmp_error = (error_handling_db.dbError_ObjectNotExecutableError('#Task-Feedback'))
+                    result[2] = tmp_error['Object-Not-Executable']
+                    return result
+                    
+                # error handling in case of other sqlalchmey errors
+                elif task.Error == '9':
+                    tmp_error = (error_handling_db.dbError_SQLAlchemyError('#Task-Feedback'))
+                    result[2] = tmp_error['SQL-Alchemy-Error']
+                    return result
+
+        return result
+
+
+
+
+
+
+
+@api.route('/get-number-of-tasks-where-status-is', methods=['GET'])
+def api_getNumberOfTasksWhereStatusFinished():
+    """
+    This method is used to get a number of all tasks that have the status 'finished' and belongs to a specific user and which are stored in the database table tbl_task_list, convert them into a formated JSON object, and return it to the client, which sent the request to this API.
+    During this process, errorhandling will also be established in case of some database failure or errors.
+
+    Args:
+        * user-id (Integer): When sending a request to the api.route(/get-all-task-by-username-group-by), a user id has to be send within the request, otherwise it is not possible to get only the tasks grouped by category, that belongs to a specific user.
+
+    Returns:
+        * JSON object: This method will return a JSON object list, with all tasks which are grouped by a category and belongs to the spcific user, from which the user-id was given and are available in the databasetable tbl_task_list
+
+    Test:
+        * test what will happen, if an string or char is given with the request to identify the users project, instead of an interger
+        * test what will happen if an user id is given with the request which does not exists in the user table tbl_user_list
+    """
+
+    method = request.method
+    args   = request.args
+
+    if method == 'GET':
+        i                   = 1
+        validation          = Validation()
+        error_handling_form = FormError()
+        result              = {}
+        result[1]           = {
+            'status'                 : False,                                       # False if an error occured, True if everything went as planned
+            'status-code'            : None,                                        # Contains an status code
+            'status-description'     : None,                                        # contains a description about the current status
+            'redirect-status'        : False,                                       # true when use will be redirected to another page when function was successfully executed, false if user should stay on the same page
+            'redirect-target'        : None,                                        # Contains the URL where user will be redirected if redirection is enabled (true)
+            'display-messages'       : None,                                        # Contains information about if the message should appear on the same webpage or on another one where it will be flashed
+            'display-messages-target': None                                         # Contains the HTML Id from the wrapper div-box where the message will be displayed
+        }            
+
+        # -------------------------------------------------------------------------------------------------------
+        # validate that user-id is set and is not empty
+        if not 'user-id' in args or validation.validation_isEmpty(args['user-id']) or 'user-id' == None:
+            i           = i+1
+            user_id_err = (error_handling_form.formError_invalidLength('#Task-Feedback', '', '', 'Please validate that an user is logged in to get number of user tasks with specific category!'))
+            result[i]   = user_id_err['Invalid-Empty-String']
+            
+        # -------------------------------------------------------------------------------------------------------
+        # validate that category-id is set and is not empty
+        if not 'category-id' in args or validation.validation_isEmpty(args['category-id']) or 'category-id' == None:
+            i               = i+1
+            category_id_err = (error_handling_form.formError_invalidLength('#Task-Feedback', '', '', 'Please validate that an category-id is set to identify the required task by group!'))
+            result[i]       = category_id_err['Invalid-Empty-String']
+
+        # -------------------------------------------------------------------------------------------------------
+        # validate that no error was set during the above validating process -> if i = 1 -> no errors occured
+        if i == 1:
+            
+            # -------------------------------------------------------------------------------------------------------
+            # Validate that project id is set to group result by projects if not set the total number of tasks of user will be returened
+            if 'project-id' in args and validation.validation_isEmpty(args['category-id']) == False and 'project-id' != None:
+                project_id = args['project-id'] 
+            else:
+                project_id = None
+
+            user_id     = args['user-id']
+            category_id = args['category-id']
+            tasks       = Task()
+            tmp_result  = tasks.task_getNumberofTasksWhereStatus(user_id, category_id, project_id)
+
+
+            if tmp_result:
+                result[1]['status']                   = True
+                result[1]['status-code']              = 200
+                result[1]['status-description']       = 'OK'
+                result[1]['redirect-status']          = False
+                result[1]['redirect-target']          = 'http://127.0.0.1:5000/dashboard'
+                result[1]['display-messages']         = None
+                result[1]['display-messages-target '] = None
+
+                return jsonify({
+                    'status'          : result[1],
+                    'count-result-set': tasks.NumResult,
+                    'result-set-data' : tasks.Result
+                })
+
+            else:
+                error_handling_db                     = DbError()
+                result[1]['status']                   = False
+                result[1]['status-code']              = 404
+                result[1]['status-description']       = 'Error'
+                result[1]['redirect-status']          = False
+                result[1]['redirect-target']          = None
+                result[1]['display-messages']         = False
+                result[1]['display-messages-target '] = None
+
+
+                # error handling in case no results were found
+                if tasks.Error == '1':
+                    tmp_error = (error_handling_db.dbError_noResultFound('#Task-Feedback'))
+                    result[2] = tmp_error['No-Result-Found']
+                    return result
+                    
+                # error handling in case email is already existing
+                elif tasks.Error == '2':
+                    tmp_error = (error_handling_db.dbError_IntegrityError('#Task-Feedback'))
+                    result[2] = tmp_error['Multiple-Records-Found']
+                    return result
+
+                # error handling in case of an compile error
+                elif tasks.Error == '3':
+                    tmp_error = (error_handling_db.dbError_CompileError('#Task-Feedback'))
+                    result[2] = tmp_error['Compile-Error']
+                    return result
+
+                # error handling in case of a DBAPI error
+                elif tasks.Error == '4':
+                    tmp_error = (error_handling_db.dbError_DBAPIError('#Task-Feedback'))
+                    result[2] = tmp_error['DBAPI-Error']
+                    return result
+                    
+                # error handling in case of some other internal errors or problems
+                elif tasks.Error == '5':
+                    tmp_error = (error_handling_db.dbError_InternalError('#Task-Feedback'))
+                    result[2] = tmp_error['Internal-Error']
+                    return result
+                    
+                # error handling in case that more than one result were found
+                elif tasks.Error == '6':
+                    tmp_error = (error_handling_db.dbError_MultipleResultsFound('#Task-Feedback'))
+                    result[2] = tmp_error['Multi-Records-Found']
+                    return result
+                    
+                # error handling in case of an missing reference table error
+                elif tasks.Error == '7':
+                    tmp_error = (error_handling_db.dbError_NoReferencedTableError('#Task-Feedback'))
+                    result[2] = tmp_error['No-Referenced-Table']
+                    return result
+                    
+                # error handling in case that object is not executable
+                elif tasks.Error == '8':
+                    tmp_error = (error_handling_db.dbError_ObjectNotExecutableError('#Task-Feedback'))
+                    result[2] = tmp_error['Object-Not-Executable']
+                    return result
+                    
+                # error handling in case of other sqlalchmey errors
+                elif tasks.Error == '9':
+                    tmp_error = (error_handling_db.dbError_SQLAlchemyError('#Task-Feedback'))
+                    result[2] = tmp_error['SQL-Alchemy-Error']
+                    return result
+        return result
+
