@@ -21,7 +21,7 @@ async def dashboard(project_id):
     project_id = int(project_id)
     if current_user.is_authenticated:
         user_id = current_user.id
-        count_date_since_start = httpx.get(f'http://127.0.0.1:5000/api/get-date-difference-stt-by-project-id?user-id={{user_id}}&project-id={project_id}')            # get date differences between project start date and current date
+        count_date_since_start = httpx.get(f'http://127.0.0.1:5000/api/get-date-difference-stt-by-project-id?user-id={user_id}&project-id={project_id}')                   # get date differences between project start date and current date
 
         async with httpx.AsyncClient() as client:
             all_projects_by_user        = await client.get(f"http://127.0.0.1:5000/api/get-all-projects-by-user?user-id={user_id}")                                                                                 # get all projects that belongs to the loged in user

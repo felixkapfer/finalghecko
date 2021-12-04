@@ -124,13 +124,18 @@
                                             <div class="col-auto">
                                                 <!-- Heading -->
                                                 <span class="h2 me-2 mb-0">
-
+                                                    {% if project_tasks_finished['count-result-set'] and project_tasks['count-result-set'] %}
+                                                        {% set projects_finished_percent = ((project_tasks_finished['count-result-set'] / project_tasks['count-result-set'] *100) | round(1, 'floor'))%}
+                                                        {{projects_finished_percent}} %
+                                                    {% else %}
+                                                        0%
+                                                    {% endif %}
                                                 </span>                      
                                             </div>
                                             <div class="col">
                                                 <!-- Progress Bar -->
                                                 <div class="progress progress-sm me-4">
-                                                   
+                                                    <div class="progress-bar" role="progressbar" style='width: {% if projects_finished_percent %} {{projects_finished_percent}}% {% else %}0% {% endif %}' aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>    
                                                 </div>
                                             </div>
                                         </div> <!-- / .row -->
@@ -152,7 +157,11 @@
                                         <h6 class="text-uppercase text-muted mb-2">Zeit seit Projektstart</h6> 
                                         <!-- Heading -->
                                         <span class="h2 mb-0">
-            
+                                            {% if project_diff_date_start_today%}
+                                                {{project_diff_date_start_today['result-set-data']['Difference-of-Days']}} Tage
+                                            {% else %}
+                                                0 Tage
+                                            {% endif %}
                                         </span>                                    
                                     </div>
                                     <div class="col-auto">
