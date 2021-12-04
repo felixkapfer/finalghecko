@@ -4,11 +4,17 @@
     license: private
 """
 
-from . import db
-from datetime import datetime
+from datetime import date, datetime
+from enum import unique
 from flask_login.mixins import UserMixin
+from website import db
 
 
+
+
+# -------------------------------------------------------------------------------------------------------------------------
+# Create Table tbl_user_list in sqllite DB which is used to store user information
+# -------------------------------------------------------------------------------------------------------------------------
 class UserList(db.Model, UserMixin):
     """
     This class extends from the SQLAlchemy sqlalchemy.orm.decl_api.Model class and is used to create the Database Table 'tbl_user_list'
@@ -32,12 +38,12 @@ class UserList(db.Model, UserMixin):
 
 
 
-    __tablename__ = 'tbl_user_list'
+    __tablename__ = 'tbl_user_list'                             # set tablename to 'tbl_project_list'
 
     id                   = db.Column(db.Integer, primary_key=True)
     firstname            = db.Column(db.String(255), nullable=False)
     lastname             = db.Column(db.String(255), nullable=False)
-    email                = db.Column(db.String(255), nullable=False)
+    email                = db.Column(db.String(255), nullable=False, unique=True)
     image_file           = db.Column(db.String(20), nullable=False, default='default.jpg')
     pwd                  = db.Column(db.String(60), nullable=False)
     date_of_issue        = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -47,6 +53,10 @@ class UserList(db.Model, UserMixin):
 
 
 
+
+# -------------------------------------------------------------------------------------------------------------------------
+# Create Table tbl_project_list in sqllite DB which is used to store projects information
+# -------------------------------------------------------------------------------------------------------------------------
 class ProjectList(db.Model):
     """
     This class extends from the SQLAlchemy sqlalchemy.orm.decl_api Model class and is used to create the Database Table ProjectList
@@ -63,24 +73,25 @@ class ProjectList(db.Model):
     Returns:
         [type]: [description]
     """
-
-
-    __tablename__ = 'tbl_project_list'  # set tablename to 'tbl_project_list'
+    __tablename__ = 'tbl_project_list'                          # set tablename to 'tbl_project_list'
 
     id                  = db.Column(db.Integer, primary_key=True)
     project_owner       = db.Column(db.Integer, db.ForeignKey('tbl_user_list.id'), nullable=False)
-    project_title       = db.Column(db.String(1000), nullable=False)
+    project_title       = db.Column(db.String(75), nullable=False)
     project_description = db.Column(db.Text, nullable=False)
-    project_start_date  = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    project_terminator  = db.Column(db.DateTime, nullable=False)
+    project_start_date  = db.Column(db.Date, nullable=False, default=datetime.date)
+    project_terminator  = db.Column(db.Date, nullable=False)
     date_of_issue       = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     task_relationship   = db.relationship('TaskList', backref='Task')
 
 
 
 
+# -------------------------------------------------------------------------------------------------------------------------
+# Create Table tbl_task_list in sqllite DB which is used to store tasks information
+# -------------------------------------------------------------------------------------------------------------------------
 class TaskList(db.Model):
-
+    
     """
     This class extends from the SQLAlchemy Model class and is used to create the Database Table ProjectList
     which contains all Projects that the users are going to create.
@@ -94,7 +105,7 @@ class TaskList(db.Model):
     Returns:
         [type]: [description]
     """
-    __tablename__ = 'tbl_task_list'  # set tablename to 'tbl_project_list'
+    __tablename__ = 'tbl_task_list'                                 # set tablename to 'tbl_task_list'
 
     id                     = db.Column(db.Integer, primary_key=True)
     task_owner             = db.Column(db.Integer, db.ForeignKey('tbl_user_list.id'), nullable=False)
@@ -103,9 +114,5 @@ class TaskList(db.Model):
     task_description       = db.Column(db.Text, nullable=False)
     task_status            = db.Column(db.String(25), nullable=False, default='open')
     task_terminator        = db.Column(db.DateTime, nullable=False)
-    date_of_issue          = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     last_modified          = db.Column(db.Date, nullable=False, default=datetime.today)
-    assigned_to_project_id = db.Column(db.String(255), unique=True, nullable=False)
-
-
-
+    date_of_issue          = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
