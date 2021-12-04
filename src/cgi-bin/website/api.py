@@ -905,9 +905,8 @@ def api_getNumberObfDaysFromStartToEndByProjectId():
           a project id has to be sent aswell within the request, to the identify one project
 
     Returns: JSON object list :
-        * JSON object: This function will return a JSON object list, 
         * This function returns a JSON object list 
-            with one json object  with with the number of day between the project's  start and end date,
+            with one json object  with with the number of days between the project's  start and end date,
             with another json object with the number of elements in the result set  
             and a JSON object that contains information about errors that occured during the data retrieval.
             Furthermore that latter  JSON object contains some metadata regarding where these error messages are going to be displayed.        
@@ -915,7 +914,7 @@ def api_getNumberObfDaysFromStartToEndByProjectId():
 
     Test:
         * test what will happen if a project id is given within the request which does not exists in the project table tbl_project_list
-        * test if the difference between the dates is displayed correctly and in the correct unit
+        * test if the difference between the dates is displayed correctly and in the correct units
     
     """
 
@@ -1053,7 +1052,28 @@ def api_getNumberObfDaysFromStartToEndByProjectId():
 @api.route('/get-date-difference-stt-by-project-id', methods=['GET'])
 def api_getNumberOfDaysFromStartToTodayByPorjectId():
     """
-    This method is used to 
+    This function is used to get the  date difference between the project's start date and the current date. 
+    For that, this function will call the project database function which calculates the amount of days between a project's start date and the current date.
+    During this process, errorhandling will also be established in case of a database failure or errors.
+
+    Input:
+        * user-id (Integer): When sending a request to the api.route(/get-date-difference-stt-by-project-id), 
+          a user id has to be send within the request, to identify the user who owns the project whose duration shall be calculated
+        * project-id (Integer):   When sending a request to the api.route(/get-date-difference-stt-by-project-id), 
+          a project id has to be sent aswell within the request, to the identify one project
+
+    Returns: JSON object list :
+        * This function returns a JSON object list 
+            with one json object  with with the number of days between the project's  start date and the current date,
+            with another json object with the number of elements in the result set  
+            and a JSON object that contains information about errors that occured during the data retrieval.
+            Furthermore that latter  JSON object contains some metadata regarding where these error messages are going to be displayed.        
+          
+
+    Test:
+        * test what will happen if a project id is given within the request which does not exists in the project table tbl_project_list
+        * test if the difference between the dates is displayed correctly and in the correct units
+        * test what happens if the order or the form of the dates is not as expected
     """
              
     method = request.method
@@ -1190,7 +1210,29 @@ def api_getNumberOfDaysFromStartToTodayByPorjectId():
 @api.route('/get-date-difference-tte-by-project-id', methods=['GET'])
 def api_getNumberOfDaysFromTodayToEndByProjectId():
     """
-    This method is used to
+    This function is used to get the  date difference between the current date and the project's end date . 
+    For that, this function will call the project database function which calculates the amount of days between the current date and the project's end date.
+    During this process, errorhandling will also be established in case of a database failure or errors.
+
+    Input:
+        * user-id (Integer): When sending a request to the api.route(/get-date-difference-tte-by-project-id), 
+          a user id has to be send within the request, to identify the user who owns the project whose duration shall be calculated
+        * project-id (Integer):   When sending a request to the api.route(/get-date-difference-tte-by-project-id), 
+          a project id has to be sent aswell within the request, to the identify one project
+
+    Returns: JSON object list :
+        * JSON object: This function will return a JSON object list, 
+        * This function returns a JSON object list 
+            with one json object  with with the number of days between the current date and the project's end date,
+            with another json object with the number of elements in the result set  
+            and a JSON object that contains information about errors that occured during the data retrieval.
+            Furthermore that latter  JSON object contains some metadata regarding where these error messages are going to be displayed.        
+          
+
+    Test:
+        * test what will happen if a project id is given within the request which does not exists in the project table tbl_project_list
+        * test if the difference between the dates is displayed correctly and in the correct units
+        * test what will happen if the order or the form of the dates is not as expected
     """
 
     method = request.method
@@ -1326,7 +1368,30 @@ def api_getNumberOfDaysFromTodayToEndByProjectId():
 @api.route('/create-project', methods=['POST'])
 def api_createProject():
     """
-    This function is used to create projects
+    This function is used to create a project on the basis of the user's input.
+    For that, this function will call the create_project function of the project class.
+    During this process, error handling will also be established in case of a database failure or errors.
+
+    Input:
+        * user-id (Integer): When sending a request to the api.route(/create-project), 
+          a user id has to be send within the request, to identify the user who wants to create the project
+        * Furthermore the user has to enter a project-title(string), a project description(text) and a project enddate(date). 
+             These values will also be checked to see if they were typed in  and if are in the correct format
+             A project start date can be set or ist set by default to the current date.
+       
+
+    Returns: JSON object list :
+        * This function returns a JSON object list 
+            with one json object   with the just created project,
+            with another json object with the number of elements of the object  mentioned just above
+            and a JSON object that contains information about errors that occured during that process.
+                   
+          
+
+    Test:
+        * test whether the validation of the input (project title etc) works as intended
+        * test whether the project's default values are set correctly like the id, or the foreign key or the date of issue (date of creation)
+        
     """
     method = request.method
     args   = request.form
@@ -1505,10 +1570,32 @@ def api_createProject():
 @api.route('/update-project', methods=['PUT'])
 def api_updateProject():
     """
-    This method is used to 
+    This function is used to update a project on the basis of the user's input. 
+    The project to be updated will identified by its id.
+    This function will call the update_project function of the project class.
+    During this process, error handling will also be established in case of a database failure or errors.
 
-    Returns:
-        [type]: [description]
+    Input:
+        * user-id (Integer): When sending a request to the api.route(/update-project), 
+          a user id has to be sent within the request, to identify the user who wants to update a project
+        * project-id (Integer):   When sending a request to the api.route(/update-project), 
+          a project id has to be sent aswell within the request, to the identify the project
+        * Furthermore the user can enter a project-title(string), a project description(text), a project enddate(date), a project start date(date). 
+             These values will also be checked to see if they were typed in  and if are in the correct format
+       
+
+    Returns: JSON object list :
+        * This function returns a JSON object list 
+            with one json object  with with the just updated project,
+            with another json object with the number of elements of the object mentioned just above
+            and a JSON object that contains information about errors that occured during that process.
+                   
+          
+
+    Test:
+        * test whether the validation of the input data (project title etc.) works as intended
+        * test whether the project's  values are stored with the  updated values in the database also when the user just wants to change one value (like the title) or more values (like the title and the end date)
+        
     """
 
     method = request.method
@@ -1694,7 +1781,30 @@ def api_updateProject():
 @api.route('/delete-project', methods=['DELETE'])
 def api_deleteProject():
     """
-    This method is used to 
+    This function is used to delete a project. 
+    The project to be deleted will identified by its id.
+    This function will call the delete_project function of the project class.
+    During this process, error handling will also be established in case of a database failure or errors.
+
+    Input:
+        * user-id (Integer): When sending a request to the api.route(/delete-project), 
+          a user id has to be sent within the request, to identify the user who wants to delete a project
+        * project-id (Integer):   When sending a request to the api.route(/delete-project), 
+          a project id has to be sent aswell within the request, to the identify the project
+            
+
+    Returns: JSON object list :
+        * This function returns a JSON object list 
+            with one json object  with with the just deleted project,
+            with another json object with the number of elements of the object mentioned just above
+            and a JSON object that contains information about errors that occured during that process.
+                   
+          
+
+    Test:
+        * test whether the validation of the input data (project title etc.) works as intended
+        * test whether the project's  values are stored with the  updated values in the database also when the user just wants to change one value (like the title) or more values (like the title and the end date)
+        
     """
 
 
