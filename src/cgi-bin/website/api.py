@@ -612,7 +612,7 @@ def api_getAllProjectsByUser():
           
 
     Test:
-        * test what will happen, if a string or char is given within the request to identify the users project, instead of an interger
+        * test what will happen, if a string or char is given within the request to identify the users project, instead of an integer
         * test what will happen if a user id is given within the request which does not exists in the user table tbl_user_list
     """
 
@@ -755,7 +755,7 @@ def api_getSingleProjectByUser():
             Furthermore that latter  JSON object contains some metadata regarding where these error messages are going to be displayed.        
 
     Test:
-        * test what will happen, if a string or char is given within the request to identify the users project, instead of an interger
+        * test what will happen, if a string or char is given within the request to identify the users project, instead of an integer
         * test what will happen if a project id is given within the request which does not exists in the project table tbl_project_list
         * test what will happen if the user id and the project id do not match, meaning the project exists but does not belong to that user
     """
@@ -906,7 +906,7 @@ def api_getNumberObfDaysFromStartToEndByProjectId():
 
     Returns: JSON object list :
         * This function returns a JSON object list 
-            with one json object  with with the number of days between the project's  start and end date,
+            with one json object  with  the number of days between the project's  start and end date,
             with another json object with the number of elements in the result set  
             and a JSON object that contains information about errors that occured during the data retrieval.
             Furthermore that latter  JSON object contains some metadata regarding where these error messages are going to be displayed.        
@@ -1064,7 +1064,7 @@ def api_getNumberOfDaysFromStartToTodayByPorjectId():
 
     Returns: JSON object list :
         * This function returns a JSON object list 
-            with one json object  with with the number of days between the project's  start date and the current date,
+            with one json object  with the number of days between the project's  start date and the current date,
             with another json object with the number of elements in the result set  
             and a JSON object that contains information about errors that occured during the data retrieval.
             Furthermore that latter  JSON object contains some metadata regarding where these error messages are going to be displayed.        
@@ -1223,7 +1223,7 @@ def api_getNumberOfDaysFromTodayToEndByProjectId():
     Returns: JSON object list :
         * JSON object: This function will return a JSON object list, 
         * This function returns a JSON object list 
-            with one json object  with with the number of days between the current date and the project's end date,
+            with one json object  with the number of days between the current date and the project's end date,
             with another json object with the number of elements in the result set  
             and a JSON object that contains information about errors that occured during the data retrieval.
             Furthermore that latter  JSON object contains some metadata regarding where these error messages are going to be displayed.        
@@ -1571,7 +1571,7 @@ def api_createProject():
 def api_updateProject():
     """
     This function is used to update a project on the basis of the user's input. 
-    The project to be updated will identified by its id.
+    The project to be updated will be identified by its id.
     This function will call the update_project function of the project class.
     During this process, error handling will also be established in case of a database failure or errors.
 
@@ -1586,12 +1586,10 @@ def api_updateProject():
 
     Returns: JSON object list :
         * This function returns a JSON object list 
-            with one json object  with with the just updated project,
+            with one json object  with the just updated project,
             with another json object with the number of elements of the object mentioned just above
             and a JSON object that contains information about errors that occured during that process.
-                   
-          
-
+                           
     Test:
         * test whether the validation of the input data (project title etc.) works as intended
         * test whether the project's  values are stored with the  updated values in the database also when the user just wants to change one value (like the title) or more values (like the title and the end date)
@@ -1795,15 +1793,17 @@ def api_deleteProject():
 
     Returns: JSON object list :
         * This function returns a JSON object list 
-            with one json object  with with the just deleted project,
+            with one json object  with the just deleted project,
             with another json object with the number of elements of the object mentioned just above
             and a JSON object that contains information about errors that occured during that process.
                    
           
 
     Test:
-        * test whether the validation of the input data (project title etc.) works as intended
-        * test whether the project's  values are stored with the  updated values in the database also when the user just wants to change one value (like the title) or more values (like the title and the end date)
+        * test the behaviour if an error occured 
+            * test if the messages are flashed as intended  and
+            * test if the transaction will get interrupted and rolled back when an error occured
+        * test if what happens when the id does not exist 
         
     """
 
@@ -1940,14 +1940,19 @@ def api_deleteProject():
 @api.route('/get-all-tasks', methods=['GET'])
 def api_getAllTasks():
     """
-    This method is used to get all tasks that are stored in the database, convert them into a formated JSON object, and return it to the client, which sent the request to this API. During this process, errorhandling will also be established,
-    in case of some database failure or errors.
+    This function is used to get all tasks that are stored in the database, convert them into a formated JSON object, 
+    and return that to the client, who sent the request to this API.
+    During this process, errorhandling will also be established, in case of a database failure or errors.
 
     Args:
         * Contains or uses no Arguments
 
-    Returns:
-        * JSON object: This method will return a JSON object list with all tasks that are available in the databasetable tbl_task_list
+    Returns:JSON object list
+        * This function will return a JSON object list 
+            with one json object with all tasks that are available in the database table tbl_task_list,
+            with another json object with the number of elements in the result set - here meaning the number of all tasks in the database,
+            and a JSON object that contains information about occured errors.
+            Furthermore that latter  JSON object contains some metadata regarding where these error messages are going to be displayed. 
 
     Tests:
         * test that databse connection can be established
@@ -2058,18 +2063,26 @@ def api_getAllTasks():
 @api.route('/get-all-tasks-by-user', methods=['GET'])
 def api_getAllTasksByUser():
     """
-    This method is used to get all tasks that belongs to a specific user and that are stored in the database table tbl_task_list, convert them into a formated JSON object, and return it to the client, which sent the request to this API.
-    During this process, errorhandling will also be established in case of some database failure or errors.
+    This function is used to get all tasks which belong to a specific user and that are stored in the database table tbl_task_list.
+    The function will then convert the received tasks into a formated JSON object, and return that to the client, who sent the request to this API.
+    During this process, errorhandling will also be established in case of a database failure or errors.
 
-    Args:
-        * user-id (Integer): When sending a request to the api.rout(/get-all-tasks-by-user), a user id has to be send within the request, otherwise it is not possible to get only the tasks, that belongs to a specific user.
+    Input:
+        * user-id (Integer): When sending a request to the api.route(/get-all-tasks-by-user), 
+          a user id has to be send within the request, otherwise it is not possible to get only tasks, that belong to a specific user.
 
-    Returns:
-        * JSON object: This method will return a JSON object list, with all tasks that belongs to the spcific user, from which the user-id was given and are available in the databasetable tbl_task_list
+    Returns: JSON object list :
+        *This function will return a JSON object list 
+            with one json object  with all in the database table tbl_taks_list  available tasks that belong to the specific user, whose user-id was given,
+            with another json object with the number of elements in the result set - here meaning the number of this user's tasks
+            and a JSON object that contains information about occurred errors and whether errors occured during the data retrieval.
+            Furthermore that latter  JSON object contains some metadata regarding where these error messages are going to be displayed. 
+          
 
     Test:
-        * test what will happen, if an string or char is given with the request to identify the users project, instead of an interger
-        * test what will happen if an user id is given with the request which does not exists in the user table tbl_user_list
+        * test what will happen, if a string or char is given within the request to identify the user, instead of an integer
+        * test what will happen if a user id is given within the request which does not exists in the user table tbl_user_list
+    
     """
 
     method = request.method
@@ -2195,18 +2208,30 @@ def api_getAllTasksByUser():
 @api.route('/get-all-tasks-by-username-group-by', methods=['GET'])
 def api_getAllTaskByUsernameGroupBy():
     """
-    This method is used to get all task that are grouped by a category and belongs to a specific user and which are stored in the database table tbl_task_list, convert them into a formated JSON object, and return it to the client, which sent the request to this API.
-    During this process, errorhandling will also be established in case of some database failure or errors.
+    This function is used to get all task from the table  tbl_task_list that  belong to a specific user, a specific project and have a specific category (meaning a specific status either "todo" or "inprogress" or "finished"). 
+    The function will then convert the received tasks into a formated JSON object, and return that to the client, who sent the request to this API.
+    During this process, errorhandling will also be established in case of a database failure or errors.
 
-    Args:
-        * user-id (Integer): When sending a request to the api.route(/get-all-task-by-username-group-by), a user id has to be send within the request, otherwise it is not possible to get only the tasks grouped by category, that belongs to a specific user.
+    Input:
+        * user-id (Integer): When sending a request to the api.route(/get-all-tasks-by-username-group-by), 
+          a user id has to be send within the request, otherwise it is not possible to get only tasks, that belong to a specific user.
+        * project-id (Integer):   When sending a request to the api.route(/get-all-tasks-by-username-group-by), 
+          a project id has to be sent aswell within the request, to the identify the project  these tasks belong to
+        * status-id (String) : When sending a request to the api.route(/get-all-tasks-by-username-group-by), 
+          status-id (meaning a task_status) has to be send within the request, otherwise it is not possible to get only tasks, that  have this status in that specific project.
 
-    Returns:
-        * JSON object: This method will return a JSON object list, with all tasks which are grouped by a category and belongs to the spcific user, from which the user-id was given and are available in the databasetable tbl_task_list
-
+    Returns: JSON object list :
+        *This function will return a JSON object list 
+            * with one json object  with all in the database table tbl_taks_list  available tasks that belong to the specific user and have this specific status in that specified project
+            * with another json object with the number of elements in the result set - here meaning the number of this user's tasks from this project with this specified status
+            * and a JSON object that contains information about occurred errors and whether errors occured during the data retrieval.
+            Furthermore that latter  JSON object contains some metadata regarding where these error messages are going to be displayed. 
+          
     Test:
-        * test what will happen, if an string or char is given with the request to identify the users project, instead of an interger
-        * test what will happen if an user id is given with the request which does not exists in the user table tbl_user_list
+        * test what will happen, if a string or char is given within the request to identify the user's project, instead of an integer
+        * test what will happen if a status-id (the task_status)  is given within the request which does not exists 
+        * test what will happen if a project id is given within the request which does not exists in the user table tbl_project_list
+    
     """
 
     method = request.method
@@ -2347,18 +2372,30 @@ def api_getAllTaskByUsernameGroupBy():
 @api.route('/get-all-task-by-username-and-project', methods=['GET'])
 def api_getAllTasksByUsernmaeProject():
     """
-    This method is used to get all task that are grouped by a category and belongs to a specific user and which are stored in the database table tbl_task_list, convert them into a formated JSON object, and return it to the client, which sent the request to this API.
-    During this process, errorhandling will also be established in case of some database failure or errors.
+    This function is used to get all task from the table  tbl_task_list that  belong to a specific user and a specific project. 
+    The function will then convert the received tasks into a formated JSON object, and return that to the client, who sent the request to this API.
+    During this process, errorhandling will also be established in case of a database failure or errors.
 
-    Args:
-        * user-id (Integer): When sending a request to the api.route(/get-all-task-by-username-group-by), a user id has to be send within the request, otherwise it is not possible to get only the tasks grouped by category, that belongs to a specific user.
+    Input:
+        * user-id (Integer): When sending a request to the api.route(/get-all-task-by-username-and-project), 
+          a user id has to be send within the request, otherwise it is not possible to get only tasks, that belong to a specific user.
+        * project-id (Integer):   When sending a request to the api.route(/get-all-task-by-username-and-project), 
+          a project id has to be sent aswell within the request, to the identify the project  these tasks belong to
+        
 
-    Returns:
-        * JSON object: This method will return a JSON object list, with all tasks which are grouped by a category and belongs to the spcific user, from which the user-id was given and are available in the databasetable tbl_task_list
+    Returns: JSON object list :
+        *This function will return a JSON object list 
+            * with one json object  with all in the database table tbl_taks_list  available tasks that belong to the specific user and this specific project
+            * with another json object with the number of elements in the result set - here meaning the number of this user's tasks from this project 
+            * and a JSON object that contains information about occurred errors and whether errors occured during the data retrieval.
+            Furthermore that latter  JSON object contains some metadata regarding where these error messages are going to be displayed. 
+          
 
     Test:
-        * test what will happen, if an string or char is given with the request to identify the users project, instead of an interger
+        * test what will happen, if a string or char is given within the request to identify the user's project, instead of an integer
+        * test what will happen if a project id is given within the request which does not exists in the user table tbl_project_list
         * test what will happen if an user id is given with the request which does not exists in the user table tbl_user_list
+    
     """
 
     method = request.method
@@ -2488,13 +2525,31 @@ def api_getAllTasksByUsernmaeProject():
 
 
 
-@api.route('get-task-by-id', methods=['GET'])
+@api.route('/get-task-by-id', methods=['GET'])
 def api_getTaskById():
     """
-    This function is used to 
+    This function is used to get one task that belongs to a specific user and that is stored in the database table tbl_task_list.
+    The function will then convert the received task into a formated JSON object, and return that object to the client, who sent the request to this API.
+    During this process, errorhandling will also be established in case of a database failure or errors.
 
-    Returns:
-        [type]: [description]
+    Input:
+        * user-id (Integer): When sending a request to the api.route(/get-task-by-id), 
+          a user id has to be sent within the request, otherwise it is not possible to only get  the task, that belongs to a specific user.
+        * task-id (Integer):   When sending a request to the api.route(/get-task-by-id), 
+          a task-id has to be sent aswell within the request, to the identify which task the user means
+
+    Returns: JSON object list :
+        *This function returns a JSON object list 
+            with one json object  with the specified, by its task-id identified, in the database table tbl_task_list  available task that belongs to the user identified by the given user-id,
+            with another json object with the number of elements in the result set  (expected to be 1)
+            and a JSON object that contains information about errors that occured during the data retrieval.
+            Furthermore that latter  JSON object contains some metadata regarding where these error messages are going to be displayed.        
+
+    Test:
+        * test whether the task is shown to the user correctly or if an error occured the error message is shown as expected
+        * test what will happen, if a string or char is given within the request to identify the users task, instead of an integer
+        * test what will happen if a task id is given within the request which does not exists in the task table tbl_task_list
+        * test what will happen if the user id and the task id do not match, meaning the project exists but does not belong to that user
     """
 
     method = request.method
@@ -2628,7 +2683,27 @@ def api_getTaskById():
 @api.route('/create-task', methods=['POST'])
 def api_createTask():
     """
-    This function is used to create projects
+    This function is used to create a task on the basis of the user's input.
+    For that, this function will call the createTask function of the task class.
+    During this process, error handling will also be established in case of a database failure or errors.
+
+    Input:
+        * user-id (Integer): When sending a request to the api.route(/create-task), 
+          a user id has to be send within the request, to identify the user who wants to create the task
+        * Furthermore the user has to enter a task-title(string), a task-description(text) and a task enddate(date). 
+             These values will also be checked to see if they were typed in  and if are in the correct format.
+             The task status is set by default to "todo".
+       
+
+    Returns: JSON object list :
+        * This function returns a JSON object list 
+            with one json object   with the just created task,
+            with another json object with the number of elements (tasks) of the object  mentioned just above
+            and a JSON object that contains information about errors that occured during that process.
+
+    Test:
+        * test whether the validation of the input (task title etc) works as intended
+        * test whether the  default values of the tasks are set correctly like the id, or the task-status, or the foreign key or the date of issue (date of creation)
     """
     method = request.method
     args   = request.form
@@ -2834,10 +2909,36 @@ def api_createTask():
 @api.route('/update-task', methods=['PUT'])
 def api_updateTask():
     """
-    This method is used to 
+    This function is used to update a task on the basis of the user's input. 
+    The task to be updated will be identified by its id.
+    This function will call the updateTaskById function of the task class.
+    During this process, error handling will also be established in case of a database failure or errors.
 
-    Returns:
-        [type]: [description]
+    Input:
+        * user-id (Integer): When sending a request to the api.route(/update-task), 
+          a user id has to be sent within the request, to identify the user who wants to update  one of his tasks
+        * task-id (Integer):   When sending a request to the api.route(/update-task), 
+          a task id has to be sent aswell within the request, to the identify the task
+        * Furthermore the user can enter one or more of the following: 
+            * a task-title(string), 
+            * a  task-description(text), 
+            * a task enddate(date),
+            * another task status (either todo or in progress or finished)
+             These values will also be checked to see if they were typed in  and if are in the correct format
+       
+
+    Returns: JSON object list :
+        * This function returns a JSON object list 
+            with one json object  with  the just updated task,
+            with another json object with the number of elements (tasks) of the object mentioned just above  
+            and a JSON object that contains information about errors that occured during that process.
+                   
+          
+
+    Test:
+        * test whether the validation of the input data (task title etc.) works as intended
+        * test whether the task's  values are stored with the  updated values in the database also when the user just wants to change one value (like the title) or more values (like the title and the end date)
+        
     """
 
     method = request.method
@@ -3042,10 +3143,33 @@ def api_updateTask():
 @api.route('/update-task-status', methods=['PUT'])
 def api_updateTaskStatus():
     """
-    This method is used to 
+    This function is used to update a task's status. This means that the status will be moved to the next step.
+    (If task status is set to "todo" it will change to "inprogress". 
+    If task status is set to "inprogress" it will change to "finished". 
+    If task status is set to "finish" it will change to "todo". )
+    
+    The task to be updated will be identified by its id.
+    This function will call the updateTaskStatusById function of the task class.
+    During this process, error handling will also be established in case of a database failure or errors.
 
-    Returns:
-        [type]: [description]
+    Input:
+        * user-id (Integer): When sending a request to the api.route(/update-task-status), 
+          a user id has to be sent within the request, to identify the user who wants to update  one of his tasks
+        * task-id (Integer):   When sending a request to the api.route(/update-task-status), 
+          a task id has to be sent aswell within the request, to the identify the task
+        
+              
+
+    Returns: JSON object list :
+        * This function returns a JSON object list 
+            with one json object  with  the just updated task,
+            with another json object with the number of elements (tasks) of the object mentioned just above  
+            and a JSON object that contains information about errors that occured during that process.
+          
+    Test:
+        * test what will happen if a task id is given within the request which does not exists in the task table tbl_task_list
+        * test what will happen if the task does not belong to the specified user
+        * test whether the task's new value for the task-status is stored in the database 
     """
 
     method = request.method
@@ -3199,7 +3323,29 @@ def api_updateTaskStatus():
 @api.route('/delete-task-by-id', methods=['DELETE'])
 def api_deleteTaskById():
     """
-    This method is used to 
+    This function is used to delete a task. 
+    The task to be deleted will identified by its id.
+    This function will call the deletetask function of the task class.
+    During this process, error handling will also be established in case of a database failure or errors.
+
+    Input:
+        * user-id (Integer): When sending a request to the api.route(/delete-task-by-id), 
+          a user id has to be sent within the request, to identify the user who wants to delete one of his tasks
+        * task-id (Integer):   When sending a request to the api.route(/delete-task-by-id), 
+          a task id has to be sent aswell within the request, to the identify the task
+            
+
+    Returns: JSON object list :
+        * This function returns a JSON object list 
+            with one json object  with the just deleted task,
+            with another json object with the number of elements (task(s)) of the object mentioned just above
+            and a JSON object that contains information about errors that occured during that process.
+      
+    Test:
+        * test the behaviour if an error occured 
+            * test if the messages are flashed as intended  and
+            * test if the transaction will get interrupted and rolled back when an error occured
+        * test if what happens when the id does not exist 
     """
 
 
@@ -3332,18 +3478,35 @@ def api_deleteTaskById():
 @api.route('/get-number-of-tasks-where-status-is', methods=['GET'])
 def api_getNumberOfTasksWhereStatusFinished():
     """
-    This method is used to get a number of all tasks that have the status 'finished' and belongs to a specific user and which are stored in the database table tbl_task_list, convert them into a formated JSON object, and return it to the client, which sent the request to this API.
-    During this process, errorhandling will also be established in case of some database failure or errors.
+    This function is used to get the number of all tasks that have a specific status. 
+    Use this function to get all tasks either in the status "todo" or "inprogress" or "finished".
+    This function will call the function of the task class which filters the tasks by the status (getNumberofTasksWhereStatus).
+    During this process, errorhandling will also be established in case of a database failure or errors.
 
-    Args:
-        * user-id (Integer): When sending a request to the api.route(/get-all-task-by-username-group-by), a user id has to be send within the request, otherwise it is not possible to get only the tasks grouped by category, that belongs to a specific user.
 
-    Returns:
-        * JSON object: This method will return a JSON object list, with all tasks which are grouped by a category and belongs to the spcific user, from which the user-id was given and are available in the databasetable tbl_task_list
+    Input:
+        * user-id (Integer): When sending a request to the api.route(/get-number-of-tasks-where-status-is), 
+          a user id has to be send within the request, to identify the user whose number of tasks with a specific status shall be retrieved
+        * project-id (Integer):   When sending a request to the api.route(/get-number-of-tasks-where-status-is), 
+          a project id can be sent aswell within the request, to limit the tasks to that project 
+          If a project id is passed, only the tasks with that status from that project will be retrieved.
+          If no project's id is passed, the tasks with that status from all project of the specified user will be retrieved.
+        * status-id (String) : When sending a request to the api.route(/get-number-of-tasks-where-status-is), 
+          status-id (meaning a task_status) has to be send within the request, otherwise it is not possible to get only tasks, that  have this status
+
+    Returns: JSON object list :
+        * This function returns a JSON object list 
+            with one json object  with the number of  tasks with that status
+            with another json object with the number of elements (tasks) of the object mentioned just above
+            and a JSON object that contains information about errors that may occur during the data retrieval.
+            Furthermore that latter  JSON object contains some metadata regarding where these error messages will be displayed.        
+          
 
     Test:
-        * test what will happen, if an string or char is given with the request to identify the users project, instead of an interger
+        * test what will happen if a task status is given within the request which does not exists 
         * test what will happen if an user id is given with the request which does not exists in the user table tbl_user_list
+        * test if the optional input of the project-id works as intended
+
     """
 
     method = request.method
