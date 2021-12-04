@@ -721,8 +721,7 @@ class Project():
         Tests:
             * test the behaviour when an exception is raised and  the associated error occurs eg the NoResultFound Error
               and test if the rollback works when an error ocurred
-            * test if all the input data is added to the database in the right format
-            * test the behaviour when not all data is given in the project array, for example no title for the pro
+            * test the behaviour when user id and project id do not belong together meaning that the user does not own this project
         """
         try:
             project_to_be_deleted = db.session.query(ProjectList).filter_by(id=project_id, project_owner=user_id).one()
