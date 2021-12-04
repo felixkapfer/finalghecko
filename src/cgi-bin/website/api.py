@@ -476,8 +476,13 @@ def api_getAllProjects():
     Args:
         * Contains or uses no Arguments
 
-    Returns:
-        * JSON object: This function will return a JSON object list with all projects that are available in the database table tbl_project_list
+    Returns:JSON object list
+        * This function will return a JSON object list 
+            with one json object with all projects that are available in the database table tbl_project_list,
+            with another json object with the number of elements in the result set 
+            and a JSON object that contains information about occured errors.
+            Furthermore that latter  JSON object contains some metadata regarding where these error messages are going to be displayed. 
+        
 
     Tests:
         * test that a databse connection can be established
@@ -598,9 +603,12 @@ def api_getAllProjectsByUser():
         * user-id (Integer): When sending a request to the api.route(/get-all-projects-by-user), 
           a user id has to be send within the request, otherwise it is not possible to get only the projects, that belong to a specific user.
 
-    Returns:
-        * JSON object: This function will return a JSON object list, with all in the database table tbl_project_list  available projects 
-          that belong to the spcific user, from which the user-id was given 
+    Returns: JSON object list :
+        *This function will return a JSON object list 
+            with one json object  with all in the database table tbl_project_list  available projects that belong to the spcific user, from which the user-id was given,
+            with another json object with the number of elements in the result set 
+            and a JSON object that contains information about occured errors that occured during the data retrieval.
+            Furthermore that latter  JSON object contains some metadata regarding where these error messages are going to be displayed. 
           
 
     Test:
@@ -735,19 +743,21 @@ def api_getSingleProjectByUser():
 
     Input:
         * user-id (Integer): When sending a request to the api.route(/get-single-project-by-users-project-id), 
-          a user id has to be send within the request, otherwise it is not possible to only get  the project, that belongs to a specific user.
+          a user id has to be sent within the request, otherwise it is not possible to only get  the project, that belongs to a specific user.
         * project-id (Integer):   When sending a request to the api.route(/get-single-project-by-users-project-id), 
-          a project id has to be send aswell within the request, to the identify which project the user means
+          a project id has to be sent aswell within the request, to the identify which project the user means
 
-    Returns:
-        * JSON object: This function will return a JSON object list, with the specified, by its project-id identified, in the database table tbl_project_list  available project 
-          that belongs to the specified user identified by the given user-id
-          
+    Returns: JSON object list :
+        *This function returns a JSON object list 
+            with one json object  with the specified, by its project-id identified, in the database table tbl_project_list  available project that belongs to the user identified by the given user-id,
+            with another json object with the number of elements in the result set  (expected to be 1)
+            and a JSON object that contains information about errors that occured during the data retrieval.
+            Furthermore that latter  JSON object contains some metadata regarding where these error messages are going to be displayed.        
 
     Test:
         * test what will happen, if a string or char is given within the request to identify the users project, instead of an interger
         * test what will happen if a project id is given within the request which does not exists in the project table tbl_project_list
-        * test what will happen if the user and the project id do not match, meaning the project exists but does not belong to that user
+        * test what will happen if the user id and the project id do not match, meaning the project exists but does not belong to that user
     """
 
     method = request.method
@@ -884,9 +894,29 @@ def api_getSingleProjectByUser():
 @api.route('/get-date-difference-ste-by-project-id', methods=['GET'])
 def api_getNumberObfDaysFromStartToEndByProjectId():
     """
-    This function is used to get the  date difference between the project's end date and the project's start date. 
-    That means this method will call the project database method which caclulates the amount of days between project start date and project end date.
-    To do so, a specific project id is required.
+    This function is used to get the  date difference between the project's start and end date . 
+    For that, this function will call the project database function which calculates the amount of days between a project's start and end date.
+    During this process, errorhandling will also be established in case of a database failure or errors.
+
+    Input:
+        * user-id (Integer): When sending a request to the api.route(/get-date-difference-ste-by-project-id), 
+          a user id has to be send within the request, to identify the user who owns the project whose duration shall be calculated
+        * project-id (Integer):   When sending a request to the api.route(/get-date-difference-ste-by-project-id), 
+          a project id has to be sent aswell within the request, to the identify one project
+
+    Returns: JSON object list :
+        * JSON object: This function will return a JSON object list, 
+        * This function returns a JSON object list 
+            with one json object  with with the number of day between the project's  start and end date,
+            with another json object with the number of elements in the result set  
+            and a JSON object that contains information about errors that occured during the data retrieval.
+            Furthermore that latter  JSON object contains some metadata regarding where these error messages are going to be displayed.        
+          
+
+    Test:
+        * test what will happen if a project id is given within the request which does not exists in the project table tbl_project_list
+        * test if the difference between the dates is displayed correctly and in the correct unit
+    
     """
 
 
