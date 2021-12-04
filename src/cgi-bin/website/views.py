@@ -84,7 +84,7 @@ async def kanban(project_id):
         print(current_project.json())
 
         return render_template(
-                'project/dashboard.html',
+                'project/kanban.html',
                 projects                      = all_projects_by_user.json(),
                 current_project               = current_project.json(), 
                 all_tasks                     = all_tasks_by_user_obj.json(),
@@ -101,8 +101,20 @@ async def kanban(project_id):
 
 
 @views.route('/profile')
-def profile():
-    return render_template('project/profile.html')
+async def profile():
+    if current_user.is_authenticated:
+        user_id                = current_user.id
+       
+        async with httpx.AsyncClient() as client:
+            all_projects_by_user        = await client.get(f"http://127.0.0.1:5000/api/get-all-projects-by-user?user-id={user_id}")                                                                                 # get all projects that belongs to the loged in user
+
+        return render_template(
+                'project/profile.html',
+                projects                      = all_projects_by_user.json(),
+            )
+    else:
+        flash('To get access to this page, you need to sign-in first!', 'alert-danger')
+        return redirect(url_for('auth.auth_login'))
 
 
 
