@@ -16,8 +16,9 @@ api   = Blueprint('api', __name__)
 @api.route('/create-user' , methods=['POST'])
 def api_createUser():
     """
-    This method is used to validate that all necessary data needed to create an user account are provided by the user. All input fields will be validated that it only contains the right data.
-    This method will also call the user_createUser function to connect to the database and write the data into the user table
+    This method is used to validate that all necessary data needed to create a user account are provided by the user. 
+    All input fields will be validated that it only contains the right data.
+    This method will also call the user_createUser function to connect to the database and write the data into the user table.
     This method will be executed when the URL extension /create-user is triggered.
     The form data will be validated for:
     * Firstname
@@ -48,23 +49,25 @@ def api_createUser():
             * noMath : will add an Error to the JSON object if password and confirm password do not match
 
     Returns:
-        JSON object: This method returns a JSON object that contains information about occured errors if registration was not successfull as well as some metadata where this error messages are going to display. If 
-                     registration was successfull it will return a JSON object with some meta data about the successfull completion of registraion as well as a linke where the user will be redirected to
-                     The JSON object looks like the following ony contains different values, depending on what kind of error or success
+        JSON object: This method returns a JSON object that contains information about occured errors in case the registration was not successfull.
+        Furthermore that JSON object contains some metadata regarding where these error messages are going to display. 
+        If the registration was successfull it will return a JSON object with some meta data about the successful completion of the registration 
+        as well as a link to where the user will be redirected to.
+                     The JSON object will look something like the following. It may contain different values, depending on if an error occured and what kind of error occurred.
                      result[1] = {                                  
                             'status'                 : False,       # False if an error occured, True if everything went as planned
-                            'status-code'            : None,        # Contains an status code
+                            'status-code'            : None,        # Contains a status code
                             'status-description'     : None,        # contains a description about the current status
-                            'redirect-status'        : False,       # true when use will be redirected to another page when function was successfully executed, false if user should stay on the same page
-                            'redirect-target'        : None,        # Contains the URL where user will be redirected if redirection is enabled (true)
+                            'redirect-status'        : False,       # true when the user will be redirected to another page so when the function was successfully executed, false if the user should stay on the same page
+                            'redirect-target'        : None,        # Contains the URL to where the user will be redirected in case the redirection is enabled (meaning the redirect status is true)
                             'display-messages'       : None,        # Contains information about if the message should appear on the same webpage or on another one where it will be flashed
                             'display-messages-target': None         # Contains the HTML Id from the wrapper div-box where the message will be displayed
                         }
 
     Tests:
-        * Test if it secure against Java Script code that is entered into the HTML input fields and could mainpulate our databases
-        * Verify that it is not possible to register more than one time with the same email address
-        * Test the case that user diable javascript in his browser           
+        * Test if it is secure against Java Script code that is entered into the HTML input fields and could mainpulate our databases
+        * Verify that it is not possible to register multiple times with the same email address
+        * Test what happens if a user disables javascript in his browser                  
     """
 
 
