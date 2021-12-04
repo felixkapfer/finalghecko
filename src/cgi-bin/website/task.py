@@ -265,7 +265,7 @@ class Task(): #Initialzing the Class 'Task'
                 raise NoResultFound
 
             elif count > 0:
-                tasks       = TaskList.query.filter_by(task_owner=user_id, assigned_to_project_id=project_id,  task_status=category_id).all()
+                tasks       = TaskList.query.filter_by(task_owner=user_id, assigned_to_project_id=project_id, task_status=category_id).all()
                 task_schema = TaskSchema(many=True)
                 output      = task_schema.dump(tasks)
 

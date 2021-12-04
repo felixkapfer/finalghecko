@@ -99,7 +99,7 @@
                         <a href="/kanban/{{project['id']}}" class="nav-link ">Kanban</a>
                       </li>
                       <li class="nav-item">
-                        <a href="/statistics/{{project['id']}}" class="nav-link ">Statistik</a>
+                        <a href="/statisticsproject/{{project['id']}}" class="nav-link ">Statistik</a>
                       </li>
                       <li class="nav-item">
                         <a href="/projectsettings/{{project['id']}}" class="nav-link ">Einstellungen</a>
@@ -129,7 +129,7 @@
             </li>
 
             <li class="nav-item">
-              <a class="nav-link " href="/statisticsproject"><i class="fe fe-bar-chart"></i>Übersicht</a>
+              <a class="nav-link " href="/statistics"><i class="fe fe-bar-chart"></i>Übersicht</a>
             </li>
 
             <li class="nav-item">
@@ -230,6 +230,12 @@
                   }
               });
               
+          })
+
+
+
+          $('.delete-task-fnc').click(function () {
+            $(this)
           })
       })
     </script>  

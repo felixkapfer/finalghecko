@@ -7,22 +7,22 @@
 {% block projectnavigation %}
 <ul class="nav nav-tabs nav-overflow header-tabs">
   <li class="nav-item">
-    <a href="/dashboard" class="nav-link">
+    <a href="/dashboard/{{current_project['result-set-data'][0]['id']}}" class="nav-link">
       Dashboard
     </a>
   </li>
   <li class="nav-item">
-    <a href="/kanban" class="nav-link">
+    <a href="/kanban/{{current_project['result-set-data'][0]['id']}}" class="nav-link">
       Kanban
     </a>
   </li>
   <li class="nav-item">
-    <a href="/statistics" class="nav-link">
+    <a href="/statistics/{{current_project['result-set-data'][0]['id']}}" class="nav-link">
       Statistik
     </a>
   </li>
   <li class="nav-item">
-    <a href="/projectsettings" class="nav-link active">
+    <a href="/projectsettings/{{current_project['result-set-data'][0]['id']}}" class="nav-link active">
       Einstellungen
     </a>
   </li>
