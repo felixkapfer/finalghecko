@@ -17,7 +17,7 @@
     </a>
   </li>
   <li class="nav-item">
-    <a href="/statistics/{{current_project['result-set-data'][0]['id']}}" class="nav-link active">
+    <a href="/statisticsproject/{{current_project['result-set-data'][0]['id']}}" class="nav-link active">
       Statistik
     </a>
   </li>
@@ -173,150 +173,7 @@
 
           </div>
         </div> <!-- / .row -->
-        <div class="row">
-          <div class="col-12 col-lg-6 col-xl">
 
-            <!-- Card -->
-            <div class="card">
-              <div class="card-body">
-                <div class="row align-items-center gx-0">
-                  <div class="col">
-
-                    <!-- Title -->
-                    <h6 class="text-uppercase text-muted mb-2">
-                      Aufgaben in Arbeit
-                    </h6>
-
-                    <!-- Heading -->
-                    <span class="h2 mb-0">
-                      3
-                    </span>
-
-                  </div>
-                  <div class="col-auto">
-
-                    <!-- Icon -->
-                    <span class="h2 fe fe-briefcase text-muted mb-0"></span>
-
-                  </div>
-                </div> <!-- / .row -->
-
-              </div>
-            </div>
-
-          </div>
-          <div class="col-12 col-lg-6 col-xl">
-
-            <!-- Card -->
-            <div class="card">
-              <div class="card-body">
-                <div class="row align-items-center gx-0">
-                  <div class="col">
-
-                    <!-- Title -->
-                    <h6 class="text-uppercase text-muted mb-2">
-                      Erledigte Aufgabe
-                    </h6>
-
-                    <!-- Heading -->
-                    <span class="h2 mb-0">
-                     6
-                    </span>
-
-                  </div>
-                  <div class="col-auto">
-
-                    <!-- Icon -->
-                    <span class="h2 fe fe-briefcase text-muted mb-0"></span>
-
-                  </div>
-                </div> <!-- / .row -->
-
-              </div>
-            </div>
-
-          </div>
-          <div class="col-12 col-lg-6 col-xl">
-
-            <!-- Card -->
-            <div class="card">
-              <div class="card-body">
-                <div class="row align-items-center gx-0">
-                  <div class="col">
-
-                    <!-- Title -->
-                    <h6 class="text-uppercase text-muted mb-2">
-                      Fortschritt
-                    </h6>
-
-                    <div class="row align-items-center g-0">
-                      <div class="col-auto">
-
-                        <!-- Heading -->
-                        <span class="h2 me-2 mb-0">
-                          30%
-                        </span>
-
-                      </div>
-                      <div class="col">
-
-                        <!-- Progress -->
-                        <div class="progress progress-sm me-4">
-                          <div class="progress-bar" role="progressbar" style="width: 30%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-
-                      </div>
-                    </div> <!-- / .row -->
-
-                  </div>
-                  <div class="col-auto">
-
-                    <!-- Icon -->
-                    <span class="h2 fe fe-clipboard text-muted mb-0"></span>
-
-                  </div>
-                </div> <!-- / .row -->
-
-              </div>
-            </div>
-
-          </div>
-
-
-          <div class="col-12 col-lg-6 col-xl">
-
-            <!-- Card -->
-            <div class="card">
-              <div class="card-body">
-                <div class="row align-items-center gx-0">
-                  <div class="col">
-
-                    <!-- Title -->
-                    <h6 class="text-uppercase text-muted mb-2">
-                      Zeit seit Projektstart
-                    </h6>
-
-                    <!-- Heading -->
-                    <span class="h2 mb-0">
-                      3 Tage
-                    </span>
-
-                  </div>
-                  <div class="col-auto">
-
-                    <!-- Chart -->
-                    <div class="chart chart-sparkline">
-                      <canvas class="chart-canvas" id="sparklineChart"></canvas>
-                    </div>
-
-                  </div>
-                </div> <!-- / .row -->
-
-              </div>
-            </div>
-
-          </div>
-        </div> <!-- / .row -->
         <div class="row">
           <div class="col-12 col-xl-8">
 
@@ -328,17 +185,6 @@
                 <h4 class="card-header-title">
                   Erstellte Aufgaben pro Tag
                 </h4>
-
-                <!-- Caption -->
-                <span class="text-muted me-3">
-                  Vergleich zum Vormonat:
-                </span>
-
-                <!-- Switch -->
-                <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" id="cardToggle" data-toggle="chart" data-target="#conversionsChart" data-trigger="change" data-action="add" data-dataset="1" />
-                  <label class="form-check-label" for="cardToggle"></label>
-                </div>
 
               </div>
               <div class="card-body">
@@ -362,20 +208,6 @@
                   Projektfortschritte
                 </h4>
 
-                <!-- Tabs -->
-                <ul class="nav nav-tabs nav-tabs-sm card-header-tabs">
-                  <li class="nav-item" data-toggle="chart" data-target="#trafficChart" data-trigger="click" data-action="toggle" data-dataset="0">
-                    <a href="#" class="nav-link active" data-bs-toggle="tab">
-                      All
-                    </a>
-                  </li>
-                  <li class="nav-item" data-toggle="chart" data-target="#trafficChart" data-trigger="click" data-action="toggle" data-dataset="1">
-                    <a href="#" class="nav-link" data-bs-toggle="tab">
-                      Direct
-                    </a>
-                  </li>
-                </ul>
-
               </div>
               <div class="card-body">
 
@@ -397,4 +229,97 @@
     {% endblock %}
     <!-- / .main-content -->
 
-</html>
+  {% block include_java_script %}
+
+      <script>
+        // Convertions chart
+
+const conversionsChart = document.getElementById('conversionsChart');
+
+if (conversionsChart) {
+  new Chart(conversionsChart, {
+    type: 'bar',
+    options: {
+      scales: {
+        y: {
+          ticks: {
+            callback: function (val) {
+              return val / 2 ;
+            },
+          },
+        },
+      },
+    },
+    data: {
+
+      labels: [
+        'Zu erledigen',
+        'In Arbeit',
+        'Fertig',
+      ],
+      datasets: [
+        {
+          label: '2020',
+          data: [
+          {% if project_tasks['count-result-set'] == null %}
+            0
+          {% elif project_tasks['count-result-set'] > 0 %}
+            {{project_tasks['count-result-set']}} *2
+          {% endif %}, 
+        2, 30, ],
+        },
+        {
+          label: '2019',
+          data: [15, 10, 20,],
+          backgroundColor: '#d2ddec',
+          hidden: true,
+        },
+      ],
+    },
+  });
+}
+
+// Traffic chart
+
+const trafficChart = document.getElementById('trafficChart');
+
+if (trafficChart) {
+  new Chart(trafficChart, {
+    type: 'doughnut',
+    options: {
+      plugins: {
+        tooltip: {
+          callbacks: {
+            afterLabel: function () {
+              return '%';
+            },
+          },
+        },
+      },
+    },
+    data: {
+      labels: ['Zu erledigen', 'In Arbeit', 'Fertig'],
+      datasets: [
+        {
+          data: [
+          {% if project_tasks['count-result-set'] == null %}
+            0
+          {% elif project_tasks['count-result-set'] > 0 %}
+            {{project_tasks['count-result-set']}} *2
+          {% endif %}, 25, 15],
+          backgroundColor: ['#2C7BE5', '#A6C5F7', '#D2DDEC'],
+        },
+        {
+          data: [15, 45, 20],
+          backgroundColor: ['#2C7BE5', '#A6C5F7', '#D2DDEC'],
+          hidden: true,
+        },
+      ],
+    },
+  });
+}
+      </script>
+
+  {% endblock %}
+
+

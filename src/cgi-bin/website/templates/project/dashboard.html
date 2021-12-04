@@ -18,7 +18,7 @@
                 <a href="/kanban/{{current_project['result-set-data'][0]['id']}}" class="nav-link">Kanban</a>
             </li>
             <li class="nav-item">
-                <a href="/statistics/{{current_project['result-set-data'][0]['id']}}" class="nav-link">Statistik</a>
+                <a href="/statisticsproject/{{current_project['result-set-data'][0]['id']}}" class="nav-link">Statistik</a>
             </li>
             <li class="nav-item">
                 <a href="/projectsettings/{{current_project['result-set-data'][0]['id']}}" class="nav-link">Einstellungen</a>
@@ -94,7 +94,11 @@
                                         <h6 class="text-uppercase text-muted mb-2">Erledigte Aufgabe</h6>
                                         <!-- Heading -->
                                         <span class="h2 mb-0">
-                                          {{project_tasks_finished['count-result-set']}}
+                                        {% if count_all_tasks_finished_by_project['result-set-data'] == null %}
+                                            0
+                                        {% elif count_all_tasks_finished_by_project['result-set-data'] > 0 %}
+                                            {{count_all_tasks_finished_by_project['result-set-data'] }}
+                                        {% endif %}
                                         </span>
                                     </div>
                                     <div class="col-auto">
