@@ -125,9 +125,21 @@ def statistics():
 
 
 
-@views.route('/settings')
-def settings():
-    return render_template('project/settings.html')
+@views.route('/settings/<project_id>')
+async def settings(project_id):
+    if current_user.is_authenticated:
+        user_id = current_user.id
+       
+        async with httpx.AsyncClient() as client:
+           current_project = await client.get(f"http://127.0.0.1:5000/api/get-single-project-by-users-project-id?user-id={user_id}&project-id={project_id}")                                           # get only the project, the user is looking for to see prject details                                                                             # get all projects that belongs to the loged in user
+
+        return render_template(
+                'project/settings.html',
+                current_project = current_project.json(),
+            )
+    else:
+        flash('To get access to this page, you need to sign-in first!', 'alert-danger')
+        return redirect(url_for('auth.auth_login'))
 
 
 
