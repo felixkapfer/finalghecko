@@ -36,13 +36,15 @@
                         {% block navbuttongroup %}
                             <div class="col-12 col-md-auto mt-3 mt-md-0">
                                 <!-- new task button -->
+                                <a href="/newtask/{{current_project['result-set-data'][0]['id']}}">
                                 <button 
                                     type="button" 
                                     class="btn btn-primary" 
                                     style="padding-left: 25px; padding-right: 25px;"
-                                    onclick= "window.location.href = '/newtask';">
+                                    >
                                     Aufgabe hinzufügen
                                 </button>
+                                </a>
                             </div>
                         {% endblock %}
                     </div>
