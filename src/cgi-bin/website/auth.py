@@ -1,4 +1,6 @@
 from flask import Blueprint, render_template, flash
+from flask.helpers import url_for
+from werkzeug.utils import redirect
 from website.user import User
 
 auth = Blueprint('auth', __name__)
@@ -22,4 +24,5 @@ def auth_logout():
     user = User()
     result = user.logout()
     flash('Log out was successfull!')
-    return render_template('auth/sign-in.html')
+    # return render_template('auth/sign-in.html')
+    return redirect(url_for('auth.auth_login'))

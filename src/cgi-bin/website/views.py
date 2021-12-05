@@ -18,19 +18,22 @@ async def emptyDashboard():
         async with httpx.AsyncClient() as client:
             all_projects_by_user = await client.get(f"http://127.0.0.1:5000/api/get-all-projects-by-user?user-id={user_id}") 
 
-    count_projects = all_projects_by_user.json()
-    
-    print(all_projects_by_user.json())
-    if not 'count-result-set' in count_projects:
-        return render_template('project/start-project.html')
+        count_projects = all_projects_by_user.json()
+        
+        print(all_projects_by_user.json())
+        if not 'count-result-set' in count_projects:
+            return render_template('project/start-project.html')
 
-    elif 'count-result-set' in count_projects:
-        print(count_projects['count-result-set'])
-        if count_projects['count-result-set'] > 0:
-            first_project = all_projects_by_user.json()['result-set-data'][0]['id']
-            return redirect(url_for('views.dashboard', project_id=first_project))
+        elif 'count-result-set' in count_projects:
+            print(count_projects['count-result-set'])
+            if count_projects['count-result-set'] > 0:
+                first_project = all_projects_by_user.json()['result-set-data'][0]['id']
+                return redirect(url_for('views.dashboard', project_id=first_project))
+        else:
+            return render_template('project/start-project.html')
+    
     else:
-        return render_template('project/start-project.html')
+        redirect(url_for('auth.auth_login'))
 
 
 
@@ -181,7 +184,6 @@ async def statistics(project_id):
                 project_tasks_in_progress           = all_tasks_status_inprogress.json(),
                 project_diff_date_start_today       = count_date_since_start.json(),
                 project_tasks_finished              = all_tasks_status_finished.json(),
-                # count_all_tasks_finished_by_project = count_all_tasks_finished_by_project.json(),
                 count_todo                          = count_tasks_status_todo.json(),
                 count_inprogress                     = count_tasks_status_inprogress.json(),
                 count_finished                      = count_tasks_status_finished.json()
@@ -267,31 +269,32 @@ async def newtask(project_id):
         flash('To get access to this page, you need to sign-in first!', 'alert-danger')
         return redirect(url_for('auth.auth_login'))
 
+@views.route('/delete-project/<project_id>')
+async def delete_project(project_id):
+    project_id = int (project_id)
+    if current_user.is_authenticated:
+        user_id = current_user.id
 
+        async with httpx.AsyncClient() as client:
+            all_tasks_by_user_obj = await client.get(f"http://127.0.0.1:5000/api/get-all-tasks-by-user?user-id={user_id}")
+            print(all_tasks_by_user_obj.json())                                                                              # get all tasks that belongs to a user --> needed for statistics
+            all_task_obj = all_tasks_by_user_obj.json()
+            # print(all_task_obj)
+            if not 'result-set-data' in all_task_obj:
+                all_tasks = all_task_obj['result-set-data']
+                # print(all_tasks)
+                i=0
+                for task in all_tasks['result-set-data']:
+                    print(task['result-set-data'][i]['id'])
+                    i=i+1
+        #             task_id   = task['id']
+        #             temp_task = await client.delte(f"http/127.0.0.1:5000/api/delete-task-by-id?user-id={user_id}&task-id={task_id}")
+            
+        # deleted_project = httpx.get(f'http://127.0.0.1:5000/api/delte-project?user-id={{user_id}}&project-id={project_id}')
 
+        return redirect(url_for('views.settings')) 
+    
+            
 
-# @views.route('/statisticsproject/<project_id>')
-# async def statisticsproject(project_id):
-#     project_id = int(project_id)
-#     if current_user.is_authenticated:
-#         user_id = current_user.id
-#         count_date_since_start = httpx.get(f'http://127.0.0.1:5000/api/get-date-difference-stt-by-project-id?user-id={{user_id}}&project-id={project_id}')            # get date differences between project start date and current date
+    
 
-#         async with httpx.AsyncClient() as client:
-#             all_projects_by_user        = await client.get(f"http://127.0.0.1:5000/api/get-all-projects-by-user?user-id={user_id}")                                                                                 # get all projects that belongs to the loged in user
-#             current_project             = await client.get(f"http://127.0.0.1:5000/api/get-single-project-by-users-project-id?user-id={user_id}&project-id={project_id}")                                           # get only the project, the user is looking for to see prject details
-#             all_tasks_by_user_obj       = await client.get(f"http://127.0.0.1:5000/api/get-all-tasks-by-user?user-id={user_id}")                                                                                    # get all tasks that belongs to a user --> needed for statistics
-#             all_tasks_by_project        = await client.get(f"http://127.0.0.1:5000/api/get-all-task-by-username-and-project?user-id={user_id}&project-id={project_id}")                                                                     # get all tasks that belongs to a user and the project the user is looking for
-#                         # get all tasks that belongs to a user and the project the user is looking for and groups them by status todo
-
-#         return render_template(
-#                 'project/statistics.html',
-#                 projects                      = all_projects_by_user.json(),
-#                 current_project               = current_project.json(), 
-#                 all_tasks                     = all_tasks_by_user_obj.json(),
-#                 project_tasks                 = all_tasks_by_project.json(),
-#                 project_diff_date_start_today = count_date_since_start.json()
-#             )
-#     else:
-#         flash('To get access to this page, you need to sign-in first!', 'alert-danger')
-#         return redirect(url_for('auth.auth_login'))
