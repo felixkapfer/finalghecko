@@ -294,4 +294,71 @@ async def delete_project(project_id):
             
 
     
+@views.route('/update-task/<project_id>/<task_id>')
+async def updateTask(project_id, task_id):
+    task_id = int(task_id)
+    if current_user.is_authenticated:
+        user_id = current_user.id
 
+        async with httpx.AsyncClient() as client:
+            all_projects_by_user        = await client.get(f"http://127.0.0.1:5000/api/get-all-projects-by-user?user-id={user_id}")                                                                                 # get all projects that belongs to the loged in user
+            current_project             = await client.get(f"http://127.0.0.1:5000/api/get-single-project-by-users-project-id?user-id={user_id}&project-id={project_id}")                                           # get only the project, the user is looking for to see prject details
+            current_task                = await client.get(f"http://127.0.0.1:5000/api/get-task-by-id?user-id={user_id}&project-id={project_id}&task-id={task_id}")
+            
+        print(user_id)
+
+        return render_template(
+                'project/update-task.html',
+                projects        = all_projects_by_user.json(),
+                current_project = current_project.json(),
+                current_task    = current_task.json()
+            )
+    else:
+        flash('Um Zugriff auf diese Seite zu erhalten, müssen Sie sich zuerst anmelden', 'alert-danger')
+        return redirect(url_for('auth.auth_login'))
+
+
+
+
+@views.route('delete-task/<task_id>')
+async def delete(task_id):
+    if current_user.is_authenticated:
+        user_id = current_user.id
+
+        async with httpx.AsyncClient() as client:
+            all_projects_by_user        = await client.get(f"http://127.0.0.1:5000/api/get-all-projects-by-user?user-id={user_id}")                                                                                 # get all projects that belongs to the loged in user
+            current_project             = await client.get(f"http://127.0.0.1:5000/api/get-single-project-by-users-project-id?user-id={user_id}&project-id={project_id}")                                           # get only the project, the user is looking for to see prject details
+            all_tasks_by_user_obj       = await client.get(f"http://127.0.0.1:5000/api/get-all-tasks-by-user?user-id={user_id}")                                                                                    # get all tasks that belongs to a user --> needed for statistics
+            all_tasks_by_project        = await client.get(f"http://127.0.0.1:5000/api/get-all-task-by-username-and-project?user-id={user_id}&project-id={project_id}")                                                                     # get all tasks that belongs to a user and the project the user is looking for
+            all_tasks_status_todo       = await client.get(f"http://127.0.0.1:5000/api/get-all-tasks-by-username-group-by?user-id={user_id}&project-id={project_id}&status-id=todo")                         # get all tasks that belongs to a user and the project the user is looking for and groups them by status todo
+            all_tasks_status_inprogress = await client.get(f"http://127.0.0.1:5000/api/get-all-tasks-by-username-group-by?user-id={user_id}&project-id={project_id}&status-id=inprogress")                         # get all tasks that belongs to a user and the project the user is looking for and groups them by status todo
+            all_tasks_status_finished   = await client.get(f"http://127.0.0.1:5000/api/get-all-tasks-by-username-group-by?user-id={user_id}&project-id={project_id}&status-id=finished")                         # get all tasks that belongs to a user and the project the user is looking for and groups them by status todo
+
+            count_tasks_status_todo       = await client.get(f"http://127.0.0.1:5000/api/get-number-of-tasks-where-status-is?user-id={user_id}&project-id={project_id}&category-id=todo")                         # get all tasks that belongs to a user and the project the user is looking for and groups them by status todo
+            count_tasks_status_inprogress = await client.get(f"http://127.0.0.1:5000/api/get-number-of-tasks-where-status-is?user-id={user_id}&project-id={project_id}&category-id=inprogress")                         # get all tasks that belongs to a user and the project the user is looking for and groups them by status todo
+            count_tasks_status_finished   = await client.get(f"http://127.0.0.1:5000/api/get-number-of-tasks-where-status-is?user-id={user_id}&project-id={project_id}&category-id=finished")
+
+            count_all_tasks_finished_by_project = await client.get(f"http://127.0.0.1:5000/api/get-number-of-tasks-where-status-is?user-id={user_id}&category-id=finished") 
+        
+        print(count_all_tasks_finished_by_project.json())
+        print(user_id)
+        print(count_all_tasks_finished_by_project.json())
+
+        return render_template(
+                'project/dashboard.html',
+                projects                            = all_projects_by_user.json(),
+                current_project                     = current_project.json(), 
+                all_tasks                           = all_tasks_by_user_obj.json(),
+                project_tasks                       = all_tasks_by_project.json(),
+                project_tasks_todo                  = all_tasks_status_todo.json(),
+                project_tasks_in_progress           = all_tasks_status_inprogress.json(),
+                project_tasks_finished              = all_tasks_status_finished.json(),
+                # project_diff_date_start_today       = count_date_since_start.json(),
+                count_all_tasks_finished_by_project = count_all_tasks_finished_by_project.json(),
+                count_todo                          = count_tasks_status_todo.json(),
+                count_inprogress                     = count_tasks_status_inprogress.json(),
+                count_finished                      = count_tasks_status_finished.json()
+            )
+    else:
+        flash('Um Zugriff auf diese Seite zu erhalten, müssen Sie sich zuerst anmelden', 'alert-danger')
+        return redirect(url_for('auth.auth_login'))
