@@ -77,7 +77,7 @@ async def dashboard(project_id):
                 count_finished                      = count_tasks_status_finished.json()
             )
     else:
-        flash('To get access to this page, you need to sign-in first!', 'alert-danger')
+        flash('Um Zugriff auf diese Seite zu erhalten, müssen Sie sich zuerst anmelden', 'alert-danger')
         return redirect(url_for('auth.auth_login'))
 
 
@@ -89,7 +89,7 @@ async def newproject():
         user_id = current_user.id
         return render_template('project/new-project.html')
     else:
-        flash('To get access to this page, you need to sign-in first!', 'alert-danger')
+        flash('Um Zugriff auf diese Seite zu erhalten, müssen Sie sich zuerst anmelden', 'alert-danger')
         return redirect(url_for('auth.auth_login'))
 
 
@@ -124,7 +124,7 @@ async def kanban(project_id):
                 project_diff_date_start_today = count_date_since_start.json()
             )
     else:
-        flash('To get access to this page, you need to sign-in first!', 'alert-danger')
+        flash('Um Zugriff auf diese Seite zu erhalten, müssen Sie sich zuerst anmelden', 'alert-danger')
         return redirect(url_for('auth.auth_login'))
 
 
@@ -142,7 +142,7 @@ async def profile():
                 projects = all_projects_by_user.json(),
             )
     else:
-        flash('To get access to this page, you need to sign-in first!', 'alert-danger')
+        flash('Um Zugriff auf diese Seite zu erhalten, müssen Sie sich zuerst anmelden', 'alert-danger')
         return redirect(url_for('auth.auth_login'))
 
 
@@ -188,7 +188,7 @@ async def statistics(project_id):
             
             )
     else:
-        flash('To get access to this page, you need to sign-in first!', 'alert-danger')
+        flash('Um Zugriff auf diese Seite zu erhalten, müssen Sie sich zuerst anmelden', 'alert-danger')
         return redirect(url_for('auth.auth_login'))
 
 
@@ -205,7 +205,7 @@ async def settings():
                 projects = all_projects_by_user.json(),
             )
     else:
-        flash('To get access to this page, you need to sign-in first!', 'alert-danger')
+        flash('Um Zugriff auf diese Seite zu erhalten, müssen Sie sich zuerst anmelden', 'alert-danger')
         return redirect(url_for('auth.auth_login'))
 
 
@@ -228,7 +228,7 @@ async def projectsettings(project_id):
                 project_diff_date_start_today = count_date_since_start.json()
             )
     else:
-        flash('To get access to this page, you need to sign-in first!', 'alert-danger')
+        flash('Um Zugriff auf diese Seite zu erhalten, müssen Sie sich zuerst anmelden', 'alert-danger')
         return redirect(url_for('auth.auth_login'))
 
 
@@ -264,7 +264,7 @@ async def newtask(project_id):
                 project_diff_date_start_today = count_date_since_start.json()
             )
     else:
-        flash('To get access to this page, you need to sign-in first!', 'alert-danger')
+        flash('Um Zugriff auf diese Seite zu erhalten, müssen Sie sich zuerst anmelden', 'alert-danger')
         return redirect(url_for('auth.auth_login'))
 
 

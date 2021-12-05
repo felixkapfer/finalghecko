@@ -14,12 +14,12 @@ def auth_login():
 @auth.route('/registerd-successfull/')
 def auth_registerdSuccessfull():
 
-    flash('User was registerd successfull - You are now able to log in with your credentials', 'alert-success')
+    flash('Ihr Profil wurde erfolgreich registriert - Sie können sich jetzt mit Ihren Zugangsdaten anmelden', 'alert-success')
     return render_template('auth/sign-in.html', flashArea='TEST')
 
 @auth.route('/logout')
 def auth_logout():
     user = User()
     result = user.logout()
-    flash('Log out was successfull!')
+    flash('Der Logout war erfolgreich', 'alert-success')
     return render_template('auth/sign-in.html')
