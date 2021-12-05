@@ -21,5 +21,5 @@ def auth_registerdSuccessfull():
 def auth_logout():
     user = User()
     result = user.logout()
-    flash('Der Logout war erfolgreich', 'alert-success')
+    flash('Sie haben sich erfolgreich ausgelogt', 'alert-success')
     return render_template('auth/sign-in.html')
