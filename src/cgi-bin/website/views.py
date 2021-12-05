@@ -19,7 +19,7 @@ async def emptyDashboard():
             all_projects_by_user = await client.get(f"http://127.0.0.1:5000/api/get-all-projects-by-user?user-id={user_id}") 
 
 
-        
+
     print(all_projects_by_user.json())
     return render_template('project/start-project.html')
 
@@ -164,7 +164,7 @@ async def statistics(project_id):
                 count_all_tasks_finished_by_project = count_all_tasks_finished_by_project.json(),
                 count_todo = count_tasks_status_toto.json(),
                 count_inprogrss = count_tasks_status_inprogress.json(),
-                count_inprogress = count_tasks_status_finished.json()
+                count_finished = count_tasks_status_finished.json()
             
             )
     else:
