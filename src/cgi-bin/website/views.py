@@ -1,7 +1,7 @@
 import asyncio
 import httpx
 from flask_login import current_user
-from flask import Blueprint, render_template, url_for, redirect, flash
+from flask import Blueprint, render_template, url_for, redirect, flash, json, jsonify
 
 
 views = Blueprint('views', __name__)
@@ -276,22 +276,19 @@ async def delete_project(project_id):
         user_id = current_user.id
 
         async with httpx.AsyncClient() as client:
-            all_tasks_by_user_obj = await client.get(f"http://127.0.0.1:5000/api/get-all-tasks-by-user?user-id={user_id}")
-            print(all_tasks_by_user_obj.json())                                                                              # get all tasks that belongs to a user --> needed for statistics
+            all_tasks_by_user_obj = await client.get(f"http://127.0.0.1:5000/api/get-all-tasks-by-user?user-id={user_id}")                                                                          # get all tasks that belongs to a user --> needed for statistics
             all_task_obj = all_tasks_by_user_obj.json()
-            # print(all_task_obj)
-            if not 'result-set-data' in all_task_obj:
-                all_tasks = all_task_obj['result-set-data']
-                # print(all_tasks)
+            if 'result-set-data' in all_task_obj:
+                print(True)
                 i=0
-                for task in all_tasks['result-set-data']:
-                    print(task['result-set-data'][i]['id'])
+                for task in all_task_obj['result-set-data']:
                     i=i+1
-        #             task_id   = task['id']
-        #             temp_task = await client.delte(f"http/127.0.0.1:5000/api/delete-task-by-id?user-id={user_id}&task-id={task_id}")
+                    task_id   = task['id']
+                    temp_task = await client.delete(f"http://127.0.0.1:5000/api/delete-task-by-id?user-id={user_id}&task-id={task_id}")
+                    # print(task_id, ' löschen erfolgreich')
             
-        # deleted_project = httpx.get(f'http://127.0.0.1:5000/api/delte-project?user-id={{user_id}}&project-id={project_id}')
-
+        deleted_project = httpx.delete(f"http://127.0.0.1:5000/api/delete-project?user-id={user_id}&project-id={project_id}")
+        
         return redirect(url_for('views.settings')) 
     
             
