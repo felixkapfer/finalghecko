@@ -18,15 +18,17 @@ async def emptyDashboard():
         async with httpx.AsyncClient() as client:
             all_projects_by_user = await client.get(f"http://127.0.0.1:5000/api/get-all-projects-by-user?user-id={user_id}") 
 
-    count_projects = all_projects_by_user.json()['count-result-set']
-
-    print(count_projects)
+    count_projects = all_projects_by_user.json()
+    
     print(all_projects_by_user.json())
-    
-    if count_projects > 0:
-        first_project = all_projects_by_user.json()['result-set-data'][1]['id']
-        return redirect(url_for('views.dashboard', project_id=first_project))
-    
+    print(count_projects['count-result-set'])
+    if not 'count-result-set' in count_projects:
+        return render_template('project/start-project.html')
+
+    elif 'count-result-set' in count_projects:
+        if count_projects['count-result-set'] > 0:
+            first_project = all_projects_by_user.json()['result-set-data'][0]['id']
+            return redirect(url_for('views.dashboard', project_id=first_project))
     else:
         return render_template('project/start-project.html')
 
