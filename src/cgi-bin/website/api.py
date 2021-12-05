@@ -136,10 +136,10 @@ def api_createUser():
             result[i] = email_err['Invalid-Empty-String']
 
         # validate that email has a valid email format
-        elif validation.validation_isEmail(args['email']) == False:
-            i         = i+1
-            email_err = (error_handling_form.formError_invalidEmail('#Email'))
-            result[i] = email_err['Invalid-Format']
+        # elif validation.validation_isEmail(args['email']) == False:
+        #    i         = i+1
+        #    email_err = (error_handling_form.formError_invalidEmail('#Email'))
+        #    result[i] = email_err['Invalid-Format']
         
         
         # -------------------------------------------------------------------------------------------------------
@@ -356,10 +356,10 @@ def api_login():
             result[i] = email_err['Invalid-Empty-String']
 
         # validate that email has a valid email format
-        elif validation.validation_isEmail(args['email']) == False:
-            i         = i+1
-            email_err = (error_handling_form.formError_invalidEmail('#Email'))
-            result[i] = email_err['Invalid-Format']
+        #elif validation.validation_isEmail(args['email']) == False:
+        #    i         = i+1
+        #    email_err = (error_handling_form.formError_invalidEmail('#Email'))
+        #    result[i] = email_err['Invalid-Format']
 
         # -------------------------------------------------------------------------------------------------------
         # validate that password is set and is not empty
