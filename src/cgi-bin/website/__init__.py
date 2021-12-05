@@ -64,7 +64,7 @@ def createApp():
     #This will bind the Flask-Login to the server
     login_manager = LoginManager() 
     login_manager.init_app(app)
-    login_manager.login_view = 'auth/login.html' #gives the standard url when logging in
+    login_manager.login_view = 'auth.auth_login' #gives the standard url when logging in
     
     @login_manager.user_loader
     def load_user(id):
