@@ -133,7 +133,7 @@ class User:
             *sets logged_in to true
 
         Args:
-            args ([type]): [description]
+            args (~werkzeug.datastructures.ImmutableMultiDict): Data from the API, which the user entered (posted)
             
         Test:
             * Test 1: Trying to register with invalid parameters
@@ -214,8 +214,6 @@ class User:
         Args:
             args (~werkzeug.datastructures.ImmutableMultiDict): Data from the API, which the user entered (posted)
 
-        Raises:
-            IntegrityError: [description]
             
         Test:
             * Test 1: Trying to login with invalid parameters -> try to log in with an email that was never registered or try to log in with a wrong password
@@ -311,7 +309,6 @@ class User:
         logout_user()
         if current_user.is_anonymous == True:           # Checks if the user is actually logged out
             self.__user__setLoggedIn(False)
-            print("user ist nicht mehr eingeloggt")
             return True
         else:
             self.__user_setError('11')
