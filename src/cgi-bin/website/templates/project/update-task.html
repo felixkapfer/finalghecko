@@ -68,7 +68,7 @@
                         <!-- Label  -->
                         <label class="form-label">Aufgaben Name</label>
                         <!-- Input -->
-                        <input type="text" class="form-control" name="task-title">
+                        <input type="text" class="form-control" name="task-title" value="{{current_task['result-set-data']['task_title']}}">
                         <!-- Input Validation Feedback Section -->
                         <div id="Task-Title" class="form-validation-feedback"></div>
                     </div>
@@ -92,7 +92,7 @@
                                 <!-- Label -->
                                 <label class="form-label">Status bearbeiten</label>
                                 <!-- Select -->
-                                <select class="form-control" name="task-status" value="to-do">
+                                <select class="form-control" name="task-status" value="{{current_task['result-set-data']['task_status']}}">
                                     <option value="todo">Zu erledigen</option>
                                     <option value="inprogress">In Arbeit</option>
                                     <option value="finished">Fertig</option>
@@ -107,7 +107,7 @@
                                 <!-- Label -->
                                 <label class="form-label">Fälligkeitsdatum</label>
                                 <!-- Input -->
-                                <input type="text" class="form-control" name="task-end-date" data-flatpickr>
+                                <input type="text" class="form-control" name="task-end-date" value="{{current_task['result-set-data']['task_terminator']}}" data-flatpickr>
                                 <!-- Input Validation Feedback Section -->
                                 <div id="Task-End-Date" class="form-validation-feedback"></div>
                             </div>
@@ -118,18 +118,19 @@
                     <!-- Buttons and hidden Inputs-->
                     <input type="hidden" name="user-id" value="{{current_user.id}}">
                     <input type="hidden" name="project-id" value="{{current_project['result-set-data'][0]['id']}}">
+                    <input type="hidden" name="task-id" value="{{current_task['result-set-data']['id']}}">
                     <button 
-                        id                 = "Form-Button"
-                        class              = "btn w-100 btn-primary"
-                        type               = "sumbit" 
-                        name               = "submit-btn"
-                        data-serialization = "True"
-                        data-api-target    = "http://127.0.0.1:5000/api/create-task"
-                        data-api-method    = "POST"
-                        data-api-task      = "registerData"
-                        data-page-reload   = "False"
-                        data-textarea-attr = "#Task-Description-Ta"
-                        data-textarea-name = "task-description=">
+                        id                       = "Form-Button"
+                        class                    = "btn w-100 btn-primary"
+                        type                     = "sumbit" 
+                        name                     = "submit-btn"
+                        data-serialization       = "True"
+                        data-api-target          = "http://127.0.0.1:5000/api/update-task"
+                        data-api-method          = "PUT"
+                        data-api-task            = "registerData"
+                        data-page-reload         = "False"
+                        data-textarea-attr       = "#Task-Description-Ta"
+                        data-textarea-name       = "task-description=">
                         Änderungen speichern
                     </button>
                     <a href="javascript:history.back()" class="btn w-100 btn-link text-muted mt-2">Abbrechen</a>
@@ -256,10 +257,17 @@
               let task               = $(this).attr('data-api-task')              // Get attribute which defines what Api is going to do with the data
               let text_area_attr     = $(this).attr('data-textarea-attr');
               let text_area_name     = $(this).attr('data-textarea-name');
+              let current_user       = $(this).attr('data-api-current-user');
+              let current_project    = $(this).attr('data-api-current-project');
+              let current_task       = $(this).attr('data-api-current-task');
               let text_area_val      = $(text_area_attr).children('div').text(); 
               let submit_data        = 'task=' + task;
               let form_serialization = $('form').serialize();
-              let data               = submit_data + '&' + form_serialization + '&' + text_area_name + text_area_val;
+              let data               = 
+              submit_data + '&' + 
+              form_serialization + '&' + 
+              text_area_name + 
+              text_area_val
               
               // Createing jQuery AJAX function to send form data to REST API
               $.ajax({

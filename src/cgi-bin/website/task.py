@@ -233,7 +233,7 @@ class Task(): #Initialzing the Class 'Task'
             self.__task_setError('8')       # If the object can't be processed return false, that an exception can be returned with the index '8'
             return False
         except SQLAlchemyError:
-            self.__task_setError('9')       # If there is a SQLALchemy error return false, that an exception can be returned with the index '10'
+            self.__task_setError('9')       # If there is a SQLALchemy error return false, that an exception can be returned with the index '9'
             return False
         else:
             self.__task_setResult(output)
@@ -294,7 +294,7 @@ class Task(): #Initialzing the Class 'Task'
             self.__task_setError('8')       # If the object can't be processed return false, that an exception can be returned with the index '8'
             return False
         except SQLAlchemyError:
-            self.__task_setError('9')      # If there is a SQLALchemy error return false, that an exception can be returned with the index '10'
+            self.__task_setError('9')      # If there is a SQLALchemy error return false, that an exception can be returned with the index '9'
             return False
         else:
             self.__task_setResult(output)
@@ -359,7 +359,7 @@ class Task(): #Initialzing the Class 'Task'
             self.__task_setError('8')           # If the object can't be processed return false, that an exception can be returned with the index '8'
             return False
         except SQLAlchemyError:
-            self.__task_setError('10')          # If there is a SQLALchemy error return false, that an exception can be returned with the index '10'
+            self.__task_setError('9')          # If there is a SQLALchemy error return false, that an exception can be returned with the index '9'
             return False
         else:
             self.__task_setResult(output)
@@ -370,13 +370,14 @@ class Task(): #Initialzing the Class 'Task'
 
 
     # donet
-    def task_getTaskById(self, user_id, task_id):
+    def task_getTaskById(self, user_id, task_id, project_id):
         """
         A task with the given ID should be found and returned
 
         Args:
-			id (Integer) : ID of the user, to which task is assigned to
-			id (Integer) : ID of the Task, which is searched
+			user_id (Integer) : ID of the user, to which task is assigned to
+			task_id (Integer) : ID of the Task, which is searched
+			project_id (Integer) : ID of the Project, which is searched
 
         Raises:
             NoResultFound: [description]
@@ -387,7 +388,7 @@ class Task(): #Initialzing the Class 'Task'
         """
 
         try:
-            count = TaskList.query.filter_by(id=task_id, task_owner=user_id).count()
+            count = TaskList.query.filter_by(id=task_id, task_owner=user_id, assigned_to_project_id=project_id).count()
 
             if count <= 0:
                 raise NoResultFound
@@ -396,8 +397,8 @@ class Task(): #Initialzing the Class 'Task'
                 raise MultipleResultsFound
 
             elif count == 1:
-                task        = TaskList.query.filter_by(id=task_id, task_owner=user_id).one
-                task_schema = TaskSchema(many=True)
+                task        = TaskList.query.filter_by(id=task_id, task_owner=user_id, assigned_to_project_id=project_id).one()
+                task_schema = TaskSchema(many=False)
                 output      = task_schema.dump(task)
             
         except NoResultFound:
@@ -425,7 +426,7 @@ class Task(): #Initialzing the Class 'Task'
             self.__task_setError('8') #If the object can't be processed return false, that an exception can be returned with the index '8'
             return False
         except SQLAlchemyError:
-            self.__task_setError('10') #If there is a SQLALchemy error return false, that an exception can be returned with the index '10'
+            self.__task_setError('9') #If there is a SQLALchemy error return false, that an exception can be returned with the index '9'
             return False
         else:
             self.__task_setResult(output)
@@ -499,7 +500,7 @@ class Task(): #Initialzing the Class 'Task'
 
         
     # donet
-    def task_updateTaskById(self, user_id, task_id, task):
+    def task_updateTaskById(self, user_id, task_id, project_id, task):
         """
         A task with a specific ID should get updated
 
@@ -514,7 +515,7 @@ class Task(): #Initialzing the Class 'Task'
         try:
             last_modified   = datetime.now()
             date_object_end = datetime.strptime(str(task['task-end-date']), "%Y-%m-%d").date()
-            update_task     = TaskList.query.filter_by(task_owner=user_id, id=task_id).update(dict(task_title=task['task-title'], task_description=task['task-description'], task_status=task['task-status'], task_terminator=date_object_end, last_modified=last_modified))
+            update_task     = TaskList.query.filter_by(task_owner=user_id, id=task_id, assigned_to_project_id=project_id ).update(dict(task_title=task['task-title'], task_description=task['task-description'], task_status=task['task-status'], task_terminator=date_object_end, last_modified=last_modified))
             db.session.commit()
         
         except NoResultFound:
@@ -721,9 +722,9 @@ class Task(): #Initialzing the Class 'Task'
         except ObjectNotExecutableError:
             self.__task_setError('8') #If the object can't be processed return false, that an exception can be returned with the index '8'
             return False
-        # except SQLAlchemyError:
-        #     self.__task_setError('9') #If there is a SQLALchemy error return false, that an exception can be returned with the index '10'
-        #     return False
+        except SQLAlchemyError:
+            self.__task_setError('9') #If there is a SQLALchemy error return false, that an exception can be returned with the index '9'
+            return False
         else:
             self.__task_setResult(num_result)
             return True

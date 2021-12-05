@@ -2584,13 +2584,21 @@ def api_getTaskById():
             result[i]   = task_id_err['Invalid-Empty-String']
 
         # -------------------------------------------------------------------------------------------------------
+        # validate that project-id is set and is not empty
+        if not 'project-id' in args or validation.validation_isEmpty(args['project-id']) or 'project-id' == None:
+            i              = i+1
+            project_id_err = (error_handling_form.formError_invalidLength('#Task-Feedback','', '', 'Please validate that an Task Id is set to identify the required task!'))
+            result[i]      = project_id_err['Invalid-Empty-String']
+
+        # -------------------------------------------------------------------------------------------------------
         # validate that no error was set during the above validating process -> if i = 1 -> no errors occured
         if i == 1:
-            user_id = args['user-id']
-            task_id = args['task-id']
+            user_id    = args['user-id']
+            task_id    = args['task-id']
+            project_id = args['project-id']
 
             task       = Task()
-            tmp_result = task.task_getTaskById(user_id, task_id)
+            tmp_result = task.task_getTaskById(user_id, task_id, project_id)
 
 
             if tmp_result:
@@ -2975,6 +2983,13 @@ def api_updateTask():
             result[i]   = task_id_err['Invalid-Empty-String']
 
         # -------------------------------------------------------------------------------------------------------
+        # validate that task-id is set and is not empty
+        if not 'project-id' in args or validation.validation_isEmpty(args['project-id']) or 'project-id' == None:
+            i              = i+1
+            project_id_err = (error_handling_form.formError_invalidLength('#Task-Feedback','', '', 'Please validate that an Task Id is set to identify the required task!'))
+            result[i]      = project_id_err['Invalid-Empty-String']
+
+        # -------------------------------------------------------------------------------------------------------
         # validate that task title is set and is not empty
         if not 'task-title' in args or validation.validation_isEmpty(args['task-title']) or 'task-title' == None:
             i              = i+1
@@ -3049,6 +3064,7 @@ def api_updateTask():
         if i == 1:
             user_id    = args['user-id']
             task_id    = args['task-id']
+            poject_id    = args['project-id']
 
             task       = Task()
             tmp_result = task.task_updateTaskById(user_id, task_id, args)
