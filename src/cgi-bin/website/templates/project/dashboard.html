@@ -94,10 +94,12 @@
                                         <h6 class="text-uppercase text-muted mb-2">Erledigte Aufgabe</h6>
                                         <!-- Heading -->
                                         <span class="h2 mb-0">
-                                        {% if count_all_tasks_finished_by_project['result-set-data'] == null %}
+                                        {% if count_finished['result-set-data'] == null %}
                                             0
-                                        {% elif count_all_tasks_finished_by_project['result-set-data'] > 0 %}
-                                            {{count_all_tasks_finished_by_project['result-set-data'] }}
+                                        {% elif count_finished['result-set-data'] == 0 %}
+                                            0
+                                        {% elif count_finished['result-set-data'] > 0 %}
+                                            {{count_finished['result-set-data'] }}
                                         {% endif %}
                                         </span>
                                     </div>
