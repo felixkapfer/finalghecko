@@ -1,0 +1,330 @@
+<!-- ################################################################################################################## -->
+<!--                                        Section for general Configuration                                           -->
+<!-- ################################################################################################################## -->
+{% extends "main/base.project.html" %} 
+{% block title %}Aufgabe bearbeiten{% endblock %}
+
+{% block projectnavigation %}
+<ul class="nav nav-tabs nav-overflow header-tabs">
+  <li class="nav-item">
+    <a href="/dashboard/{{current_project['result-set-data'][0]['id']}}" class="nav-link">
+      Dashboard
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="/kanban/{{current_project['result-set-data'][0]['id']}}" class="nav-link">
+      Kanban
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="/statistics/{{current_project['result-set-data'][0]['id']}}" class="nav-link">
+      Statistik
+    </a>
+  </li>
+  <!-- <li class="nav-item">
+                <a href="/projectsettings/{{current_project['id']}}" class="nav-link">Einstellungen</a>
+  </li> -->
+</ul>
+{% endblock %}
+
+{% block content %}
+  
+     <!-- MAIN CONTENT -->
+     <div class="container-fluid">
+      <div class="row" >
+        <div class="col-12 col-xl-8">
+
+          <div class="container-fluid" > 
+            <div class="row" >
+              <div class="col-12" style="padding-left: 0px;">
+
+                <!-- Header -->
+                <div class="header mt-md-5">
+                    <div class="header-body" style="padding-top: 0px;">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <!-- Pretitle -->
+                                <h6 class="header-pretitle">Einstellungen</h6>
+                                <!-- Title -->
+                                <h1 class="header-title">Aufgabe bearbeiten</h1>
+                            </div>
+                            <div class="col-12 col-md-auto mt-3 mt-md-0">
+                                    <!-- next status -->
+                                    <a href="/newtask/{{current_project['result-set-data'][0]['id']}}">
+                                    <button 
+                                    type="button" 
+                                    class="btn btn-primary btn-sm" 
+                                    style="padding-left: 10px; padding-right: 10px; margin-right:15px" 
+                                    >
+                                   Next Status
+                                 </button>
+                                </a>
+                            <a class="small" style="color: red; cursor: pointer;">Aufgabe löschen</a>
+                          </div>
+                        </div> <!-- / .row -->
+                    </div>
+                    <br>
+                    <div id="Task-Feedback-Error-Wrapper" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <div id="Task-Feedback-Error"></div>
+                        <!-- Close -->
+                        <!-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> -->
+                    </div>
+                </div>
+                <!-- Form -->
+                <form class="mb-4">
+                    <!-- Task name -->
+                    <div class="form-group">
+                        <!-- Label  -->
+                        <label class="form-label">Aufgaben Name</label>
+                        <!-- Input -->
+                        <input type="text" class="form-control" name="task-title">
+                        <!-- Input Validation Feedback Section -->
+                        <div id="Task-Title" class="form-validation-feedback"></div>
+                    </div>
+                    <!-- Task description -->
+                    <div class="form-group">
+                        <!-- Label -->
+                        <label class="form-label mb-1">Aufgabenbeschreibung</label>
+                        <!-- Text -->
+                        <small class="form-text text-muted">
+                            Aufgabenbeschreibung bearbeiten:
+                        </small>
+                        <!-- Textarea -->
+                        <div id="Task-Description-Ta" class="task-description-wrapper" name="task-description" data-quill></div>
+                        <!-- Input Validation Feedback Section -->
+                        <div id="Task-Description" class="form-validation-feedback"></div>
+                    </div>
+                        <div class="row">
+                          <div class="col-12 col-md-6">
+                            <!-- Task tags -->
+                            <div class="form-group">
+                                <!-- Label -->
+                                <label class="form-label">Status bearbeiten</label>
+                                <!-- Select -->
+                                <select class="form-control" name="task-status" value="to-do">
+                                    <option value="todo">Zu erledigen</option>
+                                    <option value="inprogress">In Arbeit</option>
+                                    <option value="finished">Fertig</option>
+                                </select>
+                                <!-- Input Validation Feedback Section -->
+                                <div id="Task-Description" class="form-validation-feedback"></div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <!-- Start date -->
+                            <div class="form-group">
+                                <!-- Label -->
+                                <label class="form-label">Fälligkeitsdatum</label>
+                                <!-- Input -->
+                                <input type="text" class="form-control" name="task-end-date" data-flatpickr>
+                                <!-- Input Validation Feedback Section -->
+                                <div id="Task-End-Date" class="form-validation-feedback"></div>
+                            </div>
+                        </div>
+                    </div> <!-- / .row -->
+                    <!-- Divider -->
+                    <hr class="mt-5 mb-5">
+                    <!-- Buttons and hidden Inputs-->
+                    <input type="hidden" name="user-id" value="{{current_user.id}}">
+                    <input type="hidden" name="project-id" value="{{current_project['result-set-data'][0]['id']}}">
+                    <button 
+                        id                 = "Form-Button"
+                        class              = "btn w-100 btn-primary"
+                        type               = "sumbit" 
+                        name               = "submit-btn"
+                        data-serialization = "True"
+                        data-api-target    = "http://127.0.0.1:5000/api/create-task"
+                        data-api-method    = "POST"
+                        data-api-task      = "registerData"
+                        data-page-reload   = "False"
+                        data-textarea-attr = "#Task-Description-Ta"
+                        data-textarea-name = "task-description=">
+                        Änderungen speichern
+                    </button>
+                    <a href="javascript:history.back()" class="btn w-100 btn-link text-muted mt-2">Abbrechen</a>
+                </form>
+            </div>
+        </div> <!-- / .row -->
+    </div>
+
+        </div>
+        <div class="col-12 col-xl-4">
+
+          <!-- Activity -->
+        <div class="card" style="margin-top: 25px;">
+          <div class="card-header">
+
+            <!-- Title -->
+            <h2 class="mb-0">
+              Projektinformationen
+            </h2>
+          </div>
+          <div class="card-body">
+
+            <!-- Text -->
+            <p class="small text-gray-700 mb-0" style="padding-bottom: 5px;">
+              Projektname
+            </p>
+            <!-- task description -->
+            <p style="margin-bottom: 22px;">
+              {{current_project['result-set-data'][0]['project_title']}}
+            </p>
+
+            <!-- Text -->
+            <p class="small text-gray-700 mb-0" style="padding-bottom: 5px;">
+              Projekbeschreibung
+            </p>
+            <!-- task description -->
+            <p style="margin-bottom: 30px;">
+              {{current_project['result-set-data'][0]['project_description']}}
+            </p>
+
+            <!-- List group -->
+            <div class="list-group list-group-flush list-group-activity my-n3">
+              <div class="list-group-item">
+                <div class="row">
+                  <div class="col-auto">
+
+                    <!-- Avatar -->
+                    <div class="avatar avatar-sm">
+                      <div class="avatar-title fs-lg bg-primary-soft rounded-circle text-primary">
+                        <i class="fe fe-compass"></i>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="col ms-n2">
+
+                    <!-- Heading -->
+                    <h5 class="mb-1" style="font-size: 1em;">
+                      {{current_project['result-set-data'][0]['project_start_date']}}
+                    </h5>
+
+                    <!-- Text -->
+                    <p class="small text-gray-700 mb-0">
+                      Startdatum
+                    </p>
+
+                  </div>
+                </div> <!-- / .row -->
+              </div>
+              <div class="list-group-item">
+                <div class="row">
+                  <div class="col-auto">
+
+                    <!-- Avatar -->
+                    <div class="avatar avatar-sm">
+                      <div class="avatar-title fs-lg bg-primary-soft rounded-circle text-primary">
+                        <i class="fe fe-award"></i>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="col ms-n2">
+
+                    <!-- Heading -->
+                    <h5 class="mb-1" style="font-size: 1em;">
+                      {{current_project['result-set-data'][0]['project_terminator']}}
+                    </h5>
+
+                    <!-- Text -->
+                    <p class="small text-gray-700 mb-0">
+                      vorraussichtliches Projektende
+                    </p>
+
+
+                  </div>
+                </div> <!-- / .row -->
+              </div> 
+            </div>
+
+          </div>
+        </div>
+
+        </div>
+    </div> <!-- / .row -->
+  </div> <!-- / .main-content -->
+
+    {% endblock %}
+
+
+    {% block include_java_script %}
+    <script>
+      $(document).ready(function() {                                   // Only execute the code below if page was fully load
+        test = $("form input[name=task-start-date]").val(new Date().toDateInputValue());
+        
+        
+        
+        // Send data from sign-in and sign-up from if submit button is clicked by user
+          $('#Form-Button').click(function (event) {
+              event.preventDefault();                                 // prevent pagereload or page redirecting when submit button is clicked
+              $('.form-validation-feedback').html('')                 // reset each form-validation-feedback section to null when sumbit button is clicked
+              
+              let target             = $(this).attr('data-api-target')            // Get attribute which defines the url where the date get send to via REST
+              let method             = $(this).attr('data-api-method')            // Get attribute which defines what kind of REST Method it is
+              let task               = $(this).attr('data-api-task')              // Get attribute which defines what Api is going to do with the data
+              let text_area_attr     = $(this).attr('data-textarea-attr');
+              let text_area_name     = $(this).attr('data-textarea-name');
+              let text_area_val      = $(text_area_attr).children('div').text(); 
+              let submit_data        = 'task=' + task;
+              let form_serialization = $('form').serialize();
+              let data               = submit_data + '&' + form_serialization + '&' + text_area_name + text_area_val;
+              
+              // Createing jQuery AJAX function to send form data to REST API
+              $.ajax({
+                    type    : method,
+                    url     : target,
+                    data    : data,
+                    dataType: 'HTML',
+                    success: function (response) {                                      // defines function which will be executed if AJAX request was successfull
+                          let responseObj    = JSON.parse(response)                       // create a JSON object from the data received from the API
+                          let responseLength = Object.keys(responseObj).length            // Get amount of JSON Objects that are received
+                  
+                          if (typeof responseObj[1] != 'undefined') {
+                            $(responseObj[1]['display-messages-target']).slideUp(400)
+                            if (responseObj[1]['status'] == false) {                                                                                // validate if an error occured and following error message object(s) was/ were returned
+                                  $('error-feedback-section').fadeIn(200)                                                                             // display HTML section with class 'error-feedback-section' 
+                                                                                                           
+                                  for (let i = 2; i <= responseLength; i++) {                                                                         // Looping through all error message objects that are returned by the API
+                                      let writeHtml = 'Error-Code: ' + responseObj[i]['Error-Code'] + ' - ' + responseObj[i]['Description']           // Creating output string Text that will be displayed below the input box where error occured
+                                      $(responseObj[i]['Render-Output']).html(writeHtml)                                                              // Writing error messages from each error object to the corresponing feedback section in the HTML code
+                                  }
+              
+                                  if (responseObj[1]['display-messages'] == 'inpage-alert') {
+                                      $(responseObj[1]['display-messages-target']).slideDown(600)
+                                  }
+                                  
+                                  else if (responseObj[1]['status'] == true ) {                       // if no error were returened, validate that task send was done successfull 
+                                    if (responseObj[1]['redirect-status']) {
+                                      let url = responseObj[1]['redirect-target']                 // Get URL were User gets rediretected to if everything was successfull
+                                      window.location = url                                       // Redirect User to the URL
+                                    }
+                                  } 
+                              }
+                            }
+                            if (typeof responseObj['status'] != 'undefined' && typeof responseObj['result-set-data'] != 'undefined') {
+                              console.log('test')
+                              $(responseObj['status']['display-messages-target']).slideUp(400)
+                                if (responseObj['status']['status'] == false) {
+                                  if (responseObj['status']['display-messages'] == 'inpage-alert') {
+                                        $(responseObj['status']['display-messages-target']).slideDown(600)
+                                        
+                                  }
+                                }
+                                else if (responseObj['status']['status'] == true && responseObj['status']['redirect-status'] == true) {
+                                  let url  = responseObj['status']['redirect-target'];
+                                  let task = responseObj['result-set-data']['assigned_to_project_id'];
+                                  window.location = url + '/' + task;
+                                  console.log(url + '' + task)
+                                }
+                            }
+                    }
+                  
+                  
+             
+              })  
+            })  
+      })
+    </script>  
+    
+  {% endblock %}
