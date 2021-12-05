@@ -251,7 +251,13 @@ if (conversionsChart) {
           {% elif project_tasks['count-result-set'] > 0 %}
             {{project_tasks['count-result-set']}} *2
           {% endif %}, 
-        2, 30, ],
+          3*2,
+          {% if count_all_tasks_finished_by_project['result-set-data'] == null %}
+            0
+          {% elif count_all_tasks_finished_by_project['result-set-data'] > 0 %}
+            {{count_all_tasks_finished_by_project['result-set-data'] }}
+          {% endif %}*2, 
+        ],
         },
         {
           label: '2019',
@@ -276,7 +282,7 @@ if (trafficChart) {
         tooltip: {
           callbacks: {
             afterLabel: function () {
-              return '%';
+              return '';
             },
           },
         },
@@ -290,13 +296,18 @@ if (trafficChart) {
           {% if project_tasks['count-result-set'] == null %}
             0
           {% elif project_tasks['count-result-set'] > 0 %}
-            {{project_tasks['count-result-set']}} *2
-          {% endif %}, 25, 15],
+            {{project_tasks['count-result-set']}}
+          {% endif %}, 
+          {% if count_all_tasks_finished_by_project['result-set-data'] == null %}
+            0
+          {% elif count_all_tasks_finished_by_project['result-set-data'] > 0 %}
+            {{count_all_tasks_finished_by_project['result-set-data'] }}
+          {% endif %},],
           backgroundColor: ['#2C7BE5', '#A6C5F7', '#D2DDEC'],
         },
         {
-          data: [15, 45, 20],
-          backgroundColor: ['#2C7BE5', '#A6C5F7', '#D2DDEC'],
+          data: [],
+          backgroundColor: [],
           hidden: true,
         },
       ],
