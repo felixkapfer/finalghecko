@@ -11,9 +11,16 @@ def home():
     return render_template('auth/sign-in.html')
 
 @views.route('/dashboard')
-def emptyDashboard():
+async def emptyDashboard():
     if current_user.is_authenticated:
         user_id = current_user.id
+
+        async with httpx.AsyncClient() as client:
+            all_projects_by_user = await client.get(f"http://127.0.0.1:5000/api/get-all-projects-by-user?user-id={user_id}") 
+
+
+        
+    print(all_projects_by_user.json())
     return render_template('project/start-project.html')
 
 
@@ -137,7 +144,11 @@ async def statistics(project_id):
             all_tasks_status_todo       = await client.get(f"http://127.0.0.1:5000/api/get-all-tasks-by-username-group-by?user-id={user_id}&project-id={project_id}&status-id=todo")                         # get all tasks that belongs to a user and the project the user is looking for and groups them by status todo
             all_tasks_status_inprogress = await client.get(f"http://127.0.0.1:5000/api/get-all-tasks-by-username-group-by?user-id={user_id}&project-id={project_id}&status-id=inprogress")                         # get all tasks that belongs to a user and the project the user is looking for and groups them by status todo
             all_tasks_status_finished   = await client.get(f"http://127.0.0.1:5000/api/get-all-tasks-by-username-group-by?user-id={user_id}&project-id={project_id}&status-id=finished")
-        
+
+
+            count_tasks_status_toto       = await client.get(f"http://127.0.0.1:5000/api/get-number-of-tasks-where-status-is?user-id={user_id}&project-id=project-id={project_id}&category-id=todo")                         # get all tasks that belongs to a user and the project the user is looking for and groups them by status todo
+            count_tasks_status_inprogress = await client.get(f"http://127.0.0.1:5000/api/get-number-of-tasks-where-status-is?user-id={user_id}&project-id=project-id={project_id}&category-id=inprogress")                         # get all tasks that belongs to a user and the project the user is looking for and groups them by status todo
+            count_tasks_status_finished   = await client.get(f"http://127.0.0.1:5000/api/get-number-of-tasks-where-status-is?user-id={user_id}&project-id=project-id={project_id}&category-id=finished")
             count_all_tasks_finished_by_project = await client.get(f"http://127.0.0.1:5000/api/get-number-of-tasks-where-status-is?user-id={user_id}&category-id=finished")
         
         return render_template(
@@ -150,7 +161,10 @@ async def statistics(project_id):
                 project_tasks_in_progress     = all_tasks_status_inprogress.json(),
                 project_diff_date_start_today = count_date_since_start.json(),
                 project_tasks_finished        = all_tasks_status_finished.json(),
-                count_all_tasks_finished_by_project = count_all_tasks_finished_by_project.json()
+                count_all_tasks_finished_by_project = count_all_tasks_finished_by_project.json(),
+                count_todo = count_tasks_status_toto.json(),
+                count_inprogrss = count_tasks_status_inprogress.json(),
+                count_inprogress = count_tasks_status_finished.json()
             
             )
     else:
