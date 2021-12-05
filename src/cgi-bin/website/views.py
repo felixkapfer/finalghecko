@@ -18,10 +18,17 @@ async def emptyDashboard():
         async with httpx.AsyncClient() as client:
             all_projects_by_user = await client.get(f"http://127.0.0.1:5000/api/get-all-projects-by-user?user-id={user_id}") 
 
+    count_projects = all_projects_by_user.json()['count-result-set']
 
-
+    print(count_projects)
     print(all_projects_by_user.json())
-    return render_template('project/start-project.html')
+    
+    if count_projects > 0:
+        first_project = all_projects_by_user.json()['result-set-data'][1]['id']
+        return redirect(url_for('views.dashboard', project_id=first_project))
+    
+    else:
+        return render_template('project/start-project.html')
 
 
 
@@ -48,8 +55,8 @@ async def dashboard(project_id):
 
             count_all_tasks_finished_by_project = await client.get(f"http://127.0.0.1:5000/api/get-number-of-tasks-where-status-is?user-id={user_id}&category-id=finished") 
         
-        # print(count_all_tasks_finished_by_project.json())
-        # print(user_id)
+        print(count_all_tasks_finished_by_project.json())
+        print(user_id)
         print(count_all_tasks_finished_by_project.json())
 
         return render_template(
