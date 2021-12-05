@@ -1,3 +1,4 @@
+import dependencies                 #import dependencies for projektmanagement-ghecko.de
 from website import createApp
 
 app = createApp()

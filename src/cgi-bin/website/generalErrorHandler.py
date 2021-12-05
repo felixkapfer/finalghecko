@@ -345,13 +345,13 @@ class FormError():
                 'Error-Code'   : '12-2',
                 'Error-Type'   : 'Out-Of-Minimum-Length-Failure:',
                 'Render-Output': output,
-                'Description'  : target + ' must contain at least ' + number_of_chars + ' charactes!'
+                'Description'  : target + ' muss mindestens ' + number_of_chars + ' Zeichen enthalten!'
             },
             'Invalid-Maximum-Of-Length': {
                 'Error-Code'   : '12-3',
                 'Error-Type'   : 'Out-Of-Maximum-Length-Failure:',
                 'Render-Output': output,
-                'Description'  : target + ' cannot contain more than ' + number_of_chars + ' charactes!'
+                'Description'  : target + ' kann nicht mehr als ' + number_of_chars + ' Zeichen enthalten!'
             }
         }
         return error
@@ -375,13 +375,13 @@ class FormError():
                 'Error-Code' : '13-1',
                 'Error-Type' : 'Invalid-Email-Failure:',
                 'Render-Output' : output,
-                'Description' : 'Incorrect E-Mail Format! - Please enter the correct format!'
+                'Description' : 'Falsches E-Mail-Format! - Bitte das richtige Format eingeben!'
             },
             'Already-Taken': {
                 'Error-Code' : '13-2',
                 'Error-Type' : 'Unique-Failure:',
                 'Render-Output' : output,
-                'Description' : 'E-Mail is already taken!'
+                'Description' : 'E-Mail ist bereits vergeben!'
             }
         }
         return error
@@ -408,19 +408,19 @@ class FormError():
                 'Error-Code' : '14-1',
                 'Error-Type' : 'Unique-Failure:',
                 'Render-Output' : output,
-                'Description' : 'Password cannot contain Firstname, Lastname or your E-Mail address!'
+                'Description' : 'Das Passwort darf weder Vorname, Nachname noch Ihre E-Mail-Adresse enthalten!'
             },
             'Confirmation-Error' : {
                 'Error-Code' : '14-2',
                 'Error-Type' : 'Confirmation-Failure:',
                 'Render-Output' : output,
-                'Description' : 'Passwords do not match, please try again!'
+                'Description' : 'Passwörter stimmen nicht überein, bitte versuchen Sie es erneut!'
             },
             'Login-Error' : {
                 'Error-Code' : '14-3',
                 'Error-Type' : 'Invalid-Credentials:',
                 'Render-Output' : output,
-                'Description' : 'Invalid E-Mail Address or Password!'
+                'Description' : 'Ungültige Emailadresse oder Passwort!'
             }
         }
         return error

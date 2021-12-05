@@ -7,39 +7,39 @@
 {% block projectnavigation %}
 <ul class="nav nav-tabs nav-overflow header-tabs">
   <li class="nav-item">
-    <a href="/dashboard" class="nav-link">
+    <a href="/dashboard/{{current_project['result-set-data'][0]['id']}}" class="nav-link">
       Dashboard
     </a>
   </li>
   <li class="nav-item">
-    <a href="/kanban" class="nav-link active">
+    <a href="/kanban/{{current_project['result-set-data'][0]['id']}}" class="nav-link active">
       Kanban
     </a>
   </li>
   <li class="nav-item">
-    <a href="/statistics" class="nav-link">
+    <a href="/statistics/{{current_project['result-set-data'][0]['id']}}" class="nav-link">
       Statistik
     </a>
   </li>
-  <li class="nav-item">
-    <a href="/projectsettings" class="nav-link">
-      Einstellungen
-    </a>
-  </li>
+  <!-- <li class="nav-item">
+                <a href="/projectsettings/{{current_project['id']}}" class="nav-link">Einstellungen</a>
+    </li> -->
 </ul>
 {% endblock %}
 
 {% block navbuttongroup %}
 <div class="col-12 col-md-auto mt-3 mt-md-0">
 
-    <!-- new task button -->
+   <!-- new task button -->
+   <a href="/newtask/{{current_project['result-set-data'][0]['id']}}">
     <button 
-    type="button" 
-    class="btn btn-primary" 
-    style="margin-right: 15px; padding-left: 25px; padding-right: 25px;"
-    onclick= "window.location.href = '/newtask';">
-    Aufgabe hinzufügen
+        type="button" 
+        class="btn btn-primary" 
+        style="padding-left: 25px; padding-right: 25px; margin-right:15px"
+        >
+        Aufgabe hinzufügen
     </button>
+    </a>
 
 <!-- Navigation (button group) -->
   <div class="nav btn-group d-inline-flex" role="tablist">
@@ -76,151 +76,42 @@
 
                     <!-- Category -->
                     <div class="kanban-category">
-
+                  {% if project_tasks_todo['result-set-data'] %}
+                    {% for task in project_tasks_todo['result-set-data'] %}
                     <!-- Card -->
-                    <div class="kanban-item">
+                    <div id="{{task['id']}}" class="kanban-item2 delete-task-fnc">
                       <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask">
                         <div class="card-body">
                           <!-- task name -->
                           <p class="mb-0" style="padding-bottom: 8px;">
-                            <strong>Übersicht</strong> 
+                            <strong>{{ task['task_title'] }}</strong> 
                           </p>
                           <!-- task description -->
                           <p>
-                            Create the release notes for the new pages so customers are aware.
+                            {{ task['task_description'] }} 
                           </p>
                           <!-- Footer -->
                           <div class="row align-items-center">
                             <div class="col">
                               <!-- Time -->
                               <p class="card-text small text-muted">
-                                <i class="fe fe-clock" style="margin-right: 3px;"></i> Jun 9
+                                <i class="fe fe-clock" style="margin-right: 3px;"></i> {{ task['task_terminator'] }}
                               </p>
                             </div>
                             <div class="col-auto">
-                              <!-- delete -->
-                              <i class="fe fe-trash-2"></i>
+                              <!-- update -->
+                              <a href="/updatetask">
+                              <i class="fe fe-edit"></i>
+                              </a>
                             </div>
                           </div> <!-- / .row -->
                         </div>
                       </div>
                     </div>
+                    {% endfor %}
+                  {% endif %}
 
-                      <!-- Card -->
-                    <div class="kanban-item">
-                      <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask">
-                        <div class="card-body">
-                          <!-- task name -->
-                          <p class="mb-0" style="padding-bottom: 8px;">
-                            <strong>Übersicht</strong> 
-                          </p>
-                          <!-- task description -->
-                          <p>
-                            Create the release notes for the new pages so customers are aware.
-                          </p>
-                          <!-- Footer -->
-                          <div class="row align-items-center">
-                            <div class="col">
-                              <!-- Time -->
-                              <p class="card-text small text-muted">
-                                <i class="fe fe-clock" style="margin-right: 3px;"></i> Jun 9
-                              </p>
-                            </div>
-                            <div class="col-auto">
-                              <!-- delete -->
-                              <i class="fe fe-trash-2"></i>
-                            </div>
-                          </div> <!-- / .row -->
-                        </div>
-                      </div>
-                    </div>
-
-                 <!-- Card -->
-                 <div class="kanban-item">
-                  <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask">
-                    <div class="card-body">
-                      <!-- task name -->
-                      <p class="mb-0" style="padding-bottom: 8px;">
-                        <strong>Übersicht</strong> 
-                      </p>
-                      <!-- task description -->
-                      <p>
-                        Create the release notes for the new pages so customers are aware.
-                      </p>
-                      <!-- Footer -->
-                      <div class="row align-items-center">
-                        <div class="col">
-                          <!-- Time -->
-                          <p class="card-text small text-muted">
-                            <i class="fe fe-clock" style="margin-right: 3px;"></i> Jun 9
-                          </p>
-                        </div>
-                        <div class="col-auto">
-                          <!-- delete -->
-                          <i class="fe fe-trash-2"></i>
-                        </div>
-                      </div> <!-- / .row -->
-                    </div>
-                  </div>
-                </div>
-
-                
-
-                    </div>
-
-                    <!-- Add -->
-                    <div class="kanban-add">
-                      <div class="card card-sm card-flush mb-0">
-                        <div class="card-body">
-
-                          <!-- Link -->
-                          <div class="text-center">
-                            <a class="kanban-add-link" href="#!">Aufgabe hinzufügen</a>
-                          </div>
-
-                          <!-- Form -->
-                          <form class="kanban-add-form d-none">
-
-                            <!-- Input -->
-                            <div class="form-group" style="margin-bottom: 0px; padding-bottom:0px">
-                              <textarea class="form-control form-control-flush form-control-auto" placeholder="Name der Aufgabe"></textarea>
-                            </div>
-                            <!-- Input -->
-                            <div class="form-group">
-                              <textarea class="form-control form-control-flush form-control-auto" placeholder="Aufgabenbeschreibung"></textarea>
-                            </div>
-
-                            <!-- Footer -->
-                            <div class="row align-items-center">
-                              <div class="col d-flex align-items-center">
-
-                                <!-- Icon -->
-                                <span class="text-muted small me-2">
-                                  <i class="fe fe-clock"></i>
-                                </span>
-
-                                <!-- Input -->
-                                <input type="text" class="form-control form-control-sm form-control-flush form-control-auto" text-muted data-flatpickr data-options='{"dateFormat": "M j"}' placeholder="Datum">
-
-                              </div>
-                              <div class="col-auto" style="margin-top: 25px;">
-
-                                <!-- Buttons -->
-                                <button class="btn btn-sm btn-white" type="reset" style="margin-right: 8px;">
-                                  Abbrechen
-                                </button>
-                                <button class="btn btn-sm btn-primary" type="submit">
-                                  Hinzufügen
-                                </button>
-
-                              </div>
-                            </div> <!-- / .row -->
-
-                          </form>
-
-                        </div>
-                      </div>
-                    </div>
+                    </div> <!-- end kanban -->
 
                   </div>
                 </div>
@@ -243,95 +134,41 @@
                     <!-- Category -->
                     <div class="kanban-category">
 
+                      {% if project_tasks_in_progress['result-set-data'] %}
+                      {% for task in project_tasks_in_progress['result-set-data'] %}
                       <!-- Card -->
-                      <div class="kanban-item">
+                      <div id="{{task['id']}}" class="kanban-item2">
                         <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask">
                           <div class="card-body">
-
                             <!-- task name -->
                             <p class="mb-0" style="padding-bottom: 8px;">
-                              <strong>Übersicht</strong> 
+                              <strong>{{ task['task_title'] }}</strong> 
                             </p>
-
                             <!-- task description -->
                             <p>
-                              Create the release notes for the new pages so customers are aware.
+                              {{ task['task_description'] }} 
                             </p>
-
                             <!-- Footer -->
                             <div class="row align-items-center">
                               <div class="col">
-
                                 <!-- Time -->
                                 <p class="card-text small text-muted">
-                                  <i class="fe fe-clock" style="margin-right: 3px;"></i> Jun 9
+                                  <i class="fe fe-clock" style="margin-right: 3px;"></i> {{ task['task_terminator'] }}
                                 </p>
-
                               </div>
                               <div class="col-auto">
-                                <!-- delete -->
-                                <i class="fe fe-trash-2"></i>
+                                <!-- update -->
+                                <a href="/updatetask">
+                                <i class="fe fe-edit"></i>
+                                </a>
                               </div>
                             </div> <!-- / .row -->
-
                           </div>
                         </div>
                       </div>
+                      {% endfor %}
+                    {% endif %}
 
-                    </div>
-
-                    <!-- Add -->
-                    <div class="kanban-add">
-                      <div class="card card-sm card-flush mb-0">
-                        <div class="card-body">
-
-                          <!-- Link -->
-                          <div class="text-center">
-                            <a class="kanban-add-link" href="#!">Aufgabe hinzufügen</a>
-                          </div>
-
-                          <!-- Form -->
-                          <form class="kanban-add-form d-none">
-
-                            <!-- Input -->
-                            <div class="form-group" style="margin-bottom: 0px; padding-bottom:0px">
-                              <textarea class="form-control form-control-flush form-control-auto" placeholder="Name der Aufgabe"></textarea>
-                            </div>
-                            <!-- Input -->
-                            <div class="form-group">
-                              <textarea class="form-control form-control-flush form-control-auto" placeholder="Aufgabenbeschreibung"></textarea>
-                            </div>
-
-                            <!-- Footer -->
-                            <div class="row align-items-center">
-                              <div class="col d-flex align-items-center">
-
-                                <!-- Icon -->
-                                <span class="text-muted small me-2">
-                                  <i class="fe fe-clock"></i>
-                                </span>
-
-                                <!-- Input -->
-                                <input type="text" class="form-control form-control-sm form-control-flush form-control-auto" text-muted data-flatpickr data-options='{"dateFormat": "M j"}' placeholder="Datum">
-
-                              </div>
-                              <div class="col-auto" style="margin-top: 25px;">
-
-                                <!-- Buttons -->
-                                <button class="btn btn-sm btn-white" type="reset" style="margin-right: 8px;">
-                                  Abbrechen
-                                </button>
-                                <button class="btn btn-sm btn-primary" type="submit">
-                                  Hinzufügen
-                                </button>
-
-                              </div>
-                            </div> <!-- / .row -->
-
-                          </form>
-
-                        </div>
-                      </div>
                     </div>
 
                   </div>
@@ -354,6 +191,41 @@
 
                     <!-- Category -->
                     <div class="kanban-category">
+
+                      {% if project_tasks_finished['result-set-data'] %}
+                      {% for task in project_tasks_finished['result-set-data'] %}
+                      <!-- Card -->
+                      <div id="{{task['id']}}" class="kanban-item2">
+                        <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask">
+                          <div class="card-body">
+                            <!-- task name -->
+                            <p class="mb-0" style="padding-bottom: 8px;">
+                              <strong>{{ task['task_title'] }}</strong> 
+                            </p>
+                            <!-- task description -->
+                            <p>
+                              {{ task['task_description'] }} 
+                            </p>
+                            <!-- Footer -->
+                            <div class="row align-items-center">
+                              <div class="col">
+                                <!-- Time -->
+                                <p class="card-text small text-muted">
+                                  <i class="fe fe-clock" style="margin-right: 3px;"></i> {{ task['task_terminator'] }}
+                                </p>
+                              </div>
+                              <div class="col-auto">
+                                <!-- update -->
+                                <a href="/updatetask">
+                                <i class="fe fe-edit"></i>
+                                </a>
+                              </div>
+                            </div> <!-- / .row -->
+                          </div>
+                        </div>
+                      </div>
+                      {% endfor %}
+                    {% endif %}
 
                     </div>
                   </div>
@@ -388,143 +260,42 @@
                     <div class="kanban-category">
 
                       <!-- Card -->
-                      <div class="kanban-item">
-                        <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask">
-                          <div class="card-body">
-                            <div class="row align-items-center">
-                              <div class="col-12 col-sm">
-                                <!-- task name -->
-                            <p class="mb-0" style="padding-bottom: 8px;">
-                              <strong>Übersicht</strong> 
-                            </p>
-                                <!-- Body -->
-                                <p class="mb-sm-0">
-                                  Create the release notes for the new pages so customers are aware.
-                                </p>
+                      {% if project_tasks_todo['result-set-data'] %}
+                      {% for task in project_tasks_todo['result-set-data'] %}
+                              <!-- Card -->
+                              <div id="" class="kanban-item2" >
+                                  <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask" >
+                                      <div class="card-body">
+                                          <div class="row align-items-center">
+                                              <div class="col-12 col-sm" >
+                                                  <!-- task name -->
+                                                  <p class="mb-0" style="padding-bottom: 8px;">                         
+                                                      <strong>{{ task['task_title'] }}</strong>                                                          
+                                                  </p>                 
+                                                  <!-- Body -->
+                                                  <p class="mb-sm-0">
+                                                    {{ task['task_description'] }}         
+                                                  </p>
+                                              </div>
+                                              <!-- Time -->
+                                              <div class="col col-sm-auto">
+                                                  <p class="card-text small text-muted mb-0">           
+                                                      <i class="fe fe-clock" style="margin-right: 3px;"></i>   {{ task['task_terminator'] }}                       
+                                                  </p>
+                                              </div>
+                                              <div class="col-auto">
+                                                <!-- update -->
+                                                <a href="/updatetask">
+                                                <i class="fe fe-edit"></i>
+                                                </a>
+                                              </div>
+                                          </div> <!-- / .row -->
+                                      </div>
+                                  </div>
                               </div>
-                              <div class="col col-sm-auto">
-                                <!-- Time -->
-                                <p class="card-text small text-muted mb-0">
-                                  <i class="fe fe-clock" style="margin-right: 3px;"></i> Jun 9
-                                </p>
-                              </div>
-                              <div class="col-auto">
-                                <!-- delete -->
-                                <i class="fe fe-trash-2"></i>
-                              </div>
-                            </div> <!-- / .row -->
-                          </div>
-                        </div>
-                      </div>
+                            {% endfor %}
+                        {% endif %}
 
-                      <!-- Card -->
-                      <div class="kanban-item">
-                        <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask">
-                          <div class="card-body">
-                            <div class="row align-items-center">
-                              <div class="col-12 col-sm">
-                                <!-- task name -->
-                            <p class="mb-0" style="padding-bottom: 8px;">
-                              <strong>Übersicht</strong> 
-                            </p>
-                                <!-- Body -->
-                                <p class="mb-sm-0">
-                                  Create the release notes for the new pages so customers are aware.
-                                </p>
-                              </div>
-                              <div class="col col-sm-auto">
-                                <!-- Time -->
-                                <p class="card-text small text-muted mb-0">
-                                  <i class="fe fe-clock" style="margin-right: 3px;"></i> Jun 9
-                                </p>
-                              </div>
-                              <div class="col-auto">
-                                <!-- delete -->
-                                <i class="fe fe-trash-2"></i>
-                              </div>
-                            </div> <!-- / .row -->
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- Card -->
-                      <div class="kanban-item">
-                        <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask">
-                          <div class="card-body">
-                            <div class="row align-items-center">
-                              <div class="col-12 col-sm">
-                                <!-- task name -->
-                            <p class="mb-0" style="padding-bottom: 8px;">
-                              <strong>Übersicht</strong> 
-                            </p>
-                                <!-- Body -->
-                                <p class="mb-sm-0">
-                                  Create the release notes for the new pages so customers are aware.
-                                </p>
-                              </div>
-                              <div class="col col-sm-auto">
-                                <!-- Time -->
-                                <p class="card-text small text-muted mb-0">
-                                  <i class="fe fe-clock" style="margin-right: 3px;"></i> Jun 9
-                                </p>
-                              </div>
-                              <div class="col-auto">
-                                <!-- delete -->
-                                <i class="fe fe-trash-2"></i>
-                              </div>
-                            </div> <!-- / .row -->
-                          </div>
-                        </div>
-                      </div>
-
-                    </div>
-
-                    <!-- Add -->
-                    <div class="kanban-add">
-                      <div class="card card-sm card-flush mb-0">
-                        <div class="card-body">
-
-                          <!-- Link -->
-                          <a class="kanban-add-link" href="#!">+ Aufgabe hinzufügen</a>
-
-                          <!-- Form -->
-                          <form class="kanban-add-form d-none">
-                            <div class="row align-items-center">
-                              <div class="col-12 col-md">
-
-                                <!-- Input -->
-                                <input type="text" class="form-control form-control-flush form-control-auto" placeholder="Name der Aufgabe" style="margin-bottom: 15px;">
-
-                                <input type="text" class="form-control form-control-flush form-control-auto" placeholder="Aufgabenbeschreibung">
-
-                              </div>
-                              <div class="col-6 col-md-auto d-flex align-items-center">
-
-                                <!-- Icon -->
-                                <span class="text-muted small me-2">
-                                  <i class="fe fe-clock"></i>
-                                </span>
-
-                                <!-- Input -->
-                                <input type="text" class="form-control form-control-sm form-control-flush form-control-auto text-muted" data-flatpickr data-options='{"dateFormat": "M j"}' placeholder="Datum">
-
-                              </div>
-                              <div class="col-6 col-md-auto">
-
-                                <!-- Buttons -->
-                                <button class="btn btn-sm btn-white" type="reset" style="margin-right: 8px;">
-                                  Abbrechen
-                                </button>
-                                <button class="btn btn-sm btn-primary" type="submit">
-                                  Hinzufügen
-                                </button>
-
-                              </div>
-                            </div> <!-- / .row -->
-                          </form>
-
-                        </div>
-                      </div>
                     </div>
 
                   </div>
@@ -545,85 +316,43 @@
 
                     <!-- Category -->
                     <div class="kanban-category">
-
-                      <!-- Card -->
-                      <div class="kanban-item">
-                        <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask">
-                          <div class="card-body">
-                            <div class="row align-items-center">
-                              <div class="col-12 col-sm">
-                                <!-- task name -->
-                            <p class="mb-0" style="padding-bottom: 8px;">
-                              <strong>Übersicht</strong> 
-                            </p>
-                                <!-- Body -->
-                                <p class="mb-sm-0">
-                                  Create the release notes for the new pages so customers are aware.
-                                </p>
+            
+                      {% if project_tasks_in_progress['result-set-data'] %}
+                      {% for task in project_tasks_in_progress['result-set-data'] %}
+                              <!-- Card -->
+                              <div id="" class="kanban-item2" >
+                                  <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask" >
+                                      <div class="card-body">
+                                          <div class="row align-items-center">
+                                              <div class="col-12 col-sm" >
+                                                  <!-- task name -->
+                                                  <p class="mb-0" style="padding-bottom: 8px;">                         
+                                                      <strong>{{ task['task_title'] }}</strong>                                                          
+                                                  </p>                 
+                                                  <!-- Body -->
+                                                  <p class="mb-sm-0">
+                                                    {{ task['task_description'] }}         
+                                                  </p>
+                                              </div>
+                                              <!-- Time -->
+                                              <div class="col col-sm-auto">
+                                                  <p class="card-text small text-muted mb-0">           
+                                                      <i class="fe fe-clock" style="margin-right: 3px;"></i>   {{ task['task_terminator'] }}                       
+                                                  </p>
+                                              </div>
+                                              <div class="col-auto">
+                                                <!-- update -->
+                                                <a href="/updatetask">
+                                                <i class="fe fe-edit"></i>
+                                                </a>
+                                              </div>
+                                          </div> <!-- / .row -->
+                                      </div>
+                                  </div>
                               </div>
-                              <div class="col col-sm-auto">
-                                <!-- Time -->
-                                <p class="card-text small text-muted mb-0">
-                                  <i class="fe fe-clock" style="margin-right: 3px;"></i> Jun 9
-                                </p>
-                              </div>
-                              <div class="col-auto">
-                                <!-- delete -->
-                                <i class="fe fe-trash-2"></i>
-                              </div>
-                            </div> <!-- / .row -->
-                          </div>
-                        </div>
-                      </div>
+                            {% endfor %}
+                        {% endif %}
 
-                    </div>
-
-                    <!-- Add -->
-                    <div class="kanban-add">
-                      <div class="card card-sm card-flush mb-0">
-                        <div class="card-body">
-
-                          <!-- Link -->
-                          <a class="kanban-add-link" href="#!">+ Aufgabe hinzufügen</a>
-
-                          <!-- Form -->
-                          <form class="kanban-add-form d-none">
-                            <div class="row align-items-center">
-                              <div class="col-12 col-md">
-
-                                <!-- Input -->
-                                <input type="text" class="form-control form-control-flush form-control-auto" placeholder="Name der Aufgabe" style="margin-bottom: 15px;">
-
-                                <input type="text" class="form-control form-control-flush form-control-auto" placeholder="Aufgabenbeschreibung">
-
-                              </div>
-                              <div class="col-6 col-md-auto d-flex align-items-center">
-
-                                <!-- Icon -->
-                                <span class="text-muted small me-2">
-                                  <i class="fe fe-clock"></i>
-                                </span>
-
-                                <!-- Input -->
-                                <input type="text" class="form-control form-control-sm form-control-flush form-control-auto text-muted" data-flatpickr data-options='{"dateFormat": "M j"}' placeholder="Datum">
-
-                              </div>
-                              <div class="col-6 col-md-auto">
-
-                                <!-- Buttons -->
-                                <button class="btn btn-sm btn-white" type="reset" style="margin-right: 8px;">
-                                  Abbrechen
-                                </button>
-                                <button class="btn btn-sm btn-primary" type="submit">
-                                  Hinzufügen
-                                </button>
-
-                              </div>
-                            </div> <!-- / .row -->
-                          </form>
-
-                        </div>
-                      </div>
                     </div>
 
                   </div>
@@ -645,35 +374,41 @@
                     <!-- Category -->
                     <div class="kanban-category">
 
-                      <!-- Card -->
-                      <div class="kanban-item">
-                        <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask">
-                          <div class="card-body">
-                            <div class="row align-items-center">
-                              <div class="col-12 col-sm">
-                                <!-- task name -->
-                            <p class="mb-0" style="padding-bottom: 8px;">
-                              <strong>Übersicht</strong> 
-                            </p>
-                                <!-- Body -->
-                                <p class="mb-sm-0">
-                                  Create the release notes for the new pages so customers are aware.
-                                </p>
+                      {% if project_tasks_finished['result-set-data'] %}
+                      {% for task in project_tasks_finished['result-set-data'] %}
+                              <!-- Card -->
+                              <div id="" class="kanban-item2" >
+                                  <div class="card card-sm mb-3" data-bs-toggle="modal" data-bs-target="#modalKanbanTask" >
+                                      <div class="card-body">
+                                          <div class="row align-items-center">
+                                              <div class="col-12 col-sm" >
+                                                  <!-- task name -->
+                                                  <p class="mb-0" style="padding-bottom: 8px;">                         
+                                                      <strong>{{ task['task_title'] }}</strong>                                                          
+                                                  </p>                 
+                                                  <!-- Body -->
+                                                  <p class="mb-sm-0">
+                                                    {{ task['task_description'] }}         
+                                                  </p>
+                                              </div>
+                                              <!-- Time -->
+                                              <div class="col col-sm-auto">
+                                                  <p class="card-text small text-muted mb-0">           
+                                                      <i class="fe fe-clock" style="margin-right: 3px;"></i>   {{ task['task_terminator'] }}                       
+                                                  </p>
+                                              </div>
+                                              <div class="col-auto">
+                                                <!-- update -->
+                                                <a href="/updatetask">
+                                                <i class="fe fe-edit"></i>
+                                                </a>
+                                              </div>
+                                          </div> <!-- / .row -->
+                                      </div>
+                                  </div>
                               </div>
-                              <div class="col col-sm-auto">
-                                <!-- Time -->
-                                <p class="card-text small text-muted mb-0">
-                                  <i class="fe fe-clock" style="margin-right: 3px;"></i> Jun 9
-                                </p>
-                              </div>
-                              <div class="col-auto">
-                                <!-- delete -->
-                                <i class="fe fe-trash-2"></i>
-                              </div>
-                            </div> <!-- / .row -->
-                          </div>
-                        </div>
-                      </div>
+                            {% endfor %}
+                        {% endif %}
 
                     </div>
                   </div>

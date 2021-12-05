@@ -16,7 +16,7 @@
         </button>
     
         <!-- Brand -->
-        <a class="navbar-brand" href="/dashboard">
+        <a class="navbar-brand">
           <img src="{{url_for('static', filename='assets/favicon/python_favicon.png')}}" class="navbar-brand-img mx-auto" alt="...">
         </a>
     
@@ -35,7 +35,6 @@
             <!-- Menu -->
             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="sidebarIcon">
               <a href="/profile" class="dropdown-item">Profil</a>
-              <a href="/settings" class="dropdown-item">Einstellungen</a>
               <hr class="dropdown-divider">
               <a href="/auth/sign-in" class="dropdown-item">Logout</a>
             </div>
@@ -101,9 +100,6 @@
                       <li class="nav-item">
                         <a href="/statistics/{{project['id']}}" class="nav-link ">Statistik</a>
                       </li>
-                      <li class="nav-item">
-                        <a href="/projectsettings/{{project['id']}}" class="nav-link ">Einstellungen</a>
-                      </li>
                     </ul>
                   </div>
                 </li>
@@ -113,7 +109,7 @@
 
 
 
-        </div> 
+        
     
           <!-- Divider -->
           <hr class="navbar-divider my-3">
@@ -126,14 +122,6 @@
 
             <li class="nav-item">
               <a class="nav-link " href="/profile"><i class="fe fe-user"></i>Profil</a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link " href="/statisticsproject"><i class="fe fe-bar-chart"></i>Übersicht</a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link " href="/settings"><i class="fe fe-settings"></i>Einstellungen</a>
             </li>
 
             <li class="nav-item">
@@ -156,6 +144,7 @@
         </div> <!-- / .navbar-collapse -->
     
       </div>
+    </div> 
     </nav>
 
     <!-- MAIN CONTENT -->
@@ -230,6 +219,13 @@
                   }
               });
               
+          })
+
+
+
+          $('#Delete-Project').click(function () {
+            project_id = $(this).attr('data-project-id')
+            window.location = '/delete-project/' + project_id
           })
       })
     </script>  

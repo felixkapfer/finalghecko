@@ -55,7 +55,7 @@
 
                       <!-- Heading -->
                       <h4 class="mb-1">
-                        David Persin
+                        {{current_user.firstname}} {{current_user.lastname}}
                       </h4>
 
                     </div>
@@ -81,7 +81,7 @@
                     </label>
 
                     <!-- Input -->
-                    <input type="text" class="form-control" placeholder="David">
+                    <input type="text" class="form-control" placeholder="{{current_user.firstname}}">
 
                   </div>
 
@@ -97,7 +97,7 @@
                     </label>
 
                     <!-- Input -->
-                    <input type="text" class="form-control" placeholder="Persin">
+                    <input type="text" class="form-control" placeholder="{{current_user.lastname}}">
 
                   </div>
 
@@ -113,47 +113,17 @@
                     </label>
 
                     <!-- Input -->
-                    <input type="email" class="form-control" placeholder="david.persin01@gmail.com">
+                    <input type="email" class="form-control" placeholder="{{current_user.email}}">
 
                   </div>
 
                 </div>
-                <div class="col-12 col-md-6">
 
-                  <!-- Phone -->
-                  <div class="form-group">
 
-                    <!-- Label -->
-                    <label class="form-label">
-                      Telefonnummer
-                    </label>
-
-                    <!-- Input -->
-                    <input type="text" class="form-control mb-3" placeholder="015751216964"/>
-
-                  </div>
-
-                </div>
-                <div class="col-12 col-md-6">
-
-                  <!-- Birthday -->
-                  <div class="form-group">
-
-                    <!-- Label -->
-                    <label class="form-label">
-                      Geburtsdatum
-                    </label>
-
-                    <!-- Input -->
-                    <input type="text" class="form-control" data-flatpickr placeholder="28-01-2001">
-
-                  </div>
-
-                </div>
               </div> <!-- / .row -->
 
               <!-- Button -->
-              <button class="btn btn-primary">
+              <button class="btn btn-primary" style="margin-top: 10px;">
                 Änderungen speichern
               </button>
 

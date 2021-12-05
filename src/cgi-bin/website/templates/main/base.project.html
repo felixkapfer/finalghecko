@@ -12,8 +12,10 @@
                             <!-- Pretitle -->
                             <h6 class="header-pretitle" style="padding-left: 3px;">Projekt</h6>
                             <!-- Title -->
-                            <h1 class="header-title" style="font-size: 3em; padding-top: 6px; padding-bottom: 15px;">
-
+                            <h1 class="header-title" style="font-size: 3em; padding-top: 6px;">
+                                {% if current_project['result-set-data'][0]['project_title'] %}
+                                {{current_project['result-set-data'][0]['project_title']}}
+                                {% endif %}
                             </h1>
                         </div>
       
@@ -36,13 +38,15 @@
                         {% block navbuttongroup %}
                             <div class="col-12 col-md-auto mt-3 mt-md-0">
                                 <!-- new task button -->
+                                <a href="/newtask/{{current_project['result-set-data'][0]['id']}}">
                                 <button 
                                     type="button" 
                                     class="btn btn-primary" 
                                     style="padding-left: 25px; padding-right: 25px;"
-                                    onclick= "window.location.href = '/newtask/';">
+                                    >
                                     Aufgabe hinzufügen
                                 </button>
+                                </a>
                             </div>
                         {% endblock %}
                     </div>

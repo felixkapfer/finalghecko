@@ -112,7 +112,7 @@ class TaskList(db.Model):
     assigned_to_project_id = db.Column(db.Integer, db.ForeignKey('tbl_project_list.id'), nullable=False)
     task_title             = db.Column(db.String(1000), nullable=False)
     task_description       = db.Column(db.Text, nullable=False)
-    task_status            = db.Column(db.String(25), nullable=False, default='open')
+    task_status            = db.Column(db.String(25), nullable=False, default='todo')
     task_terminator        = db.Column(db.Date, nullable=False)
     last_modified          = db.Column(db.Date, nullable=False, default=datetime.today)
     date_of_issue          = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)

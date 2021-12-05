@@ -265,7 +265,7 @@ class Task(): #Initialzing the Class 'Task'
                 raise NoResultFound
 
             elif count > 0:
-                tasks       = TaskList.query.filter_by(task_owner=user_id, assigned_to_project_id=project_id,  task_status=category_id).all()
+                tasks       = TaskList.query.filter_by(task_owner=user_id, assigned_to_project_id=project_id, task_status=category_id).all()
                 task_schema = TaskSchema(many=True)
                 output      = task_schema.dump(tasks)
 
@@ -618,7 +618,7 @@ class Task(): #Initialzing the Class 'Task'
 
 
     # donet
-    def task_deleteTaskById(self, user_id, task_id):
+    def task_deleteTaskById(self, user_id, task_id, project_id):
         """
         A given Task should get deleted
 
@@ -630,7 +630,7 @@ class Task(): #Initialzing the Class 'Task'
         """
 
         try:
-            delete_task = TaskList.query.filter_by(id=task_id, task_owner=user_id).one()
+            delete_task = TaskList.query.filter_by(id=task_id, task_owner=user_id, assigned_to_project_id=project_id).one()
             db.session.delete(delete_task)
             db.session.commit()
 

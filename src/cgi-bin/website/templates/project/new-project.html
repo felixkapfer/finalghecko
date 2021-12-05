@@ -1,128 +1,191 @@
 <!-- ################################################################################################################## -->
 <!--                                        Section for general Configuration                                           -->
 <!-- ################################################################################################################## -->
-{% extends "main/base.userview.html" %} 
-{% block title %}Neues Projekt{% endblock %}
+{% extends "main/base.html" %} 
+    {% block title %}Dashboard{% endblock %}
 
-{% block content %}
-  
-    <!-- MAIN CONTENT -->
-    <div class="main-content">
 
-      <div class="container-fluid">
-        <div class="row justify-content-center">
-          <div class="col-12 col-lg-10 col-xl-8">
+    <!-- ################################################################################################################## -->
+    <!--    Content Section, where alerts get displayed          -->
+    <!-- ################################################################################################################## -->
+    {% block body %}
 
-            <!-- Header -->
-            <div class="header mt-md-5">
-              <div class="header-body">
-                <div class="row align-items-center">
-                  <div class="col">
+        <!-- MAIN CONTENT -->
+        <center><div class="main-content" style="max-width: 1000px;">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-lg-10 col-xl-8">
 
-                    <!-- Pretitle -->
-                    <h6 class="header-pretitle">
-                      Neues Projekt
-                    </h6>
-
-                    <!-- Title -->
-                    <h1 class="header-title">
-                      Neues Projekt erstellen
-                    </h1>
-
-                  </div>
+                        <!-- Header -->
+                        <div class="header mt-md-5">
+                            <div class="header-body">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <!-- Pretitle -->
+                                        <h6 class="header-pretitle">Neues Projekt</h6>
+                                        <!-- Title -->
+                                        <h1 class="header-title">Neues Projekt erstellen</h1>
+                                    </div>
+                                </div> <!-- / .row -->
+                            </div>
+                            <br>
+                            <div id="Project-Feedback-Error-Wrapper" class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <div id="Project-Feedback-Error"></div>
+                                <!-- Close -->
+                                <!-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> -->
+                            </div>
+                        </div>
+                        <!-- Form -->
+                        <form class="mb-4">
+                            <!-- Project name -->
+                            <div class="form-group">
+                                <!-- Label  -->
+                                <label class="form-label">Projekt Name</label>
+                                <!-- Input -->
+                                <input type="text" class="form-control" name="project-title">
+                                <!-- Input Validation Feedback Section -->
+                                <div id="Project-Title" class="form-validation-feedback"></div>
+                            </div>
+                            <!-- Project description -->
+                            <div class="form-group">
+                                <!-- Label -->
+                                <label class="form-label mb-1">Projekt Beschreibung</label>
+                                <!-- Text -->
+                                <small class="form-text text-muted">
+                                    Um was soll es bei Ihrem Projekt gehen:
+                                </small>
+                                <!-- Textarea -->
+                                <div id="Project-Description-Ta" class="project-description-wrapper" name="project-description" data-quill></div>
+                                <!-- Input Validation Feedback Section -->
+                                <div id="Project-Description" class="form-validation-feedback"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <!-- Start date -->
+                                    <div class="form-group">
+                                        <!-- Label -->
+                                        <label class="form-label">Startdatum</label>
+                                        <!-- Input -->
+                                        <input type="text" class="form-control" name="project-start-date" data-flatpickr>
+                                        <!-- Input Validation Feedback Section -->
+                                        <div id="Project-Start-Date" class="form-validation-feedback"></div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <!-- Start date -->
+                                    <div class="form-group">
+                                        <!-- Label -->
+                                        <label class="form-label">Enddatum</label>
+                                        <!-- Input -->
+                                        <input type="text" class="form-control" name="project-end-date" data-flatpickr>
+                                        <!-- Input Validation Feedback Section -->
+                                        <div id="Project-End-Date" class="form-validation-feedback"></div>
+                                    </div>
+                                </div>
+                            </div> <!-- / .row -->
+                            <!-- Divider -->
+                            <hr class="mt-5 mb-5">
+                            <!-- Buttons and hidden Inputs-->
+                            <input type="hidden" name="user-id" value="{{current_user.id}}">
+                            <button 
+                                id                 = "Form-Button"
+                                class              = "btn w-100 btn-primary"
+                                type               = "sumbit" 
+                                name               = "submit-btn"
+                                data-serialization = "True"
+                                data-api-target    = "http://127.0.0.1:5000/api/create-project"
+                                data-api-method    = "POST"
+                                data-api-task      = "registerData"
+                                data-page-reload   = "False"
+                                data-textarea-attr = "#Project-Description-Ta"
+                                data-textarea-name = "project-description=">
+                                Projekt erstellen
+                            </button>
+                            <a href="javascript:history.back()" class="btn w-100 btn-link text-muted mt-2">Abbrechen</a>
+                        </form>
+                    </div>
                 </div> <!-- / .row -->
-              </div>
             </div>
-
-            <!-- Form -->
-            <form class="mb-4">
-
-              <!-- Project name -->
-              <div class="form-group">
-
-                <!-- Label  -->
-                <label class="form-label">
-                  Projekt Name
-                </label>
-
-                <!-- Input -->
-                <input type="text" class="form-control">
-
-              </div>
-
-              <!-- Project description -->
-              <div class="form-group">
-
-                <!-- Label -->
-                <label class="form-label mb-1">
-                  Projekt Beschreibung
-                </label>
-
-                <!-- Text -->
-                <small class="form-text text-muted">
-                  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam.
-                </small>
-
-                <!-- Textarea -->
-                <div data-quill></div>
-
-              </div>
-
-
-              <div class="row">
-                <div class="col-12 col-md-6">
-
-                  <!-- Start date -->
-                  <div class="form-group">
-
-                    <!-- Label -->
-                    <label class="form-label">
-                      Startdatum
-                    </label>
-
-                    <!-- Input -->
-                    <input type="text" class="form-control" data-flatpickr>
-
-                  </div>
-
-                </div>
-                <div class="col-12 col-md-6">
-
-                  <!-- Start date -->
-                  <div class="form-group">
-
-                    <!-- Label -->
-                    <label class="form-label">
-                      Enddatum
-                    </label>
-
-                    <!-- Input -->
-                    <input type="text" class="form-control" data-flatpickr>
-
-                  </div>
-
-                </div>
-              </div> <!-- / .row -->
-
-              <!-- Divider -->
-              <hr class="mt-5 mb-5">
-
-              <!-- Buttons -->
-              <a href="#" class="btn w-100 btn-primary">
-                Projekt erstellen
-              </a>
-              <a href="javascript:history.back()" class="btn w-100 btn-link text-muted mt-2">
-                Abbrechen
-              </a>
-
-            </form>
-
-          </div>
-        </div> <!-- / .row -->
-      </div>
-
-    </div> <!-- / .main-content -->
-
+        </div> <!-- / .main-content -->
+    </center>
     {% endblock %}
+
+    {% block include_java_script %}
+    <script>
+      $(document).ready(function() {                                   // Only execute the code below if page was fully load
+        test = $("form input[name=project-start-date]").val(new Date().toDateInputValue());
+        
+        
+        
+        // Send data from sign-in and sign-up from if submit button is clicked by user
+          $('#Form-Button').click(function (event) {
+              event.preventDefault();                                 // prevent pagereload or page redirecting when submit button is clicked
+              $('.form-validation-feedback').html('')                 // reset each form-validation-feedback section to null when sumbit button is clicked
+              
+              let target             = $(this).attr('data-api-target')            // Get attribute which defines the url where the date get send to via REST
+              let method             = $(this).attr('data-api-method')            // Get attribute which defines what kind of REST Method it is
+              let task               = $(this).attr('data-api-task')              // Get attribute which defines what Api is going to do with the data
+              let text_area_attr     = $(this).attr('data-textarea-attr');
+              let text_area_name     = $(this).attr('data-textarea-name');
+              let text_area_val      = $(text_area_attr).children('div').text(); 
+              let submit_data        = 'task=' + task;
+              let form_serialization = $('form').serialize();
+              let data               = submit_data + '&' + form_serialization + '&' + text_area_name + text_area_val;
+              
+              // Createing jQuery AJAX function to send form data to REST API
+              $.ajax({
+                    type    : method,
+                    url     : target,
+                    data    : data,
+                    dataType: 'HTML',
+                    success: function (response) {                                      // defines function which will be executed if AJAX request was successfull
+                          let responseObj    = JSON.parse(response)                       // create a JSON object from the data received from the API
+                          let responseLength = Object.keys(responseObj).length            // Get amount of JSON Objects that are received
+                  
+                          if (typeof responseObj[1] != 'undefined') {
+                            $(responseObj[1]['display-messages-target']).slideUp(400)
+                            if (responseObj[1]['status'] == false) {                                                                                // validate if an error occured and following error message object(s) was/ were returned
+                                  $('error-feedback-section').fadeIn(200)                                                                             // display HTML section with class 'error-feedback-section' 
+                                                                                                           
+                                  for (let i = 2; i <= responseLength; i++) {                                                                         // Looping through all error message objects that are returned by the API
+                                      let writeHtml = 'Error-Code: ' + responseObj[i]['Error-Code'] + ' - ' + responseObj[i]['Description']           // Creating output string Text that will be displayed below the input box where error occured
+                                      $(responseObj[i]['Render-Output']).html(writeHtml)                                                              // Writing error messages from each error object to the corresponing feedback section in the HTML code
+                                  }
+              
+                                  if (responseObj[1]['display-messages'] == 'inpage-alert') {
+                                      $(responseObj[1]['display-messages-target']).slideDown(600)
+                                  }
+                                  
+                                  else if (responseObj[1]['status'] == true ) {                       // if no error were returened, validate that task send was done successfull 
+                                    if (responseObj[1]['redirect-status']) {
+                                      let url = responseObj[1]['redirect-target']                 // Get URL were User gets rediretected to if everything was successfull
+                                      window.location = url                                       // Redirect User to the URL
+                                    }
+                                  } 
+                              }
+                            }
+                            if (typeof responseObj['status'] != 'undefined' && typeof responseObj['result-set-data'] != 'undefined') {
+                              $(responseObj['status']['display-messages-target']).slideUp(400)
+                                if (responseObj['status']['status'] == false) {
+                                  if (responseObj['status']['display-messages'] == 'inpage-alert') {
+                                        $(responseObj['status']['display-messages-target']).slideDown(600)
+                                        
+                                  }
+                                }
+                                else if (responseObj['status']['status'] == true && responseObj['status']['redirect-status'] == true) {
+                                  let url         = responseObj['status']['redirect-target'];
+                                  let project     = responseObj['result-set-data']['id'];
+                                  window.location = url + '/' + project;
+                                  console.log(url + '/' + project)
+                                }
+                            }
+                    }
+                  
+                  
+             
+              })  
+            })  
+      })
+    </script>  
     
-</html>
+  {% endblock %}
