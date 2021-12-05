@@ -8,10 +8,25 @@ views = Blueprint('views', __name__)
 
 @views.route('/')
 def home():
+    """This functions renders the authentification sign-in page when the base URL is called 
+
+    Returns:
+        html: the authentification sign-in page
+        
+    Test: calling the url and see if it renders the right template
+    """
     return render_template('auth/sign-in.html')
 
 @views.route('/dashboard')
 async def emptyDashboard():
+    """This functions renders the login page when the /dashboard URL is called and if the user is not logged in. If the user is logged in and has no projects created, then the functions renders the start project page. If the user already has projects, then the functions renders the dashboard page
+
+    Returns:
+        html: the page that is rendered
+        
+    Test 1: calling the url and see if it renders the right template
+    Test 2: try to create a project if no user is logged in
+    """
     if current_user.is_authenticated:
         user_id = current_user.id
 
@@ -39,6 +54,17 @@ async def emptyDashboard():
 
 @views.route('/dashboard/<project_id>')
 async def dashboard(project_id):
+    """This functions renders the project page with the id that is given through the parameter  
+
+    Args:
+        project_id (int): the id of the project
+
+    Returns:
+        html: the page that is rendered
+        
+    Test 1: calling the url with a certain project id and see if it renders the right template with the right project
+    Test 2: calling the url with a wrong id and see if it throws an error
+    """
     project_id = int(project_id)
     if current_user.is_authenticated:
         user_id = current_user.id
@@ -88,6 +114,14 @@ async def dashboard(project_id):
 
 @views.route('/new-project')
 async def newproject():
+    """This functions renders the new project page when the /new-project URL is called and if the user is logged in, but if the user is not logged in the functions renders the login page
+
+   Returns:
+        html: the page that is rendered
+        
+    Test 1: calling the url with a certain project id and see if it renders the right template with the right project
+    Test 2: calling the url with a wrong id and see if it throws an error
+    """
     if current_user.is_authenticated:
         user_id = current_user.id
         return render_template('project/new-project.html')
@@ -100,6 +134,14 @@ async def newproject():
 
 @views.route('/kanban/<project_id>')
 async def kanban(project_id):
+    """This functions renders the kanban page when the /kanban URL is called and if the user is logged in, but if the user is not logged the function renders the login page
+
+    Returns:
+        html: the page that is rendered
+        
+    Test 1: calling the url with a certain project id and see if it renders the right template with the right project
+    Test 2: calling the url with a wrong id and see if it throws an error
+    """
     project_id = int(project_id)
     if current_user.is_authenticated:
         user_id                = current_user.id
@@ -134,6 +176,14 @@ async def kanban(project_id):
 
 @views.route('/profile')
 async def profile():
+    """This functions renders the profile page when the /profile URL is called and if the user is logged in, but if the user is not logged the function renders the ling page
+
+    Returns:
+        html: the page that is rendered
+        
+    Test 1: calling the url with a certain project id and see if it renders the right template with the right project
+    Test 2: calling the url with a wrong id and see if it throws an error
+    """
     if current_user.is_authenticated:
         user_id = current_user.id
        
@@ -152,6 +202,13 @@ async def profile():
 
 @views.route('/statistics/<project_id>')
 async def statistics(project_id):
+    """This functions renders the statistics page for a certain id when the /statistics/<project_id> URL is called and if the user is logged in, but if the user is not logged the function renders the ling page
+    Returns:
+        html: the page that is rendered
+        
+    Test 1: calling the url with a certain project id and see if it renders the right template with the right project
+    Test 2: calling the url with a wrong id and see if it throws an error
+    """
     if current_user.is_authenticated:
         user_id = current_user.id
         count_date_since_start = httpx.get(f'http://127.0.0.1:5000/api/get-date-difference-stt-by-project-id?user-id={user_id}&project-id={project_id}')
@@ -196,6 +253,13 @@ async def statistics(project_id):
 
 @views.route('/settings/')
 async def settings():
+    """This functions renders the settings page when the /settings/ URL is called and if the user is logged in, but if the user is not logged the function renders the ling page
+    Returns:
+        html: the page that is rendered
+        
+    Test 1: calling the url with a certain project id and see if it renders the right template with the right project
+    Test 2: calling the url with a wrong id and see if it throws an error
+    """
     if current_user.is_authenticated:
         user_id = current_user.id
        
@@ -214,6 +278,13 @@ async def settings():
 
 @views.route('/projectsettings/<project_id>')
 async def projectsettings(project_id):
+    """This functions renders the projectsettings üage for a certain project when the /projectsettings/<project_id> URL is called and if the user is logged in, but if the user is not logged the function renders the ling page
+    Returns:
+        html: the page that is rendered
+        
+    Test 1: calling the url with a certain project id and see if it renders the right template with the right project
+    Test 2: calling the url with a wrong id and see if it throws an error
+    """
     project_id = int(project_id)
     if current_user.is_authenticated:
         user_id = current_user.id
@@ -237,6 +308,13 @@ async def projectsettings(project_id):
 
 @views.route('/newtask/<project_id>')
 async def newtask(project_id):
+    """This functions renders the new task page for a certain project when the /newtask/<project_id> URL is called and if the user is logged in, but if the user is not logged the function renders the ling page
+    Returns:
+        html: the page that is rendered
+        
+    Test 1: calling the url with a certain project id and see if it renders the right template with the right project
+    Test 2: calling the url with a wrong id and see if it throws an error
+    """
     project_id = int(project_id)
     if current_user.is_authenticated:
         user_id = current_user.id
@@ -271,6 +349,13 @@ async def newtask(project_id):
 
 @views.route('/delete-project/<project_id>')
 async def delete_project(project_id):
+    """This functions renders the view profile page when the /delete-project/<project_id> URL is called and if the user is logged in, but if the user is not logged the function renders the ling page
+    Returns:
+        html: the page that is rendered
+        
+    Test 1: calling the url with a certain project id and see if it renders the right template with the right project
+    Test 2: calling the url with a wrong id and see if it throws an error
+    """
     project_id = int (project_id)
     if current_user.is_authenticated:
         user_id = current_user.id
