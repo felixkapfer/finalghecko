@@ -305,18 +305,18 @@
                                 <!-- Title -->
                                 <h2 class="mb-0">Projektinformationen</h2>
                                 <!-- Button -->
-                              <a class="small" style="color: red;" href="">Löschen</a> 
+                              <a id="Delete-Project" class="small" style="color: red; cursor: pointer;" data-project-id="{{current_project['result-set-data'][0]['id']}}">Löschen</a> 
                             </div>
 
                             <div class="card-body">
                                 <!-- Text -->
-                                <p class="small text-gray-700 mb-0" style="padding-bottom: 5px;">Projektname</p>                <!-- todo -->
+                                <p class="small text-gray-700 mb-0" style="padding-bottom: 5px;">Projektname</p>               
                                 <!-- task description -->
-                                <p style="margin-bottom: 22px;">{{current_project['result-set-data'][0]['project_title']}}</p>                                              <!-- todo -->
+                                <p style="margin-bottom: 22px;">{{current_project['result-set-data'][0]['project_title']}}</p>                                             
                                 <!-- Text -->
-                                <p class="small text-gray-700 mb-0" style="padding-bottom: 5px;">Projekbeschreibung</p>         <!-- todo -->
+                                <p class="small text-gray-700 mb-0" style="padding-bottom: 5px;">Projekbeschreibung</p>        
                                 <!-- task description -->
-                                <p style="margin-bottom: 30px;">                                                                <!-- todo -->
+                                <p style="margin-bottom: 30px;">                                                               
                                   {{current_project['result-set-data'][0]['project_description']}} 
                                 </p>
                                 <!-- List group -->
@@ -333,7 +333,7 @@
                                             </div>
                                             <div class="col ms-n2">
                                                 <!-- Heading -->
-                                                <h5 class="mb-1" style="font-size: 1em;">{{current_project['result-set-data'][0]['project_start_date']}}</h5>                    <!-- todo -->
+                                                <h5 class="mb-1" style="font-size: 1em;">{{current_project['result-set-data'][0]['project_start_date']}}</h5>            
                                                 <!-- Text -->
                                                 <p class="small text-gray-700 mb-0">Startdatum</p>
                                             </div>

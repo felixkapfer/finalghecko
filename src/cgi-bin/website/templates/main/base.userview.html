@@ -223,8 +223,9 @@
 
 
 
-          $('.delete-task-fnc').click(function () {
-            $(this)
+          $('#Delete-Project').click(function () {
+            project_id = $(this).attr('data-project-id')
+            window.location = '/delete-project/' + project_id
           })
       })
     </script>  
