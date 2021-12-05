@@ -289,7 +289,7 @@ async def delete_project(project_id):
             
         deleted_project = httpx.delete(f"http://127.0.0.1:5000/api/delete-project?user-id={user_id}&project-id={project_id}")
         
-        return redirect(url_for('views.settings')) 
+        return redirect(url_for('views.profile')) 
     
             
 
