@@ -21,11 +21,11 @@ async def emptyDashboard():
     count_projects = all_projects_by_user.json()
     
     print(all_projects_by_user.json())
-    print(count_projects['count-result-set'])
     if not 'count-result-set' in count_projects:
         return render_template('project/start-project.html')
 
     elif 'count-result-set' in count_projects:
+        print(count_projects['count-result-set'])
         if count_projects['count-result-set'] > 0:
             first_project = all_projects_by_user.json()['result-set-data'][0]['id']
             return redirect(url_for('views.dashboard', project_id=first_project))
