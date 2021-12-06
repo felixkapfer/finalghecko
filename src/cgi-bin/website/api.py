@@ -2950,7 +2950,7 @@ def api_updateTask():
     """
 
     method = request.method
-    args   = request.args
+    args   = request.form
 
     if method == 'PUT':
         i                   = 1
@@ -3064,18 +3064,18 @@ def api_updateTask():
         if i == 1:
             user_id    = args['user-id']
             task_id    = args['task-id']
-            poject_id    = args['project-id']
+            project_id    = args['project-id']
 
             task       = Task()
-            tmp_result = task.task_updateTaskById(user_id, task_id, args)
-
+            tmp_result = task.task_updateTaskById(user_id, task_id, project_id, args)
+            url = "http://127.0.0.1:5000/dashboard" + '/' + project_id
 
             if tmp_result:
                 result[1]['status']                   = True
                 result[1]['status-code']              = 200
                 result[1]['status-description']       = 'OK'
-                result[1]['redirect-status']          = False
-                result[1]['redirect-target']          = 'http://127.0.0.1:5000/dashboard'
+                result[1]['redirect-status']          = True
+                result[1]['redirect-target']          = url
                 result[1]['display-messages']         = None
                 result[1]['display-messages-target '] = None
 

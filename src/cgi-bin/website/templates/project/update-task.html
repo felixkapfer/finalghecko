@@ -309,7 +309,7 @@
                                 else if (responseObj['status']['status'] == true && responseObj['status']['redirect-status'] == true) {
                                   let url  = responseObj['status']['redirect-target'];
                                   let task = responseObj['result-set-data']['assigned_to_project_id'];
-                                  window.location = url + '/' + task;
+                                  window.location = url
                                   console.log(url + '' + task)
                                 }
                             }
