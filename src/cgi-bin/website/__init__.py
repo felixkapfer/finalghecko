@@ -9,9 +9,12 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_login import LoginManager, login_manager
 from datetime import date
+import pymysql
+from website.secrets import dbhost, dbname, dbuser, dbpass
 
 db = SQLAlchemy()
 ma = Marshmallow()
+__con = "mysql+pymysql://{0}:{1}@{2}/{3}".format(dbuser, dbpass, dbhost, dbname)
 
 
 
@@ -29,7 +32,8 @@ def createApp():
 
     #app.config['SECRET KEY'] = 'gheckoprojectname2021 - Group: Programmieren Next Level'
     app.secret_key = 'gheckoprojectname2021 - Group: Programmieren Next Level'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+    # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = __con
 
     
     db.init_app(app)
